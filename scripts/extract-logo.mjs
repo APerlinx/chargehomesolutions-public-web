@@ -20,6 +20,18 @@ const FLOOR = 0.1
 /** At or above this luminance the pixel is fully opaque artwork. */
 const CEIL = 0.62
 
+/**
+ * Regions cleared from the artwork, in source pixel coordinates.
+ *
+ * The car's rear bumper is drawn as a "C" curl — a stroke at y 242-252, another at
+ * y 193-203, a cap joining them at the left edge, and a small flick at y 166-176.
+ * This box lifts that whole assembly out. Its top edge sits at y 158, which clears
+ * the roofline: that line tapers in at x 196 / y 152 and only climbs from there, so
+ * it survives intact. The right edge stops at x 254, just before the underside
+ * begins sweeping up into the side skirt, leaving that sweep as the new rear line.
+ */
+const ERASE_BOXES = [{ left: 78, top: 158, right: 254, bottom: 262 }]
+
 const image = sharp(SOURCE).ensureAlpha()
 const { width, height } = await image.metadata()
 const { data } = await image.raw().toBuffer({ resolveWithObject: true })
@@ -33,6 +45,16 @@ for (let i = 0, p = 0; p < alpha.length; i += 4, p++) {
   // transparent and the strokes stay solid, without eating the soft edges.
   const coverage = (luma - FLOOR) / (CEIL - FLOOR)
   alpha[p] = Math.round(Math.max(0, Math.min(1, coverage)) * 255)
+}
+
+// Clear the unwanted regions before measuring, so the trim tightens around what
+// actually remains rather than around the removed artwork.
+for (const box of ERASE_BOXES) {
+  for (let y = box.top; y <= box.bottom; y++) {
+    for (let x = box.left; x <= box.right; x++) {
+      alpha[y * width + x] = 0
+    }
+  }
 }
 
 // Find the artwork's bounding box so the asset carries no dead margin and can be
@@ -73,3 +95,7 @@ await sharp(
 
 console.log(`[v0] source ${width}x${height} -> mask ${box.width}x${box.height}`)
 console.log(`[v0] aspect ratio ${(box.width / box.height).toFixed(4)}`)
+console.log(`[v0] set LOGO_RATIO to "${box.width} / ${box.height}"`)
+
+// A flattened copy for eyeballing the result; not shipped to the app.
+await sharp(OUTPUT).flatten({ background: "#0b0f14" }).png().toFile("/tmp/logo/preview.png")
