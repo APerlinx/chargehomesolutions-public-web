@@ -1,7 +1,7 @@
 import { Check, X } from "lucide-react"
 import { Container, Section, SectionHeader } from "@/components/ui/section"
 import { Reveal } from "@/components/ui/reveal"
-import { whyUs } from "@/lib/content"
+import { site, whyUs } from "@/lib/content"
 
 export function WhyUs() {
   return (
@@ -13,7 +13,7 @@ export function WhyUs() {
           <div className="grid grid-cols-[1fr_auto_auto] items-center gap-x-4 bg-ink-raised px-5 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted sm:px-7">
             <span>Feature</span>
             <span className="w-24 text-center sm:w-32">{whyUs.competitor}</span>
-            <span className="w-24 text-center sm:w-32 text-primary">Charge Home</span>
+            <span className="w-24 text-center sm:w-32 text-primary">{site.name}</span>
           </div>
 
           <ul>
@@ -33,7 +33,7 @@ export function WhyUs() {
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/15">
                     <Check className="h-4 w-4 text-primary" aria-hidden="true" />
                   </span>
-                  <span className="sr-only">Offered by Charge Home Solutions</span>
+                  <span className="sr-only">Offered by {site.name}</span>
                 </span>
               </li>
             ))}
