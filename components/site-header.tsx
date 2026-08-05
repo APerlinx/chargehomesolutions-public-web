@@ -38,7 +38,7 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
         <div className="flex items-center gap-3">
-          <a href="#top" className="flex items-center gap-3" aria-label="Charge Home Solutions home">
+          <a href="/" className="flex items-center gap-3" aria-label="Charge Home Solutions home">
             <ChsLogo className="h-11 w-auto lg:h-14" />
           </a>
           <span className="hidden h-6 w-px bg-border sm:block" aria-hidden="true" />
