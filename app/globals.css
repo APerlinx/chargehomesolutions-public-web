@@ -24,7 +24,9 @@
 
   --radius: 0.75rem;
 
-  --animate-marquee: marquee 60s linear infinite;
+  /* Duration scales with the number of logos so the scroll pace stays constant:
+     the partner row grew from 12 brands to 25, so its track is ~2x longer. */
+  --animate-marquee: marquee 125s linear infinite;
   --animate-pulse-ring: pulse-ring 3s ease-out infinite;
   --animate-ticker: ticker 1.6s cubic-bezier(0.16, 1, 0.3, 1);
 }

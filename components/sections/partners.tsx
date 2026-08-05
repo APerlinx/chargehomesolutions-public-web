@@ -20,10 +20,15 @@ const TARGET_AREA = 3240
  * row that stays level.
  */
 const MAX_HEIGHT = 40
-/** Keeps Lucid's very long wordmark from dominating the row. */
+/** Keeps Lucid's and Jaguar's very long wordmarks from dominating the row. */
 const MAX_WIDTH = 176
-/** Floor for thin wordmarks so their strokes stay legible. */
-const MIN_HEIGHT = 10
+/**
+ * Floor for very wide wordmarks. Lucid is 17.6:1, so the width cap alone would
+ * leave it only 10px tall -- the thinnest thing in the row, the opposite of the
+ * problem the cap exists to solve. Letting it exceed MAX_WIDTH slightly is a
+ * better trade than a sliver of a logo.
+ */
+const MIN_HEIGHT = 14
 
 function logoSize(ratio: number) {
   // Equal area: height * (height * ratio) = TARGET_AREA.
