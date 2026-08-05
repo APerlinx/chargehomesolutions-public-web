@@ -11,7 +11,6 @@ import { Plans } from "@/components/sections/plans"
 import { Fees } from "@/components/sections/fees"
 import { CaseStudy } from "@/components/sections/case-study"
 import { Testimonials } from "@/components/sections/testimonials"
-import { Gallery } from "@/components/sections/gallery"
 import { About } from "@/components/sections/about"
 import { Faq } from "@/components/sections/faq"
 import { FinalCta } from "@/components/sections/final-cta"
@@ -32,7 +31,6 @@ export default function HomePage() {
         <Fees />
         <CaseStudy />
         <Testimonials />
-        <Gallery />
         <About />
         <Faq />
         <FinalCta />

@@ -387,19 +387,6 @@ export const testimonials = {
   ],
 } as const
 
-export const gallery = {
-  eyebrow: "Our Work",
-  title: "Installation Gallery",
-  subtitle: "Real projects completed by electricians in our network.",
-  items: [
-    { image: "/images/gallery-plug.png", alt: "EV charging connector plugged into an electric car", span: "tall" },
-    { image: "/images/gallery-solar.png", alt: "Solar panels installed on a modern home roof", span: "wide" },
-    { image: "/images/gallery-electrician.png", alt: "Licensed electrician beside a newly installed panel", span: "normal" },
-    { image: "/images/gallery-smart-home.png", alt: "Smart electrical panel with a touchscreen interface", span: "normal" },
-    { image: "/images/gallery-commercial.png", alt: "Row of commercial EV charging stations at dusk", span: "wide" },
-  ],
-} as const
-
 export const about = {
   eyebrow: "About Us",
   title: "Who We Are",
@@ -492,7 +479,7 @@ export const footer = {
         { label: "About Us", href: "#about" },
         { label: "How It Works", href: "#how-it-works" },
         { label: "Coverage", href: "#coverage" },
-        { label: "Our Work", href: "#gallery" },
+        { label: "Our Work", href: "#projects" },
       ],
     },
     {
