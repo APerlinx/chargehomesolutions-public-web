@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react"
 
 /**
  * The hero's signature element: a slowly rotating sphere built from one node per
- * licensed electrician in the network. Every few moments a pulse of light travels
- * along an arc between two nodes — an appointment being dispatched to an installer.
+ * licensed electrician in the network. Charge arcs between neighbouring nodes and
+ * chains outward across the surface, like current finding its way through a grid.
  *
  * Rendered on a canvas so 2,500 nodes stay cheap, and it degrades to a single
  * static frame when the visitor prefers reduced motion.
@@ -14,17 +14,28 @@ import { useEffect, useRef } from "react"
 const NODE_COUNT = 2500
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
 
+/** Segments per spark: enough to read as a jagged discharge, few enough to stay cheap. */
+const SPARK_SEGMENTS = 12
+/** How far a spark may reach, as chord length on the unit sphere. Keeps hops local. */
+const MIN_REACH = 0.07
+const MAX_REACH = 0.22
+
 type Node = { x: number; y: number; z: number }
 
-type Dispatch = {
+type Discharge = {
   from: Node
   to: Node
-  /** Control point that lifts the arc off the sphere surface. */
-  cx: number
-  cy: number
-  cz: number
-  progress: number
-  speed: number
+  /** Unit vector perpendicular to the hop, used to zigzag the spark sideways. */
+  px: number
+  py: number
+  pz: number
+  /** Lateral offset per segment, tapered to zero at both ends so it meets the nodes. */
+  offsets: number[]
+  age: number
+  duration: number
+  /** Chain generation; capped so a single spark can't cascade forever. */
+  generation: number
+  hasChained: boolean
 }
 
 function buildNodes(): Node[] {
@@ -58,7 +69,7 @@ export function NetworkSphere({ className }: { className?: string }) {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const nodes = buildNodes()
-    const dispatches: Dispatch[] = []
+    const discharges: Discharge[] = []
     let colors = readColors()
 
     let width = 0
@@ -70,7 +81,7 @@ export function NetworkSphere({ className }: { className?: string }) {
     let pointerY = 0
     let targetPointerX = 0
     let targetPointerY = 0
-    let nextDispatchAt = 600
+    let nextDischargeAt = 600
     let elapsed = 0
     let frame = 0
     let lastTime = performance.now()
@@ -90,28 +101,69 @@ export function NetworkSphere({ className }: { className?: string }) {
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
 
-    function spawnDispatch() {
-      // Prefer nodes on the visible hemisphere so the pulse reads clearly.
-      const pick = () => {
-        for (let attempt = 0; attempt < 12; attempt++) {
-          const candidate = nodes[Math.floor(Math.random() * nodes.length)]
-          if (candidate.z > -0.1) return candidate
-        }
-        return nodes[Math.floor(Math.random() * nodes.length)]
+    /** A node on the hemisphere facing the viewer, so the discharge reads clearly. */
+    function pickVisibleNode() {
+      for (let attempt = 0; attempt < 12; attempt++) {
+        const candidate = nodes[Math.floor(Math.random() * nodes.length)]
+        if (candidate.z > -0.1) return candidate
       }
-      const from = pick()
-      const to = pick()
-      const lift = 1.32
-      dispatches.push({
+      return nodes[Math.floor(Math.random() * nodes.length)]
+    }
+
+    /** Nearest usable neighbour within reach, so charge steps rather than flies. */
+    function pickNeighbour(from: Node) {
+      let best: Node | null = null
+      let bestDistance = Infinity
+      for (let attempt = 0; attempt < 60; attempt++) {
+        const candidate = nodes[Math.floor(Math.random() * nodes.length)]
+        const dx = candidate.x - from.x
+        const dy = candidate.y - from.y
+        const dz = candidate.z - from.z
+        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz)
+        if (distance >= MIN_REACH && distance <= MAX_REACH && distance < bestDistance) {
+          best = candidate
+          bestDistance = distance
+        }
+      }
+      return best
+    }
+
+    function spawnDischarge(origin?: Node, generation = 0) {
+      const from = origin ?? pickVisibleNode()
+      const to = pickNeighbour(from)
+      if (!to) return
+
+      // Perpendicular to the hop plane: offsetting along it bends the spark
+      // sideways across the surface instead of lifting it into a trajectory.
+      let px = from.y * to.z - from.z * to.y
+      let py = from.z * to.x - from.x * to.z
+      let pz = from.x * to.y - from.y * to.x
+      const length = Math.sqrt(px * px + py * py + pz * pz) || 1
+      px /= length
+      py /= length
+      pz /= length
+
+      const spread = 0.1 + Math.random() * 0.1
+      const offsets: number[] = []
+      for (let step = 0; step <= SPARK_SEGMENTS; step++) {
+        const t = step / SPARK_SEGMENTS
+        // Taper to zero at both ends so the spark terminates exactly on the nodes.
+        offsets.push((Math.random() - 0.5) * spread * Math.sin(Math.PI * t))
+      }
+
+      discharges.push({
         from,
         to,
-        cx: ((from.x + to.x) / 2) * lift,
-        cy: ((from.y + to.y) / 2) * lift,
-        cz: ((from.z + to.z) / 2) * lift,
-        progress: 0,
-        speed: 0.5 + Math.random() * 0.35,
+        px,
+        py,
+        pz,
+        offsets,
+        age: 0,
+        duration: 0.85 + Math.random() * 0.55,
+        generation,
+        hasChained: false,
       })
-      if (dispatches.length > 5) dispatches.shift()
+      if (discharges.length > 18) discharges.shift()
     }
 
     /** Rotate a unit-sphere point into screen space. */
@@ -157,54 +209,68 @@ export function NetworkSphere({ className }: { className?: string }) {
         ctx!.fill()
       }
 
-      // Dispatch arcs: an appointment travelling from the platform to an installer.
-      for (let i = dispatches.length - 1; i >= 0; i--) {
-        const dispatch = dispatches[i]
-        dispatch.progress += delta * dispatch.speed
-        if (dispatch.progress >= 1.35) {
-          dispatches.splice(i, 1)
+      // Discharges: charge arcing between neighbouring electricians. The whole
+      // spark lights at once and fades, rather than a head dragging a trail.
+      ctx!.lineCap = "round"
+      for (let i = discharges.length - 1; i >= 0; i--) {
+        const discharge = discharges[i]
+        discharge.age += delta
+        if (discharge.age >= discharge.duration) {
+          discharges.splice(i, 1)
           continue
         }
 
-        const head = Math.min(1, dispatch.progress)
-        const steps = 26
-        ctx!.lineWidth = 1
-        ctx!.strokeStyle = colors.accent
-
-        let previous: { sx: number; sy: number; depth: number } | null = null
-        for (let step = 0; step <= steps; step++) {
-          const t = (step / steps) * head
-          const inv = 1 - t
-          // Quadratic Bézier through the lifted control point.
-          const point = {
-            x: inv * inv * dispatch.from.x + 2 * inv * t * dispatch.cx + t * t * dispatch.to.x,
-            y: inv * inv * dispatch.from.y + 2 * inv * t * dispatch.cy + t * t * dispatch.to.y,
-            z: inv * inv * dispatch.from.z + 2 * inv * t * dispatch.cz + t * t * dispatch.to.z,
+        // Chain onward from the far node, so current propagates node to node.
+        if (!discharge.hasChained && discharge.age > discharge.duration * 0.32) {
+          discharge.hasChained = true
+          if (discharge.generation < 3 && Math.random() < 0.72) {
+            spawnDischarge(discharge.to, discharge.generation + 1)
           }
-          const projected = project(point, radius)
-          if (previous) {
-            const trail = step / steps
-            const fade = Math.max(0, 1 - (dispatch.progress - 1) * 2.6)
-            ctx!.globalAlpha = trail * 0.5 * fade * (projected.depth > -0.35 ? 1 : 0.18)
-            ctx!.beginPath()
-            ctx!.moveTo(previous.sx, previous.sy)
-            ctx!.lineTo(projected.sx, projected.sy)
-            ctx!.stroke()
-          }
-          previous = projected
         }
 
-        // The travelling pulse itself.
-        if (previous && dispatch.progress <= 1) {
-          ctx!.globalAlpha = previous.depth > -0.35 ? 0.95 : 0.3
-          ctx!.fillStyle = colors.accent
+        // Quick swell, gentle decay, with a slow shimmer so it breathes.
+        const life = discharge.age / discharge.duration
+        const envelope = life < 0.2 ? life / 0.2 : Math.pow(1 - (life - 0.2) / 0.8, 1.7)
+        const intensity = envelope * (0.82 + Math.sin(discharge.age * 22) * 0.18)
+
+        const points: { sx: number; sy: number; depth: number }[] = []
+        for (let step = 0; step <= SPARK_SEGMENTS; step++) {
+          const t = step / SPARK_SEGMENTS
+          const offset = discharge.offsets[step]
+          // Lerp then renormalise: the spark rides the surface of the sphere.
+          const x = discharge.from.x + (discharge.to.x - discharge.from.x) * t + discharge.px * offset
+          const y = discharge.from.y + (discharge.to.y - discharge.from.y) * t + discharge.py * offset
+          const z = discharge.from.z + (discharge.to.z - discharge.from.z) * t + discharge.pz * offset
+          const length = Math.sqrt(x * x + y * y + z * z) || 1
+          points.push(project({ x: x / length, y: y / length, z: z / length }, radius))
+        }
+
+        const facing = points[Math.floor(SPARK_SEGMENTS / 2)].depth > -0.3 ? 1 : 0.16
+        ctx!.strokeStyle = colors.accent
+
+        // Outer bloom, then a tighter core for the hot centre of the arc.
+        ctx!.globalAlpha = intensity * 0.16 * facing
+        ctx!.lineWidth = 3.5
+        ctx!.beginPath()
+        ctx!.moveTo(points[0].sx, points[0].sy)
+        for (let step = 1; step < points.length; step++) ctx!.lineTo(points[step].sx, points[step].sy)
+        ctx!.stroke()
+
+        ctx!.globalAlpha = intensity * 0.85 * facing
+        ctx!.lineWidth = 1.1
+        ctx!.stroke()
+
+        // Both endpoints flare while the arc is live.
+        ctx!.fillStyle = colors.accent
+        for (const end of [points[0], points[points.length - 1]]) {
+          ctx!.globalAlpha = intensity * 0.9 * facing
           ctx!.beginPath()
-          ctx!.arc(previous.sx, previous.sy, 2.4, 0, Math.PI * 2)
+          ctx!.arc(end.sx, end.sy, 1.7, 0, Math.PI * 2)
           ctx!.fill()
 
-          ctx!.globalAlpha = 0.16
+          ctx!.globalAlpha = intensity * 0.12 * facing
           ctx!.beginPath()
-          ctx!.arc(previous.sx, previous.sy, 7, 0, Math.PI * 2)
+          ctx!.arc(end.sx, end.sy, 5.5, 0, Math.PI * 2)
           ctx!.fill()
         }
       }
@@ -219,9 +285,9 @@ export function NetworkSphere({ className }: { className?: string }) {
       rotation += delta * 0.09
       tilt = -0.32 + Math.sin(elapsed / 6400) * 0.05
 
-      if (elapsed >= nextDispatchAt) {
-        spawnDispatch()
-        nextDispatchAt = elapsed + 900 + Math.random() * 1400
+      if (elapsed >= nextDischargeAt) {
+        spawnDischarge()
+        nextDischargeAt = elapsed + 320 + Math.random() * 620
       }
 
       draw(delta)
