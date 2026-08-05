@@ -69,39 +69,6 @@ export const liveStats = [
   { value: 50, suffix: "", label: "States covered", note: "nationwide coverage" },
 ] as const
 
-export const howItWorks = {
-  eyebrow: "How It Works",
-  title: "How It Works",
-  subtitle: "From appointment to payment in 3 simple steps.",
-  cards: [
-    {
-      tag: "Step-by-step",
-      title: "Receive. Accept. Complete.",
-      body: "We handle the marketing, customer communication, and scheduling so you can focus on the work.",
-      image: "/images/how-it-works-sms.png",
-      alt: "Electrician reading an appointment text message at his service van",
-      items: [
-        "Receive a confirmed appointment via SMS directly to your phone",
-        "Review the job details and reply YES to accept",
-        "Get full customer information and complete the job on-site",
-      ],
-    },
-    {
-      tag: "What you receive",
-      title: "Real Appointments. Delivered by Text.",
-      body: "Every appointment includes complete job details to ensure efficiency and transparency.",
-      image: "/images/how-it-works-appointment.png",
-      alt: "Homeowner with a smartphone beside her electric car as an electrician arrives",
-      items: [
-        "Service type (EV charger, panel upgrade, Powerwall, etc.)",
-        "Distance from your service radius",
-        "Scheduled date and time window",
-        "Customer name, address, and contact information",
-      ],
-    },
-  ],
-} as const
-
 export const sms = {
   eyebrow: "SMS Appointments",
   titleLines: ["Real Appointments.", "Straight to Your Phone."],

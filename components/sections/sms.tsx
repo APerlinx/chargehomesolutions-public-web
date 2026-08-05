@@ -7,9 +7,15 @@ import { Reveal } from "@/components/ui/reveal"
 import { Icon } from "@/components/ui/icon"
 import { sms } from "@/lib/content"
 
+/**
+ * Carries the "how-it-works" anchor: this is now the page's only walkthrough of
+ * the appointment flow, and the nav, hero and footer all point here. Nothing ever
+ * linked to "#sms", so reusing the id keeps every link (and any inbound external
+ * one) working without edits.
+ */
 export function Sms() {
   return (
-    <Section id="sms" tone="muted">
+    <Section id="how-it-works" tone="muted">
       <Container>
         <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <div>

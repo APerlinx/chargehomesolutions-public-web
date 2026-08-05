@@ -2,7 +2,6 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Hero } from "@/components/sections/hero"
 import { Partners } from "@/components/sections/partners"
-import { HowItWorks } from "@/components/sections/how-it-works"
 import { Sms } from "@/components/sections/sms"
 import { WhyUs } from "@/components/sections/why-us"
 import { Projects } from "@/components/sections/projects"
@@ -24,7 +23,6 @@ export default function HomePage() {
       <main className="flex-1">
         <Hero />
         <Partners />
-        <HowItWorks />
         <Sms />
         <WhyUs />
         <Projects />
