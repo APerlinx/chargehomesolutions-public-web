@@ -4,7 +4,8 @@ import { motion, useReducedMotion } from "motion/react"
 import { ArrowRight } from "lucide-react"
 import { NetworkSphere } from "@/components/hero/network-sphere"
 import { Container } from "@/components/ui/section"
-import { hero } from "@/lib/content"
+import { CountUp } from "@/components/ui/count-up"
+import { hero, liveStats } from "@/lib/content"
 
 export function Hero() {
   const reduceMotion = useReducedMotion()
@@ -32,7 +33,7 @@ export function Hero() {
       <Container className="relative">
         <div className="flex min-h-[calc(100svh-5rem)] flex-col justify-center py-24 lg:py-28">
           <div>
-            <h1 className="max-w-[22ch] text-[clamp(2.75rem,7.6vw,6.75rem)] font-semibold leading-[0.92] tracking-[-0.04em] lg:max-w-none">
+            <h1 className="max-w-[78%] text-[clamp(2.5rem,5.6vw,5rem)] font-light leading-[0.95] tracking-[-0.035em]">
               <motion.span custom={0} variants={rise} initial="hidden" animate="show" className="block text-ink-foreground">
                 {hero.titleLead}
               </motion.span>
@@ -52,7 +53,7 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-ink-muted sm:text-lg"
+              className="mt-8 max-w-xl text-pretty text-lg font-light leading-relaxed text-ink-muted sm:text-xl"
             >
               {hero.body}
             </motion.p>
@@ -84,13 +85,23 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-14 flex gap-12 border-t border-ink-border pt-8"
+              className="mt-14 grid grid-cols-2 gap-x-8 gap-y-8 sm:flex sm:flex-wrap sm:gap-x-14"
             >
-              {hero.stats.map((stat) => (
+              {liveStats.map((stat) => (
                 <div key={stat.label}>
                   <dt className="sr-only">{stat.label}</dt>
-                  <dd className="text-3xl font-semibold tracking-tight sm:text-4xl">{stat.value}</dd>
-                  <p className="mt-1 text-xs uppercase tracking-[0.14em] text-ink-muted">{stat.label}</p>
+                  <dd className="text-3xl font-medium tracking-tight sm:text-4xl">
+                    <CountUp
+                      value={stat.value}
+                      prefix={"prefix" in stat ? stat.prefix : ""}
+                      suffix={stat.suffix}
+                      decimals={"decimals" in stat ? stat.decimals : 0}
+                    />
+                  </dd>
+                  <p className="mt-2 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-ink-muted">
+                    {stat.label}
+                  </p>
+                  <p className="mt-0.5 text-xs font-light text-ink-muted/70">{stat.note}</p>
                 </div>
               ))}
             </motion.dl>
