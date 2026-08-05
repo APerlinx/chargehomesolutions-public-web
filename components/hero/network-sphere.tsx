@@ -15,8 +15,13 @@ import { useEffect, useRef } from "react"
 const NODE_COUNT = 2500
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
 
-/** Every Nth node glows in the brand accent and is able to pulse. */
-const ACCENT_STRIDE = 37
+/**
+ * How many nodes glow in the brand accent. These are chosen at random rather than
+ * by a fixed stride: a regular stride lands on a helix of the Fibonacci spiral, and
+ * those nodes visually align into a thin streak that looks like something flying
+ * across the sphere as it rotates.
+ */
+const ACCENT_COUNT = 68
 /** Seconds a single pulse takes to bloom and fade. */
 const PULSE_DURATION = 1.9
 
@@ -43,16 +48,22 @@ function buildNodes(): Node[] {
   return nodes
 }
 
-function buildPulses(nodes: Node[]): Pulse[] {
+function buildPulses(nodes: Node[]): { pulses: Pulse[]; isAccent: Uint8Array } {
+  const isAccent = new Uint8Array(nodes.length)
   const pulses: Pulse[] = []
-  for (let i = 0; i < nodes.length; i += ACCENT_STRIDE) {
+  while (pulses.length < ACCENT_COUNT) {
+    const index = Math.floor(Math.random() * nodes.length)
+    if (isAccent[index]) continue
+    isAccent[index] = 1
     pulses.push({
-      index: i,
-      period: 5 + Math.random() * 7,
+      index,
+      // Each node keeps its own period and head start, so pulses never fall into
+      // step: one fires low on the sphere, another moments later up top.
+      period: 4.5 + Math.random() * 7,
       offset: Math.random() * 12,
     })
   }
-  return pulses
+  return { pulses, isAccent }
 }
 
 function readColors() {
@@ -74,7 +85,7 @@ export function NetworkSphere({ className }: { className?: string }) {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const nodes = buildNodes()
-    const pulses = buildPulses(nodes)
+    const { pulses, isAccent } = buildPulses(nodes)
     /** Pulse strength per node index, refreshed each frame. */
     const intensities = new Map<number, number>()
     let colors = readColors()
@@ -158,31 +169,33 @@ export function NetworkSphere({ className }: { className?: string }) {
         const size = 0.35 + normalized * 1.05
 
         // A thin scattering of nodes glows in the brand accent.
-        const isAccent = i % ACCENT_STRIDE === 0
-        const intensity = isAccent ? (intensities.get(i) ?? 0) : 0
+        const accent = isAccent[i] === 1
+        const intensity = accent ? (intensities.get(i) ?? 0) : 0
 
         if (intensity > 0) {
-          // Charge ring expanding away from the dot, fading as it goes.
           const facing = depth > -0.3 ? 1 : 0.2
-          ctx!.strokeStyle = colors.accent
-          ctx!.globalAlpha = intensity * 0.4 * alpha * facing * 2
-          ctx!.lineWidth = 0.9
-          ctx!.beginPath()
-          ctx!.arc(sx, sy, size + intensity * 5.5, 0, Math.PI * 2)
-          ctx!.stroke()
 
-          // Halo tight to the node, giving the dot itself a hot centre.
+          // Soft bloom around the node, so the pulse carries visible light.
           ctx!.fillStyle = colors.accent
-          ctx!.globalAlpha = intensity * 0.16 * facing
+          ctx!.globalAlpha = intensity * 0.3 * facing
           ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 2.6, 0, Math.PI * 2)
+          ctx!.arc(sx, sy, size + 4.5, 0, Math.PI * 2)
           ctx!.fill()
+
+          // Charge ring travelling outward from the dot, thinning as it expands.
+          ctx!.strokeStyle = colors.accent
+          ctx!.globalAlpha = intensity * 0.85 * facing
+          ctx!.lineWidth = 1.4 - intensity * 0.5
+          ctx!.beginPath()
+          ctx!.arc(sx, sy, size + 1.5 + intensity * 8, 0, Math.PI * 2)
+          ctx!.stroke()
         }
 
-        ctx!.globalAlpha = isAccent ? Math.min(1, alpha * (1.7 + intensity * 1.6)) : alpha
-        ctx!.fillStyle = isAccent ? colors.accent : colors.node
+        // Pulsing nodes brighten to a hot core and swell slightly.
+        ctx!.globalAlpha = accent ? Math.min(1, alpha * 1.7 + intensity * 0.9) : alpha
+        ctx!.fillStyle = accent ? colors.accent : colors.node
         ctx!.beginPath()
-        ctx!.arc(sx, sy, size * (1 + intensity * 0.6), 0, Math.PI * 2)
+        ctx!.arc(sx, sy, size * (1 + intensity * 1.1), 0, Math.PI * 2)
         ctx!.fill()
       }
 
