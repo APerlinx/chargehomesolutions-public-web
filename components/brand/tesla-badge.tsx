@@ -3,9 +3,11 @@
 /**
  * "Tesla Certified Installer" credential shown beside the CHS logo.
  *
- * The Tesla mark and wordmark are the official assets, rendered unmodified —
- * only inverted from black to white on dark backgrounds, which matches Tesla's
- * own light-on-dark usage. They are deliberately not restyled or recoloured.
+ * The Tesla mark and wordmark are the official assets, rendered unmodified: no
+ * recolouring, no filters, and no distortion. Both ship in Tesla red, which reads
+ * on light and dark backgrounds alike, so neither is ever inverted — running a
+ * filter over them turned Tesla red into cyan. Only the "CERTIFIED INSTALLER"
+ * caption, which is our text and not Tesla's, adapts to the surface.
  */
 export function TeslaBadge({
   className = "",
@@ -17,24 +19,34 @@ export function TeslaBadge({
   const isLight = variant === "light"
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
+      {/*
+       * Sized taller than the text block beside it, so the mark's upper edge rises
+       * above the wordmark rather than sitting boxed in line with it.
+       */}
       <img
         src="/logos/tesla-mark.svg"
         alt=""
-        width={13}
-        height={13}
-        className={`shrink-0 ${isLight ? "invert" : ""}`}
+        width={28}
+        height={28}
+        className="h-7 w-7 shrink-0"
         aria-hidden="true"
       />
       <span className="flex flex-col leading-none">
+        {/*
+         * The source viewBox is 342x35, a 9.771 ratio. It was previously forced to
+         * 52x6 (8.667), squashing every glyph ~11% horizontally — that is what made
+         * the E and S look smeared. Height is set and width left automatic so the
+         * browser derives it from the intrinsic ratio and cannot distort it again.
+         */}
         <img
           src="/logos/tesla-wordmark.svg"
           alt="Tesla"
-          width={52}
-          height={6}
-          className={`h-[6px] w-[52px] ${isLight ? "invert" : "dark:invert"}`}
+          width={107}
+          height={11}
+          className="h-[11px] w-auto"
         />
         <span
-          className={`mt-[4px] font-mono text-[6.5px] leading-none tracking-[0.2em] ${
+          className={`mt-[3px] font-mono text-[7px] leading-none tracking-[0.185em] ${
             isLight ? "text-ink-muted" : "text-muted-foreground"
           }`}
         >
