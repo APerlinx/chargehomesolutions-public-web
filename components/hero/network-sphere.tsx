@@ -65,11 +65,36 @@ function buildAccents(nodes: Node[]): { accentIndices: number[]; isAccent: Uint8
   return { accentIndices, isAccent }
 }
 
+/**
+ * Resolve any CSS colour (including oklch) to `r,g,b` parts by painting a single
+ * pixel and reading it back. Gradient stops need alpha variants of the accent,
+ * and string interpolation can't build those from an oklch token.
+ */
+function toRgbParts(color: string) {
+  const fallback = "37, 99, 235"
+  const probe = document.createElement("canvas")
+  probe.width = 1
+  probe.height = 1
+  const probeCtx = probe.getContext("2d")
+  if (!probeCtx) return fallback
+  // Seed with the fallback: assigning an unparseable colour leaves it untouched.
+  probeCtx.fillStyle = "#2563eb"
+  probeCtx.fillStyle = color
+  probeCtx.fillRect(0, 0, 1, 1)
+  const [r, g, b, a] = probeCtx.getImageData(0, 0, 1, 1).data
+  return a === 0 ? fallback : `${r}, ${g}, ${b}`
+}
+
 function readColors() {
   const styles = getComputedStyle(document.documentElement)
+  const accent = styles.getPropertyValue("--primary").trim() || "#2563eb"
+  const accentRgb = toRgbParts(accent)
   return {
     node: styles.getPropertyValue("--foreground").trim() || "#111827",
-    accent: styles.getPropertyValue("--primary").trim() || "#2563eb",
+    accent,
+    /** Mid-glow, and a fully transparent edge so the falloff has no hard rim. */
+    accentSoft: `rgba(${accentRgb}, 0.45)`,
+    accentClear: `rgba(${accentRgb}, 0)`,
   }
 }
 
@@ -166,8 +191,10 @@ export function NetworkSphere({ className }: { className?: string }) {
           continue
         }
         const t = pulse.age / PULSE_DURATION
-        // Ease in, ease out: no hard edges at either end of the flash.
-        intensities.set(pulse.index, Math.sin(Math.PI * t) ** 1.4)
+        // Quick swell into a longer, smooth decay — brighter to the eye than a
+        // symmetric fade, and closer to how a charge actually discharges.
+        const envelope = t < 0.18 ? t / 0.18 : Math.pow(1 - (t - 0.18) / 0.82, 1.5)
+        intensities.set(pulse.index, envelope)
       }
     }
 
@@ -190,32 +217,27 @@ export function NetworkSphere({ className }: { className?: string }) {
         const intensity = accent ? (intensities.get(i) ?? 0) : 0
 
         if (intensity > 0) {
-          const facing = depth > -0.3 ? 1 : 0.2
+          const facing = depth > -0.3 ? 1 : 0.25
 
-          // No ring — just light bleeding off the dot. Two stacked soft fills
-          // fake a radial falloff cheaply, reading as a dim electrical flash.
-          ctx!.fillStyle = colors.accent
-          ctx!.globalAlpha = intensity * 0.14 * facing
+          // No ring — a true radial falloff, so the light fades to nothing at its
+          // edge and reads as a glow rather than a disc with an outline.
+          const glowRadius = 13 * intensity + 3
+          const glow = ctx!.createRadialGradient(sx, sy, 0, sx, sy, glowRadius)
+          glow.addColorStop(0, colors.accent)
+          glow.addColorStop(0.35, colors.accentSoft)
+          glow.addColorStop(1, colors.accentClear)
+          ctx!.fillStyle = glow
+          ctx!.globalAlpha = intensity * 0.95 * facing
           ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 7, 0, Math.PI * 2)
-          ctx!.fill()
-
-          ctx!.globalAlpha = intensity * 0.2 * facing
-          ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 4, 0, Math.PI * 2)
-          ctx!.fill()
-
-          ctx!.globalAlpha = intensity * 0.32 * facing
-          ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 2, 0, Math.PI * 2)
+          ctx!.arc(sx, sy, glowRadius, 0, Math.PI * 2)
           ctx!.fill()
         }
 
-        // The flashing node brightens to a hot core, with only a hint of swell.
-        ctx!.globalAlpha = accent ? Math.min(1, alpha * 1.7 + intensity * 0.75) : alpha
+        // The flashing node burns to a hot white-hot core and swells noticeably.
+        ctx!.globalAlpha = accent ? Math.min(1, alpha * 1.7 + intensity * 1.1) : alpha
         ctx!.fillStyle = accent ? colors.accent : colors.node
         ctx!.beginPath()
-        ctx!.arc(sx, sy, size * (1 + intensity * 0.5), 0, Math.PI * 2)
+        ctx!.arc(sx, sy, size * (1 + intensity * 1.4), 0, Math.PI * 2)
         ctx!.fill()
       }
 
