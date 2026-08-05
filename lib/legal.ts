@@ -41,7 +41,14 @@ export const legalEntity = {
   tradeName: "Charge Home Solutions",
   short: "CHS",
   address: "[street address, city, state, ZIP]",
+  /** Privacy requests and data-rights inquiries. */
   email: "[privacy@yourdomain.com]",
+  /**
+   * Contractual and dispute notices. Kept separate from the privacy inbox on
+   * purpose: arbitration opt-outs and pre-suit notices carry hard deadlines, so
+   * they should not land in a queue triaged for data-rights requests.
+   */
+  legalEmail: "[legal@yourdomain.com]",
   supportEmail: "[support@yourdomain.com]",
   phone: "[business phone number]",
   website: "[yourdomain.com]",
@@ -50,25 +57,35 @@ export const legalEntity = {
   venueCounty: "[county] County, Florida",
 } as const
 
-const CONTACT_BLOCK: LegalBlock[] = [
-  {
-    kind: "p",
-    text: `Questions, requests, or complaints about this document may be directed to ${legalEntity.tradeName} at:`,
-  },
-  {
-    kind: "list",
-    items: [
-      `Entity: ${legalEntity.name}`,
-      `Mailing address: ${legalEntity.address}`,
-      `Email: ${legalEntity.email}`,
-      `Phone: ${legalEntity.phone}`,
-    ],
-  },
-  {
-    kind: "p",
-    text: "We aim to respond to all substantive inquiries within thirty (30) days. Where a specific statute grants you a shorter or longer response window, that statutory period controls.",
-  },
-]
+/** Builds a closing contact section, routing readers to the right inbox. */
+function contactBlock(emails: Array<[string, string]>): LegalBlock[] {
+  return [
+    {
+      kind: "p",
+      text: `Questions, requests, or complaints about this document may be directed to ${legalEntity.tradeName} at:`,
+    },
+    {
+      kind: "list",
+      items: [
+        `Entity: ${legalEntity.name}`,
+        `Mailing address: ${legalEntity.address}`,
+        ...emails.map(([label, address]) => `${label}: ${address}`),
+        `Phone: ${legalEntity.phone}`,
+      ],
+    },
+    {
+      kind: "p",
+      text: "We aim to respond to all substantive inquiries within thirty (30) days. Where a specific statute grants you a shorter or longer response window, that statutory period controls.",
+    },
+  ]
+}
+
+const PRIVACY_CONTACT_BLOCK = contactBlock([["Privacy and data-rights requests", legalEntity.email]])
+
+const TERMS_CONTACT_BLOCK = contactBlock([
+  ["Legal and dispute notices", legalEntity.legalEmail],
+  ["General support", legalEntity.supportEmail],
+])
 
 /* ------------------------------------------------------------------ *
  * PRIVACY POLICY
@@ -284,6 +301,44 @@ export const privacyPolicy: LegalDoc = {
           kind: "p",
           text: "We retain personal information for as long as needed for the purposes described in this policy, and then for the period required to meet our legal, tax, accounting, and recordkeeping obligations or to resolve disputes and enforce agreements. Relevant factors include the length of your relationship with us, whether amounts remain owed, applicable statutes of limitation, and the retention periods required for SMS consent records and licensing verification. When information no longer serves these purposes, we delete it or de-identify it.",
         },
+        {
+          kind: "p",
+          text: "The periods below describe our general practice. Confirm each one against your actual systems and your accountant's guidance before publishing.",
+        },
+        {
+          kind: "table",
+          head: ["Category of information", "Retention period"],
+          rows: [
+            [
+              "Account and profile records",
+              "For the life of the account, then [number] years after closure to resolve disputes and enforce agreements.",
+            ],
+            [
+              "SMS consent and opt-out records",
+              "At least four (4) years from the date consent is given or withdrawn, consistent with the federal statute of limitations for TCPA claims.",
+            ],
+            [
+              "Appointment and job records",
+              "[number] years after the appointment date, for dispute resolution, fee reconciliation, and quality review.",
+            ],
+            [
+              "Billing, invoices, and tax records",
+              "At least seven (7) years, to meet federal and state tax and accounting recordkeeping requirements.",
+            ],
+            [
+              "Electrician licensing and insurance verification",
+              "For the life of the network relationship, then [number] years, to evidence that we verified credentials at the time of each referral.",
+            ],
+            [
+              "Website usage and analytics data",
+              "Up to twenty-six (26) months, after which it is deleted or aggregated so it no longer identifies you.",
+            ],
+            [
+              "Marketing and advertising records",
+              "Until you unsubscribe or object, then only as needed to honor your suppression request.",
+            ],
+          ],
+        },
       ],
     },
     {
@@ -389,7 +444,7 @@ export const privacyPolicy: LegalDoc = {
     {
       id: "privacy-contact",
       heading: "15. Contact Us",
-      blocks: CONTACT_BLOCK,
+      blocks: PRIVACY_CONTACT_BLOCK,
     },
   ],
 }
@@ -889,7 +944,7 @@ export const termsOfService: LegalDoc = {
         { kind: "subheading", text: "24.1 Informal resolution first" },
         {
           kind: "p",
-          text: `Before starting an arbitration or lawsuit, you agree to try to resolve the dispute informally. Send a written notice describing the dispute, the relief you seek, and your contact information to ${legalEntity.email} or to the address in Section 27. The parties will negotiate in good faith for sixty (60) days from receipt. This period is a condition precedent to starting a proceeding, and it tolls any applicable limitations period.`,
+          text: `Before starting an arbitration or lawsuit, you agree to try to resolve the dispute informally. Send a written notice describing the dispute, the relief you seek, and your contact information to ${legalEntity.legalEmail} or to the address in Section 27. The parties will negotiate in good faith for sixty (60) days from receipt. This period is a condition precedent to starting a proceeding, and it tolls any applicable limitations period.`,
         },
         { kind: "subheading", text: "24.2 Agreement to arbitrate" },
         {
@@ -919,7 +974,7 @@ export const termsOfService: LegalDoc = {
         { kind: "subheading", text: "24.7 Your right to opt out" },
         {
           kind: "p",
-          text: `You may reject this arbitration agreement by sending written notice within thirty (30) days after you first accept these Terms. The notice must include your name, the email and mobile number associated with your account, and a clear statement that you decline arbitration, and must be sent to ${legalEntity.email} with the subject line "Arbitration Opt-Out," or by mail to the address in Section 27. Opting out affects only arbitration; the rest of these Terms, including the jury-trial and class-action waivers to the extent otherwise enforceable in court, continue to apply. Opting out will not adversely affect your account or relationship with us.`,
+          text: `You may reject this arbitration agreement by sending written notice within thirty (30) days after you first accept these Terms. The notice must include your name, the email and mobile number associated with your account, and a clear statement that you decline arbitration, and must be sent to ${legalEntity.legalEmail} with the subject line "Arbitration Opt-Out," or by mail to the address in Section 27. Opting out affects only arbitration; the rest of these Terms, including the jury-trial and class-action waivers to the extent otherwise enforceable in court, continue to apply. Opting out will not adversely affect your account or relationship with us.`,
         },
         { kind: "subheading", text: "24.8 Changes and survival" },
         {
@@ -971,7 +1026,7 @@ export const termsOfService: LegalDoc = {
             "Independent contractors: the parties are independent contractors. These Terms create no employment, agency, partnership, joint venture, or franchise relationship, and neither party may bind the other.",
             "Force majeure: neither party is liable for any delay or failure to perform caused by events beyond its reasonable control, including natural disasters, severe weather, fire, war, civil unrest, labor disputes, epidemic, government action, utility or carrier failure, or Internet or telecommunications outage. Payment obligations already incurred are not excused.",
             "No third-party beneficiaries: these Terms create no rights in any person who is not a party, except that our affiliates and personnel may enforce Sections 21 through 23.",
-            `Notices: we may give notice by email or text to the contact details on your account, or by posting on the Services. You must send legal notices in writing to ${legalEntity.name} at ${legalEntity.address}, with a copy to ${legalEntity.email}.`,
+            `Notices: we may give notice by email or text to the contact details on your account, or by posting on the Services. You must send legal notices in writing to ${legalEntity.name} at ${legalEntity.address}, with a copy to ${legalEntity.legalEmail}.`,
             "Headings and interpretation: headings are for convenience only. \"Including\" means \"including without limitation,\" and these Terms will not be construed against the drafter.",
             "Electronic contracting: you consent to contract electronically and agree that your electronic acceptance, including replying to a text message as instructed, has the same legal effect as a handwritten signature.",
           ],
@@ -981,7 +1036,7 @@ export const termsOfService: LegalDoc = {
     {
       id: "terms-contact",
       heading: "28. Contact Us",
-      blocks: CONTACT_BLOCK,
+      blocks: TERMS_CONTACT_BLOCK,
     },
   ],
 }

@@ -15,6 +15,7 @@ function Text({ text }: { text: string }) {
         part.startsWith("[") && part.endsWith("]") ? (
           <span
             key={i}
+            data-legal-placeholder=""
             title="Placeholder — replace before publishing"
             className="rounded bg-accent/15 px-1 py-0.5 font-mono text-[0.85em] text-accent-foreground ring-1 ring-accent/40 dark:bg-accent/20"
           >
