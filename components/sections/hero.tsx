@@ -23,13 +23,20 @@ export function Hero() {
     <section id="top" className="relative overflow-hidden bg-ink text-ink-foreground">
       {/* Signature animation: the electrician network as a rotating sphere. */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Below lg the sphere is sized in vw, so it scales with the screen and the
-            copy always sits on it. From lg up the copy stops growing (the Container
-            caps at max-w-6xl / 36rem half-width) while a viewport-relative offset
-            would keep sliding the sphere right — on a wide monitor the two drifted
-            fully apart. Anchoring the right edge to the container rail with calc
-            instead of a percentage makes the overlap identical at 1280px and 2560px. */}
-        <div className="absolute right-[-28%] top-1/2 h-[130vw] w-[130vw] -translate-y-1/2 sm:right-[-14%] sm:h-[92vw] sm:w-[92vw] lg:right-[calc(50%-44rem)] lg:h-[58rem] lg:w-[58rem]">
+        {/* Below lg the sphere is sized in vw so it scales with the screen and the
+            copy always sits on it.
+
+            From lg up two things have to hold at once, and they pull in opposite
+            directions: the headline should graze the sphere's left edge (fixed,
+            because the Container caps at max-w-6xl so the copy stops growing),
+            while the sphere's right edge should always reach the viewport edge
+            (viewport-relative). Anchoring the *right* edge can only satisfy one
+            of the two. So anchor the left edge to the container rail — that pins
+            the overlap to the last word at any width — and let the width grow
+            with max(), which keeps the right edge just past the screen. Below
+            ~2016px the 58rem floor already overshoots; past that the 50vw term
+            takes over. Vertical spill is clipped by overflow-hidden above. */}
+        <div className="absolute right-[-28%] top-1/2 h-[130vw] w-[130vw] -translate-y-1/2 sm:right-[-14%] sm:h-[92vw] sm:w-[92vw] lg:right-auto lg:left-[calc(50%+5rem)] lg:h-[max(58rem,50vw_-_4rem)] lg:w-[max(58rem,50vw_-_4rem)]">
           <NetworkSphere className="h-full w-full opacity-70 sm:opacity-90" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-transparent" />
