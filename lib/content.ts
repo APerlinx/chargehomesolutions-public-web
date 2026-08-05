@@ -27,19 +27,26 @@ export const hero = {
   secondaryCta: { label: "See How It Works", href: "#how-it-works" },
 } as const
 
+/**
+ * Partner logos, with each mark's true width/height ratio after its empty margin
+ * was cropped away (see scripts/tighten-logos.mjs). The spread is enormous --
+ * Maserati's trident is taller than it is wide at 0.71, Lucid's wordmark is 17.6x
+ * wider than tall -- so the row sizes each logo from its ratio rather than pinning
+ * them all to one height, which would leave the wide ones huge and the rest tiny.
+ */
 export const partners = [
-  { name: "Kia", file: "kia" },
-  { name: "Lexus", file: "lexus" },
-  { name: "Lucid", file: "lucid" },
-  { name: "Polestar", file: "polestar" },
-  { name: "Subaru", file: "subaru" },
-  { name: "Chrysler", file: "chrysler" },
-  { name: "Jeep", file: "jeep" },
-  { name: "Maserati", file: "maserati" },
-  { name: "Rivian", file: "rivian" },
-  { name: "Lincoln", file: "lincoln" },
-  { name: "Nissan", file: "nissan" },
-  { name: "Rolls-Royce", file: "rolls-royce" },
+  { name: "Kia", file: "kia", ratio: 4.2254 },
+  { name: "Lexus", file: "lexus", ratio: 5.8729 },
+  { name: "Lucid", file: "lucid", ratio: 17.6106 },
+  { name: "Polestar", file: "polestar", ratio: 0.9867 },
+  { name: "Subaru", file: "subaru", ratio: 1.7045 },
+  { name: "Chrysler", file: "chrysler", ratio: 6.25 },
+  { name: "Jeep", file: "jeep", ratio: 2.4793 },
+  { name: "Maserati", file: "maserati", ratio: 0.7067 },
+  { name: "Rivian", file: "rivian", ratio: 5.011 },
+  { name: "Lincoln", file: "lincoln", ratio: 3.8462 },
+  { name: "Nissan", file: "nissan", ratio: 1.1952 },
+  { name: "Rolls-Royce", file: "rolls-royce", ratio: 0.76 },
 ] as const
 
 export const liveStats = [
