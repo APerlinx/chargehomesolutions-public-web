@@ -99,7 +99,7 @@ export function Hero() {
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-14 grid grid-cols-2 gap-x-8 gap-y-8 sm:flex sm:flex-wrap sm:gap-x-14 sm:pl-6 lg:pl-10"
+              className="mt-14 grid grid-cols-2 justify-items-center gap-x-8 gap-y-8 text-center sm:flex sm:flex-wrap sm:justify-center sm:gap-x-16"
             >
               {liveStats.map((stat) => (
                 <div key={stat.label}>
