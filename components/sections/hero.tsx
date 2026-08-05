@@ -23,7 +23,13 @@ export function Hero() {
     <section id="top" className="relative overflow-hidden bg-ink text-ink-foreground">
       {/* Signature animation: the electrician network as a rotating sphere. */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-[-28%] top-1/2 h-[130vw] w-[130vw] -translate-y-1/2 sm:right-[-14%] sm:h-[92vw] sm:w-[92vw] lg:right-[-6%] lg:h-[52rem] lg:w-[52rem]">
+        {/* Below lg the sphere is sized in vw, so it scales with the screen and the
+            copy always sits on it. From lg up the copy stops growing (the Container
+            caps at max-w-6xl / 36rem half-width) while a viewport-relative offset
+            would keep sliding the sphere right — on a wide monitor the two drifted
+            fully apart. Anchoring the right edge to the container rail with calc
+            instead of a percentage makes the overlap identical at 1280px and 2560px. */}
+        <div className="absolute right-[-28%] top-1/2 h-[130vw] w-[130vw] -translate-y-1/2 sm:right-[-14%] sm:h-[92vw] sm:w-[92vw] lg:right-[calc(50%-44rem)] lg:h-[58rem] lg:w-[58rem]">
           <NetworkSphere className="h-full w-full opacity-70 sm:opacity-90" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-transparent" />
