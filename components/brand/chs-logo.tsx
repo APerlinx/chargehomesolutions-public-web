@@ -5,7 +5,14 @@
  * SOLUTIONS" lockup — but redrawn with smooth geometry, and the wordmark set in
  * the site typeface so it stays crisp at every size and inherits the theme colour.
  */
-export function ChsLogo({ className = "" }: { className?: string }) {
+export function ChsLogo({
+  className = "",
+  variant = "default",
+}: {
+  className?: string
+  variant?: "default" | "light"
+}) {
+  const mutedClass = variant === "light" ? "text-ink-muted" : "text-muted-foreground"
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <svg
@@ -42,7 +49,7 @@ export function ChsLogo({ className = "" }: { className?: string }) {
         <span className="text-[15px] font-semibold tracking-[-0.025em]">
           Charge<span className="font-normal">Home</span>
         </span>
-        <span className="mt-[3px] font-mono text-[7px] leading-none tracking-[0.34em] text-muted-foreground">
+        <span className={`mt-[3px] font-mono text-[7px] leading-none tracking-[0.34em] ${mutedClass}`}>
           SOLUTIONS
         </span>
       </span>

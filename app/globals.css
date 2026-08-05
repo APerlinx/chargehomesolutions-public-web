@@ -103,6 +103,11 @@
     text-transform: uppercase;
   }
 
+  /* Fade the marquee edges into the background. */
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
   /* Faint technical grid, echoing a wiring schematic. */
   .schematic-grid {
     background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px),

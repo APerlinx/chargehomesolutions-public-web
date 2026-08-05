@@ -1,34 +1,128 @@
-import Link from "next/link"
+"use client"
 
-const navItems = [
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
-]
+import { useEffect, useState } from "react"
+import { motion, AnimatePresence } from "motion/react"
+import { Menu, X } from "lucide-react"
+import { ChsLogo } from "@/components/brand/chs-logo"
+import { TeslaBadge } from "@/components/brand/tesla-badge"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { nav as navLinks } from "@/lib/content"
+import { cn } from "@/lib/utils"
 
 export function SiteHeader() {
-  return (
-    <header className="border-b border-border">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
-        <Link href="/" className="text-base font-semibold tracking-tight">
-          Charge Home Solutions
-        </Link>
+  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false)
 
-        <nav aria-label="Main navigation">
-          <ul className="flex items-center gap-4 text-sm sm:gap-6">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : ""
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [open])
+
+  return (
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        scrolled
+          ? "border-b border-border/70 bg-background/80 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent",
+      )}
+    >
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
+        <div className="flex items-center gap-3">
+          <a href="#top" className="flex items-center gap-3" aria-label="Charge Home Solutions home">
+            <ChsLogo className="h-8 w-auto lg:h-9" />
+          </a>
+          <span className="hidden h-6 w-px bg-border sm:block" aria-hidden="true" />
+          <TeslaBadge className="hidden sm:flex" />
+        </div>
+
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {link.label}
+            </a>
+          ))}
         </nav>
+
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <a
+            href="#login"
+            className="hidden rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
+          >
+            Log In
+          </a>
+          <a
+            href="#work-with-us"
+            className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03] active:scale-95 lg:inline-flex"
+          >
+            Work With Us
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="border-b border-border bg-background/95 backdrop-blur-xl lg:hidden"
+          >
+            <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6" aria-label="Mobile">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <div className="mt-3 flex flex-col gap-2 border-t border-border pt-4">
+                <a
+                  href="#login"
+                  onClick={() => setOpen(false)}
+                  className="rounded-full border border-border px-5 py-3 text-center text-sm font-semibold text-foreground"
+                >
+                  Log In
+                </a>
+                <a
+                  href="#work-with-us"
+                  onClick={() => setOpen(false)}
+                  className="rounded-full bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
+                >
+                  Work With Us
+                </a>
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }
