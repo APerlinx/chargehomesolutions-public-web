@@ -31,48 +31,34 @@ export function Hero() {
 
       <Container className="relative">
         <div className="flex min-h-[calc(100svh-5rem)] flex-col justify-center py-24 lg:py-28">
-          <div className="max-w-2xl">
-            <motion.span
-              custom={0}
-              variants={rise}
-              initial="hidden"
-              animate="show"
-              className="inline-flex items-center gap-2 rounded-full border border-ink-border bg-ink-raised/60 px-4 py-1.5 text-xs font-medium text-ink-muted backdrop-blur-sm"
-            >
-              <span className="relative flex h-2 w-2" aria-hidden="true">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-              </span>
-              {hero.badge}
-            </motion.span>
-
-            <h1 className="mt-7 text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-7xl">
-              <motion.span custom={1} variants={rise} initial="hidden" animate="show" className="block text-ink-foreground">
+          <div>
+            <h1 className="max-w-[22ch] text-[clamp(2.75rem,7.6vw,6.75rem)] font-semibold leading-[0.92] tracking-[-0.04em] lg:max-w-none">
+              <motion.span custom={0} variants={rise} initial="hidden" animate="show" className="block text-ink-foreground">
                 {hero.titleLead}
               </motion.span>
               <motion.span
-                custom={2}
+                custom={1}
                 variants={rise}
                 initial="hidden"
                 animate="show"
-                className="mt-2 block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent"
+                className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent"
               >
                 {hero.titleBrand}
               </motion.span>
             </h1>
 
             <motion.p
-              custom={3}
+              custom={2}
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-ink-muted sm:text-lg"
+              className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-ink-muted sm:text-lg"
             >
               {hero.body}
             </motion.p>
 
             <motion.div
-              custom={4}
+              custom={3}
               variants={rise}
               initial="hidden"
               animate="show"
@@ -93,22 +79,12 @@ export function Hero() {
               </a>
             </motion.div>
 
-            <motion.p
-              custom={5}
-              variants={rise}
-              initial="hidden"
-              animate="show"
-              className="mt-6 max-w-md text-xs leading-relaxed text-ink-muted/80"
-            >
-              {hero.note}
-            </motion.p>
-
             <motion.dl
-              custom={6}
+              custom={4}
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-12 flex gap-12 border-t border-ink-border pt-8"
+              className="mt-14 flex gap-12 border-t border-ink-border pt-8"
             >
               {hero.stats.map((stat) => (
                 <div key={stat.label}>

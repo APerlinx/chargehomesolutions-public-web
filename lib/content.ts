@@ -19,13 +19,11 @@ export const nav = [
 ] as const
 
 export const hero = {
-  badge: "No app needed · Appointments sent by SMS · Nationwide coverage",
   titleLead: "Grow Your Business with",
   titleBrand: "Charge Home Solutions",
-  body: "We don't sell leads. We book real customer appointments and send them directly to you by SMS. From EV chargers and Powerwall to panel upgrades, new construction and everyday electrical work. Just show up, quote, and close.",
+  body: "We don't sell leads. We book real customer appointments and send them straight to your phone by SMS — no app needed. From EV installs and Powerwall to panel upgrades, new construction and service calls, in all 50 states. Just show up, quote, and close.",
   primaryCta: { label: "Get Started Free", href: "#plans" },
   secondaryCta: { label: "See How It Works", href: "#how-it-works" },
-  note: "Appointments include EV installs, Powerwall, panel upgrades, new construction and service calls",
   stats: [
     { value: "2,500+", label: "Licensed electricians" },
     { value: "50", label: "States covered" },
