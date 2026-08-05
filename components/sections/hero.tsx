@@ -31,25 +31,39 @@ export function Hero() {
       </div>
 
       <Container className="relative">
-        <div className="flex min-h-[calc(100svh-5rem)] flex-col justify-center py-24 lg:py-28">
+        {/* Full viewport height so the wave lands at the fold on every screen:
+            it hints at the next section without revealing its content. */}
+        <div className="flex min-h-svh flex-col justify-center py-28 lg:py-32">
           <div>
-            <h1 className="max-w-[78%] text-[clamp(2.5rem,5.6vw,5rem)] font-light leading-[0.95] tracking-[-0.035em]">
-              <motion.span custom={0} variants={rise} initial="hidden" animate="show" className="block text-ink-foreground">
+            <motion.div
+              custom={0}
+              variants={rise}
+              initial="hidden"
+              animate="show"
+              className="mb-7 flex items-center gap-4"
+            >
+              <span aria-hidden="true" className="h-px w-10 bg-ink-muted/50" />
+              <span className="font-mono text-xs tracking-[0.08em] text-ink-muted">{hero.eyebrow}</span>
+            </motion.div>
+
+            <h1 className="max-w-[80%] text-[clamp(2.75rem,6.2vw,5.5rem)] font-light leading-[0.98] tracking-[-0.035em]">
+              <motion.span custom={1} variants={rise} initial="hidden" animate="show" className="block text-ink-foreground">
                 {hero.titleLead}
               </motion.span>
+              {/* pb keeps the gradient clip box tall enough for the "g" descender. */}
               <motion.span
-                custom={1}
+                custom={2}
                 variants={rise}
                 initial="hidden"
                 animate="show"
-                className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent"
+                className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text pb-[0.14em] text-transparent"
               >
                 {hero.titleBrand}
               </motion.span>
             </h1>
 
             <motion.p
-              custom={2}
+              custom={3}
               variants={rise}
               initial="hidden"
               animate="show"
@@ -59,7 +73,7 @@ export function Hero() {
             </motion.p>
 
             <motion.div
-              custom={3}
+              custom={4}
               variants={rise}
               initial="hidden"
               animate="show"
@@ -81,11 +95,11 @@ export function Hero() {
             </motion.div>
 
             <motion.dl
-              custom={4}
+              custom={5}
               variants={rise}
               initial="hidden"
               animate="show"
-              className="mt-14 grid grid-cols-2 gap-x-8 gap-y-8 sm:flex sm:flex-wrap sm:gap-x-14"
+              className="mt-14 grid grid-cols-2 gap-x-8 gap-y-8 sm:flex sm:flex-wrap sm:gap-x-14 sm:pl-6 lg:pl-10"
             >
               {liveStats.map((stat) => (
                 <div key={stat.label}>
