@@ -22,18 +22,19 @@ const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
  * across the sphere as it rotates.
  */
 const ACCENT_COUNT = 68
-/** Seconds a single pulse takes to bloom and fade. */
-const PULSE_DURATION = 1.9
+/** Seconds a single flash takes to swell and fade. */
+const PULSE_DURATION = 1.6
+/** Gap between flashes. One dot lights, then another elsewhere a moment later. */
+const MIN_GAP = 0.9
+const MAX_GAP = 1.9
 
 type Node = { x: number; y: number; z: number }
 
-/** An accent node's own clock, so no two pulse together. */
+/** A single live flash on one accent node. */
 type Pulse = {
   index: number
-  /** Seconds between pulses; varied per node to keep the field desynchronised. */
-  period: number
-  /** Random head start, so they don't all fire on the first cycle either. */
-  offset: number
+  /** Seconds since this flash began. */
+  age: number
 }
 
 function buildNodes(): Node[] {
@@ -48,22 +49,16 @@ function buildNodes(): Node[] {
   return nodes
 }
 
-function buildPulses(nodes: Node[]): { pulses: Pulse[]; isAccent: Uint8Array } {
+function buildAccents(nodes: Node[]): { accentIndices: number[]; isAccent: Uint8Array } {
   const isAccent = new Uint8Array(nodes.length)
-  const pulses: Pulse[] = []
-  while (pulses.length < ACCENT_COUNT) {
+  const accentIndices: number[] = []
+  while (accentIndices.length < ACCENT_COUNT) {
     const index = Math.floor(Math.random() * nodes.length)
     if (isAccent[index]) continue
     isAccent[index] = 1
-    pulses.push({
-      index,
-      // Each node keeps its own period and head start, so pulses never fall into
-      // step: one fires low on the sphere, another moments later up top.
-      period: 4.5 + Math.random() * 7,
-      offset: Math.random() * 12,
-    })
+    accentIndices.push(index)
   }
-  return { pulses, isAccent }
+  return { accentIndices, isAccent }
 }
 
 function readColors() {
@@ -85,9 +80,12 @@ export function NetworkSphere({ className }: { className?: string }) {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const nodes = buildNodes()
-    const { pulses, isAccent } = buildPulses(nodes)
-    /** Pulse strength per node index, refreshed each frame. */
+    const { accentIndices, isAccent } = buildAccents(nodes)
+    /** Only the handful of flashes currently alive. */
+    const pulses: Pulse[] = []
+    /** Flash strength per node index, refreshed each frame. */
     const intensities = new Map<number, number>()
+    let nextPulseIn = 0.6
     let colors = readColors()
 
     let width = 0
@@ -139,17 +137,32 @@ export function NetworkSphere({ className }: { className?: string }) {
     }
 
     /**
-     * Advance each accent node's private clock. A pulse is only live for
-     * PULSE_DURATION out of its (longer, randomised) period, so at any moment
-     * just a handful are firing — one low on the sphere, another up top.
+     * A single scheduler lights one node at a time, waiting a random beat before
+     * choosing another somewhere else on the sphere. Because flashes are spawned
+     * rather than driven by per-node clocks, the count on screen stays down to
+     * roughly one or two — quiet, and never in unison.
      */
-    function updatePulses(seconds: number) {
+    function updatePulses(delta: number) {
+      nextPulseIn -= delta
+      if (nextPulseIn <= 0) {
+        nextPulseIn = MIN_GAP + Math.random() * (MAX_GAP - MIN_GAP)
+        const index = accentIndices[Math.floor(Math.random() * accentIndices.length)]
+        // Skip if that node is already lit, so a flash never doubles up.
+        if (!pulses.some((pulse) => pulse.index === index)) {
+          pulses.push({ index, age: 0 })
+        }
+      }
+
       intensities.clear()
-      for (const pulse of pulses) {
-        const local = (seconds + pulse.offset) % pulse.period
-        if (local >= PULSE_DURATION) continue
-        const t = local / PULSE_DURATION
-        // Ease in, ease out: no hard edges at either end of the bloom.
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const pulse = pulses[i]
+        pulse.age += delta
+        if (pulse.age >= PULSE_DURATION) {
+          pulses.splice(i, 1)
+          continue
+        }
+        const t = pulse.age / PULSE_DURATION
+        // Ease in, ease out: no hard edges at either end of the flash.
         intensities.set(pulse.index, Math.sin(Math.PI * t) ** 1.4)
       }
     }
@@ -175,27 +188,25 @@ export function NetworkSphere({ className }: { className?: string }) {
         if (intensity > 0) {
           const facing = depth > -0.3 ? 1 : 0.2
 
-          // Soft bloom around the node, so the pulse carries visible light.
+          // No ring — just light bleeding off the dot. Two stacked soft fills
+          // fake a radial falloff cheaply, reading as a dim electrical flash.
           ctx!.fillStyle = colors.accent
-          ctx!.globalAlpha = intensity * 0.3 * facing
+          ctx!.globalAlpha = intensity * 0.1 * facing
           ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 4.5, 0, Math.PI * 2)
+          ctx!.arc(sx, sy, size + 5, 0, Math.PI * 2)
           ctx!.fill()
 
-          // Charge ring travelling outward from the dot, thinning as it expands.
-          ctx!.strokeStyle = colors.accent
-          ctx!.globalAlpha = intensity * 0.85 * facing
-          ctx!.lineWidth = 1.4 - intensity * 0.5
+          ctx!.globalAlpha = intensity * 0.22 * facing
           ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 1.5 + intensity * 8, 0, Math.PI * 2)
-          ctx!.stroke()
+          ctx!.arc(sx, sy, size + 2.2, 0, Math.PI * 2)
+          ctx!.fill()
         }
 
-        // Pulsing nodes brighten to a hot core and swell slightly.
-        ctx!.globalAlpha = accent ? Math.min(1, alpha * 1.7 + intensity * 0.9) : alpha
+        // The flashing node brightens to a hot core, with only a hint of swell.
+        ctx!.globalAlpha = accent ? Math.min(1, alpha * 1.7 + intensity * 0.75) : alpha
         ctx!.fillStyle = accent ? colors.accent : colors.node
         ctx!.beginPath()
-        ctx!.arc(sx, sy, size * (1 + intensity * 1.1), 0, Math.PI * 2)
+        ctx!.arc(sx, sy, size * (1 + intensity * 0.5), 0, Math.PI * 2)
         ctx!.fill()
       }
 
@@ -209,7 +220,7 @@ export function NetworkSphere({ className }: { className?: string }) {
       rotation += delta * 0.09
       tilt = -0.32 + Math.sin(elapsed / 6400) * 0.05
 
-      updatePulses(elapsed / 1000)
+      updatePulses(delta)
       draw()
       frame = requestAnimationFrame(loop)
     }
