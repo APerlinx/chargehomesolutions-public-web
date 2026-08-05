@@ -196,7 +196,12 @@ export const coverage = {
   subtitle: "We match jobs to electricians in every state. See where work is available now.",
 } as const
 
-/** Approximate [longitude, latitude] of network hubs, sized by relative volume. */
+/**
+ * Approximate [longitude, latitude] of network hubs, sized by relative volume.
+ * Size drives both the dot radius and whether it pulses: size >= 2 gets an
+ * animated ring, size 1 renders as a static dot, which keeps ~120 markers on
+ * screen without running ~120 simultaneous animations.
+ */
 export const coverageMarkers: Array<{ city: string; coords: [number, number]; size: number }> = [
   { city: "Los Angeles", coords: [-118.24, 34.05], size: 3 },
   { city: "San Francisco", coords: [-122.42, 37.77], size: 2 },
@@ -248,6 +253,86 @@ export const coverageMarkers: Array<{ city: string; coords: [number, number]; si
   { city: "Reno", coords: [-119.814, 39.53], size: 1 },
   { city: "Portland ME", coords: [-70.255, 43.662], size: 1 },
   { city: "Charleston", coords: [-79.931, 32.777], size: 1 },
+
+  // Alaska and Hawaii. geoAlbersUsa places these in its standard insets below the
+  // mainland; without markers they were the only dark, unexplained land on a map
+  // headlined "Active in All 50 States".
+  { city: "Anchorage", coords: [-149.9, 61.218], size: 2 },
+  { city: "Fairbanks", coords: [-147.716, 64.838], size: 1 },
+  { city: "Juneau", coords: [-134.42, 58.302], size: 1 },
+  { city: "Honolulu", coords: [-157.858, 21.307], size: 2 },
+  { city: "Hilo", coords: [-155.089, 19.706], size: 1 },
+
+  // West
+  { city: "San Diego", coords: [-117.161, 32.716], size: 2 },
+  { city: "Sacramento", coords: [-121.494, 38.582], size: 2 },
+  { city: "San Jose", coords: [-121.887, 37.339], size: 1 },
+  { city: "Fresno", coords: [-119.787, 36.738], size: 1 },
+  { city: "Bakersfield", coords: [-119.019, 35.373], size: 1 },
+  { city: "Spokane", coords: [-117.426, 47.659], size: 1 },
+  { city: "Eugene", coords: [-123.087, 44.052], size: 1 },
+  { city: "Tucson", coords: [-110.926, 32.222], size: 1 },
+  { city: "Missoula", coords: [-113.994, 46.872], size: 1 },
+  { city: "Idaho Falls", coords: [-112.034, 43.492], size: 1 },
+  { city: "Casper", coords: [-106.313, 42.85], size: 1 },
+  { city: "Grand Junction", coords: [-108.551, 39.064], size: 1 },
+  { city: "Colorado Springs", coords: [-104.821, 38.834], size: 1 },
+  { city: "Santa Fe", coords: [-105.937, 35.687], size: 1 },
+
+  // Midwest
+  { city: "Fargo", coords: [-96.79, 46.877], size: 1 },
+  { city: "Bismarck", coords: [-100.784, 46.808], size: 1 },
+  { city: "Rapid City", coords: [-103.231, 44.081], size: 1 },
+  { city: "Duluth", coords: [-92.1, 46.786], size: 1 },
+  { city: "Green Bay", coords: [-88.016, 44.513], size: 1 },
+  { city: "Madison", coords: [-89.401, 43.073], size: 1 },
+  { city: "Des Moines", coords: [-93.61, 41.587], size: 1 },
+  { city: "Lincoln", coords: [-96.676, 40.814], size: 1 },
+  { city: "Wichita", coords: [-97.336, 37.687], size: 1 },
+  { city: "Springfield MO", coords: [-93.298, 37.209], size: 1 },
+  { city: "Fort Wayne", coords: [-85.139, 41.079], size: 1 },
+  { city: "Cleveland", coords: [-81.694, 41.505], size: 1 },
+  { city: "Cincinnati", coords: [-84.512, 39.103], size: 1 },
+  { city: "Grand Rapids", coords: [-85.668, 42.963], size: 1 },
+
+  // South
+  { city: "Tulsa", coords: [-95.993, 36.154], size: 1 },
+  { city: "El Paso", coords: [-106.485, 31.762], size: 1 },
+  { city: "Lubbock", coords: [-101.855, 33.578], size: 1 },
+  { city: "Corpus Christi", coords: [-97.396, 27.8], size: 1 },
+  { city: "Shreveport", coords: [-93.75, 32.525], size: 1 },
+  { city: "Baton Rouge", coords: [-91.187, 30.451], size: 1 },
+  { city: "Jackson", coords: [-90.185, 32.299], size: 1 },
+  { city: "Mobile", coords: [-88.043, 30.695], size: 1 },
+  { city: "Montgomery", coords: [-86.3, 32.367], size: 1 },
+  { city: "Huntsville", coords: [-86.586, 34.73], size: 1 },
+  { city: "Knoxville", coords: [-83.921, 35.961], size: 1 },
+  { city: "Chattanooga", coords: [-85.309, 35.046], size: 1 },
+  { city: "Lexington", coords: [-84.504, 38.048], size: 1 },
+  { city: "Fayetteville AR", coords: [-94.158, 36.063], size: 1 },
+  { city: "Charleston WV", coords: [-81.633, 38.35], size: 1 },
+  { city: "Savannah", coords: [-81.096, 32.081], size: 1 },
+  { city: "Columbia SC", coords: [-81.035, 34.001], size: 1 },
+  { city: "Greensboro", coords: [-79.792, 36.073], size: 1 },
+  { city: "Asheville", coords: [-82.552, 35.595], size: 1 },
+  { city: "Norfolk", coords: [-76.285, 36.851], size: 1 },
+  { city: "Roanoke", coords: [-79.941, 37.271], size: 1 },
+  { city: "Tallahassee", coords: [-84.281, 30.438], size: 1 },
+  { city: "Pensacola", coords: [-87.217, 30.421], size: 1 },
+  { city: "Fort Myers", coords: [-81.873, 26.64], size: 1 },
+
+  // Northeast
+  { city: "Baltimore", coords: [-76.612, 39.29], size: 2 },
+  { city: "Wilmington", coords: [-75.546, 39.739], size: 1 },
+  { city: "Newark", coords: [-74.172, 40.736], size: 1 },
+  { city: "Hartford", coords: [-72.685, 41.764], size: 1 },
+  { city: "Providence", coords: [-71.413, 41.824], size: 1 },
+  { city: "Albany", coords: [-73.757, 42.653], size: 1 },
+  { city: "Syracuse", coords: [-76.148, 43.049], size: 1 },
+  { city: "Burlington", coords: [-73.213, 44.476], size: 1 },
+  { city: "Manchester", coords: [-71.454, 42.996], size: 1 },
+  { city: "Scranton", coords: [-75.663, 41.409], size: 1 },
+  { city: "Harrisburg", coords: [-76.884, 40.273], size: 1 },
 ]
 
 export const plans = {

@@ -18,17 +18,34 @@ const topo = states10m as any
 
 export type ProjectedMarker = { city: string; x: number; y: number; size: number }
 
+/** Breathing room so no state touches the container edge. */
+const MAP_PADDING = 6
+
 export function getUsMap() {
-  const projection = geoAlbersUsa().scale(1300).translate([MAP_WIDTH / 2, MAP_HEIGHT / 2])
+  const projection = geoAlbersUsa()
   const path = geoPath(projection)
 
   const statesFeature = feature(topo, topo.objects.states) as unknown as {
     features: Array<Parameters<typeof path>[0]>
   }
 
-  const statePaths = statesFeature.features
-    .map((f) => path(f))
-    .filter((d): d is string => Boolean(d))
+  // geoAlbersUsa has no projection for Puerto Rico or the Pacific territories, so
+  // those geometries return null. Drop them before fitting, otherwise they'd skew
+  // the extent (and they can't be drawn anyway).
+  const drawable = statesFeature.features.filter((f) => path(f))
+
+  // Fit the real geometry to the viewBox instead of hardcoding scale/translate: at
+  // the old fixed scale(1300) Alaska's inset started at x = -58 and was clipped off
+  // the left edge. fitExtent guarantees every state lands inside the frame.
+  projection.fitExtent(
+    [
+      [MAP_PADDING, MAP_PADDING],
+      [MAP_WIDTH - MAP_PADDING, MAP_HEIGHT - MAP_PADDING],
+    ],
+    { type: "FeatureCollection", features: drawable } as unknown as Parameters<typeof path>[0],
+  )
+
+  const statePaths = drawable.map((f) => path(f)).filter((d): d is string => Boolean(d))
 
   const borders = mesh(topo, topo.objects.states, (a, b) => a !== b)
   const borderPath = path(borders as unknown as Parameters<typeof path>[0]) ?? ""
