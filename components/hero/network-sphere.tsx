@@ -23,10 +23,14 @@ const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
  */
 const ACCENT_COUNT = 68
 /** Seconds a single flash takes to swell and fade. */
-const PULSE_DURATION = 1.6
-/** Gap between flashes. One dot lights, then another elsewhere a moment later. */
-const MIN_GAP = 0.9
-const MAX_GAP = 1.9
+const PULSE_DURATION = 1.7
+/**
+ * Gap between flashes. One dot lights, then another elsewhere a moment later.
+ * Averaged against PULSE_DURATION this keeps roughly three alive at a time —
+ * enough to notice, still far from the busy field of a per-node clock.
+ */
+const MIN_GAP = 0.35
+const MAX_GAP = 0.85
 
 type Node = { x: number; y: number; z: number }
 
@@ -191,14 +195,19 @@ export function NetworkSphere({ className }: { className?: string }) {
           // No ring — just light bleeding off the dot. Two stacked soft fills
           // fake a radial falloff cheaply, reading as a dim electrical flash.
           ctx!.fillStyle = colors.accent
-          ctx!.globalAlpha = intensity * 0.1 * facing
+          ctx!.globalAlpha = intensity * 0.14 * facing
           ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 5, 0, Math.PI * 2)
+          ctx!.arc(sx, sy, size + 7, 0, Math.PI * 2)
           ctx!.fill()
 
-          ctx!.globalAlpha = intensity * 0.22 * facing
+          ctx!.globalAlpha = intensity * 0.2 * facing
           ctx!.beginPath()
-          ctx!.arc(sx, sy, size + 2.2, 0, Math.PI * 2)
+          ctx!.arc(sx, sy, size + 4, 0, Math.PI * 2)
+          ctx!.fill()
+
+          ctx!.globalAlpha = intensity * 0.32 * facing
+          ctx!.beginPath()
+          ctx!.arc(sx, sy, size + 2, 0, Math.PI * 2)
           ctx!.fill()
         }
 
