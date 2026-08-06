@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-border: var(--ink-border);
+  --color-ink-raised: var(--ink-raised);
+
+  /* `panel` is the full-bleed alternating section band; `ink` stays reserved for
+     genuinely dark objects (phone bezel, fees header, vision card, legal header).
+     They were one token, which is why the band could not simply be lightened. */
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-panel-muted: var(--panel-muted);
+  --color-panel-border: var(--panel-border);
+  --color-panel-raised: var(--panel-raised);
+
+  --radius: 0.75rem;
+
+  /* Duration scales with the number of logos so the scroll pace stays constant:
+     the partner row grew from 12 brands to 25, so its track is ~2x longer. */
+  --animate-marquee: marquee 125s linear infinite;
+  --animate-pulse-ring: pulse-ring 3s ease-out infinite;
+  --animate-ticker: ticker 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light: cool near-white paper with near-black ink and a single electric-blue accent. */
+:root {
+  --background: oklch(0.988 0.002 250);
+  --foreground: oklch(0.17 0.012 262);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.17 0.012 262);
+  --muted: oklch(0.965 0.004 250);
+  --muted-foreground: oklch(0.53 0.015 258);
+  --border: oklch(0.906 0.006 255);
+  --primary: oklch(0.555 0.21 258);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.63 0.15 156);
+  --accent-foreground: oklch(0.99 0 0);
+
+  /* Inverted surface for genuinely dark objects: the SMS phone bezel, the fees
+     table header, the About vision card, and the legal-page headers. */
+  --ink: oklch(0.19 0.016 264);
+  --ink-foreground: oklch(0.98 0.002 250);
+  --ink-muted: oklch(0.71 0.014 258);
+  --ink-border: oklch(0.29 0.018 264);
+  --ink-raised: oklch(0.25 0.018 264);
+
+  /* Section band. Deliberately 0.938, not ~0.96: `--muted` is already 0.965 and
+     the page is 0.988, so a lighter panel would make Sms -> WhyUs read as one
+     block. This keeps three distinct light levels. `raised` lifts toward white. */
+  --panel: oklch(0.938 0.008 252);
+  --panel-foreground: oklch(0.17 0.012 262);
+  --panel-muted: oklch(0.5 0.015 258);
+  --panel-border: oklch(0.885 0.007 255);
+  --panel-raised: oklch(0.995 0.002 250);
+}
+
+.dark {
+  --background: oklch(0.155 0.014 264);
+  --foreground: oklch(0.975 0.002 250);
+  --card: oklch(0.196 0.016 264);
+  --card-foreground: oklch(0.975 0.002 250);
+  --muted: oklch(0.226 0.016 264);
+  --muted-foreground: oklch(0.685 0.014 258);
+  --border: oklch(0.283 0.018 264);
+  --primary: oklch(0.645 0.19 258);
+  --primary-foreground: oklch(0.14 0.014 264);
+  --accent: oklch(0.72 0.16 158);
+  --accent-foreground: oklch(0.14 0.014 264);
+
+  --ink: oklch(0.115 0.012 264);
+  --ink-foreground: oklch(0.975 0.002 250);
+  --ink-muted: oklch(0.66 0.014 258);
+  --ink-border: oklch(0.245 0.016 264);
+  --ink-raised: oklch(0.175 0.014 264);
+
+  /* Identical to the `ink` values above, so every band that moved from `ink` to
+     `panel` renders unchanged in dark mode. Only light mode diverges. */
+  --panel: oklch(0.115 0.012 264);
+  --panel-foreground: oklch(0.975 0.002 250);
+  --panel-muted: oklch(0.66 0.014 258);
+  --panel-border: oklch(0.245 0.016 264);
+  --panel-raised: oklch(0.175 0.014 264);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor scrolling for the sticky header. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
+}
+
+@layer components {
+  /* Small tracked-out monospace label used above every section heading. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Fade the marquee edges into the background. */
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  /* Faint technical grid, echoing a wiring schematic. */
+  .schematic-grid {
+    background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+    background-size: 5.5rem 5.5rem;
+    mask-image: radial-gradient(ellipse 100% 70% at 50% 40%, black 20%, transparent 78%);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes ticker {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
