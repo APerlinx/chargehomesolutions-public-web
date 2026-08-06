@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
-import { useInView, useReducedMotion } from "motion/react"
+import { useEffect, useRef, useState } from 'react'
+import { useInView, useReducedMotion } from 'motion/react'
 
 export function CountUp({
   value,
-  prefix = "",
-  suffix = "",
+  prefix = '',
+  suffix = '',
   decimals = 0,
   className,
 }: {
@@ -17,16 +17,13 @@ export function CountUp({
   className?: string
 }) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, margin: "-60px" })
+  const inView = useInView(ref, { once: true, margin: '-60px' })
   const reduceMotion = useReducedMotion()
   const [display, setDisplay] = useState(0)
 
   useEffect(() => {
     if (!inView) return
-    if (reduceMotion) {
-      setDisplay(value)
-      return
-    }
+    if (reduceMotion) return
 
     let raf = 0
     const duration = 1600
@@ -34,7 +31,6 @@ export function CountUp({
 
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1)
-      // easeOutExpo for a fast-then-settle count.
       const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
       setDisplay(value * eased)
       if (t < 1) raf = requestAnimationFrame(tick)
@@ -44,7 +40,9 @@ export function CountUp({
     return () => cancelAnimationFrame(raf)
   }, [inView, value, reduceMotion])
 
-  const formatted = display.toLocaleString("en-US", {
+  const shown = inView && reduceMotion ? value : display
+
+  const formatted = shown.toLocaleString('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   })

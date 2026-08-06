@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { motion, useReducedMotion } from "motion/react"
-import { ArrowRight } from "lucide-react"
-import { NetworkSphere } from "@/components/hero/network-sphere"
-import { Container } from "@/components/ui/section"
-import { CountUp } from "@/components/ui/count-up"
-import { hero, liveStats } from "@/lib/content"
+import { motion, useReducedMotion } from 'motion/react'
+import { ArrowRight } from 'lucide-react'
+import { NetworkSphere } from '@/components/hero/network-sphere'
+import { Container } from '@/components/ui/section'
+import { CountUp } from '@/components/ui/count-up'
+import { hero, liveStats } from '@/lib/content'
 
 export function Hero() {
   const reduceMotion = useReducedMotion()
@@ -15,37 +15,31 @@ export function Hero() {
     show: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, delay: reduceMotion ? 0 : 0.15 + i * 0.09, ease: [0.16, 1, 0.3, 1] as const },
+      transition: {
+        duration: 0.8,
+        delay: reduceMotion ? 0 : 0.15 + i * 0.09,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
     }),
   }
 
   return (
-    <section id="top" className="relative overflow-hidden bg-ink text-ink-foreground">
-      {/* Signature animation: the electrician network as a rotating sphere. */}
+    <section
+      id="top"
+      className="relative overflow-hidden bg-ink text-ink-foreground"
+    >
+      {}
       <div className="pointer-events-none absolute inset-0">
-        {/* Below lg the sphere is sized in vw so it scales with the screen and the
-            copy always sits on it.
-
-            From lg up two things have to hold at once, and they pull in opposite
-            directions: the headline should graze the sphere's left edge (fixed,
-            because the Container caps at max-w-6xl so the copy stops growing),
-            while the sphere's right edge should always reach the viewport edge
-            (viewport-relative). Anchoring the *right* edge can only satisfy one
-            of the two. So anchor the left edge to the container rail — that pins
-            the overlap to the last word at any width — and let the width grow
-            with max(), which keeps the right edge just past the screen. Below
-            ~2016px the 58rem floor already overshoots; past that the 50vw term
-            takes over. Vertical spill is clipped by overflow-hidden above. */}
-        <div className="absolute right-[-28%] top-1/2 h-[130vw] w-[130vw] -translate-y-1/2 sm:right-[-14%] sm:h-[92vw] sm:w-[92vw] lg:right-auto lg:left-[calc(50%+5rem)] lg:h-[max(58rem,50vw_-_4rem)] lg:w-[max(58rem,50vw_-_4rem)]">
+        {}
+        <div className="absolute right-[-28%] top-1/2 h-[130vw] w-[130vw] -translate-y-1/2 sm:right-[-14%] sm:h-[92vw] sm:w-[92vw] lg:right-auto lg:left-[calc(50%+5rem)] lg:h-[max(58rem,50vw-4rem)] lg:w-[max(58rem,50vw-4rem)]">
           <NetworkSphere className="h-full w-full opacity-70 sm:opacity-90" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/85 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-ink to-transparent" />
       </div>
 
       <Container className="relative">
-        {/* Full viewport height so the wave lands at the fold on every screen:
-            it hints at the next section without revealing its content. */}
+        {}
         <div className="flex min-h-svh flex-col justify-center py-28 lg:py-32">
           <div>
             <motion.div
@@ -56,20 +50,28 @@ export function Hero() {
               className="mb-7 flex items-center gap-4"
             >
               <span aria-hidden="true" className="h-px w-10 bg-ink-muted/50" />
-              <span className="font-mono text-xs tracking-[0.08em] text-ink-muted">{hero.eyebrow}</span>
+              <span className="font-mono text-xs tracking-[0.08em] text-ink-muted">
+                {hero.eyebrow}
+              </span>
             </motion.div>
 
             <h1 className="max-w-[80%] text-[clamp(2.75rem,6.2vw,5.5rem)] font-light leading-[0.98] tracking-[-0.035em]">
-              <motion.span custom={1} variants={rise} initial="hidden" animate="show" className="block text-ink-foreground">
+              <motion.span
+                custom={1}
+                variants={rise}
+                initial="hidden"
+                animate="show"
+                className="block text-ink-foreground"
+              >
                 {hero.titleLead}
               </motion.span>
-              {/* pb keeps the gradient clip box tall enough for the "g" descender. */}
+              {}
               <motion.span
                 custom={2}
                 variants={rise}
                 initial="hidden"
                 animate="show"
-                className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text pb-[0.14em] text-transparent"
+                className="block bg-linear-to-r from-primary via-primary to-accent bg-clip-text pb-[0.14em] text-transparent"
               >
                 {hero.titleBrand}
               </motion.span>
@@ -120,15 +122,17 @@ export function Hero() {
                   <dd className="text-3xl font-medium tracking-tight sm:text-4xl">
                     <CountUp
                       value={stat.value}
-                      prefix={"prefix" in stat ? stat.prefix : ""}
+                      prefix={'prefix' in stat ? stat.prefix : ''}
                       suffix={stat.suffix}
-                      decimals={"decimals" in stat ? stat.decimals : 0}
+                      decimals={'decimals' in stat ? stat.decimals : 0}
                     />
                   </dd>
                   <p className="mt-2 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-ink-muted">
                     {stat.label}
                   </p>
-                  <p className="mt-0.5 text-xs font-light text-ink-muted/70">{stat.note}</p>
+                  <p className="mt-0.5 text-xs font-light text-ink-muted/70">
+                    {stat.note}
+                  </p>
                 </div>
               ))}
             </motion.dl>
@@ -136,10 +140,17 @@ export function Hero() {
         </div>
       </Container>
 
-      {/* Curved cut into the next section, echoing the reference site. */}
+      {}
       <div className="absolute inset-x-0 bottom-0" aria-hidden="true">
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" className="h-10 w-full sm:h-16">
-          <path d="M0 80 L1440 80 L1440 40 Q720 -20 0 40 Z" className="fill-background" />
+        <svg
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          className="h-10 w-full sm:h-16"
+        >
+          <path
+            d="M0 80 L1440 80 L1440 40 Q720 -20 0 40 Z"
+            className="fill-background"
+          />
         </svg>
       </div>
     </section>

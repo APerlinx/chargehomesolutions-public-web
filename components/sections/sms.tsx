@@ -7,12 +7,7 @@ import { Reveal } from "@/components/ui/reveal"
 import { Icon } from "@/components/ui/icon"
 import { sms } from "@/lib/content"
 
-/**
- * Carries the "how-it-works" anchor: this is now the page's only walkthrough of
- * the appointment flow, and the nav, hero and footer all point here. Nothing ever
- * linked to "#sms", so reusing the id keeps every link (and any inbound external
- * one) working without edits.
- */
+
 export function Sms() {
   return (
     <Section id="how-it-works" tone="muted">
@@ -85,7 +80,7 @@ function Phone() {
 
   return (
     <div className="relative">
-      {/* Floating status pills */}
+      {}
       <motion.div
         {...floater(0.5, 0)}
         className="absolute -left-6 top-24 z-20 hidden rounded-2xl border border-border bg-card px-4 py-2.5 text-xs font-semibold shadow-xl sm:block"
@@ -106,7 +101,7 @@ function Phone() {
         {sms.floaters[2].label}
       </motion.div>
 
-      {/* Device */}
+      {}
       <div className="relative w-[300px] rounded-[2.75rem] border border-border bg-ink p-2.5 shadow-2xl sm:w-[330px]">
         <div className="relative overflow-hidden rounded-[2.25rem] bg-card">
           <div className="absolute left-1/2 top-2.5 z-10 h-6 w-28 -translate-x-1/2 rounded-full bg-ink" />

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 import { ROUTES, SITE_URL } from "@/lib/site"
 
-/** Served at /sitemap.xml. The marketing page is the priority; legal pages rarely change. */
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date()
 

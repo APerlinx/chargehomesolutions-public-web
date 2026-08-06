@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "motion/react"
-import { Menu, X } from "lucide-react"
-import { ChsLogo } from "@/components/brand/chs-logo"
-import { TeslaBadge } from "@/components/brand/tesla-badge"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { nav as navLinks } from "@/lib/content"
-import { cn } from "@/lib/utils"
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
+import { Menu, X } from 'lucide-react'
+import { ChsLogo } from '@/components/brand/chs-logo'
+import { TeslaBadge } from '@/components/brand/tesla-badge'
+import { nav as navLinks } from '@/lib/content'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false)
@@ -16,60 +16,55 @@ export function SiteHeader() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
     onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : ""
+    document.body.style.overflow = open ? 'hidden' : ''
     return () => {
-      document.body.style.overflow = ""
+      document.body.style.overflow = ''
     }
   }, [open])
 
-  /*
-   * Unscrolled, the header is transparent and floats over the hero's dark `--ink`
-   * band, but its contents inherited the page-level `--foreground`. In light mode
-   * that is near-black, so the masked logo (painted with `bg-current`) vanished and
-   * the nav sat at ~2.9:1 contrast. Scrolled, the header gains a `bg-background`
-   * panel and the page tokens become correct again — hence the two sets.
-   *
-   * The `dark:` halves pin dark mode to the values it already used, so this only
-   * changes light mode.
-   */
   const onInk = !scrolled
-  const inkText = onInk ? "text-ink-foreground dark:text-foreground" : "text-foreground"
+  const inkText = onInk
+    ? 'text-ink-foreground dark:text-foreground'
+    : 'text-foreground'
   const inkMuted = onInk
-    ? "text-ink-muted hover:text-ink-foreground dark:text-muted-foreground dark:hover:text-foreground"
-    : "text-muted-foreground hover:text-foreground"
+    ? 'text-ink-muted hover:text-ink-foreground dark:text-muted-foreground dark:hover:text-foreground'
+    : 'text-muted-foreground hover:text-foreground'
 
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        'fixed inset-x-0 top-0 z-50 transition-all duration-300',
         scrolled
-          ? "border-b border-border/70 bg-background/80 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent",
+          ? 'border-b border-border/70 bg-background/80 backdrop-blur-xl'
+          : 'border-b border-transparent bg-transparent',
         inkText,
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
         <div className="flex items-center gap-3">
-          <a href="/" className="flex items-center gap-3" aria-label="Charge Home Solutions home">
-            {/*
-             * Paired with the Tesla badge, so the two are matched on cap height rather
-             * than box height. The CHS lockup is stacked (icon / wordmark / rule) and
-             * "ChargeHome" occupies 22.6% of the mask's 376px height, so 44px puts its
-             * caps at ~9.9px — level with the 10px Tesla wordmark. Equalising the
-             * bounding boxes instead would crush "ChargeHome" to ~6px and lose it.
-             */}
-            <ChsLogo className="h-10 w-auto lg:h-11" />
-          </a>
+          <Link
+            href="/"
+            className="flex items-center gap-3"
+            aria-label="Charge Home Solutions home"
+          >
+            <ChsLogo className="h-9 w-auto lg:h-10" />
+          </Link>
           <span
-            className={cn("hidden h-7 w-px sm:block", onInk ? "bg-ink-border dark:bg-border" : "bg-border")}
+            className={cn(
+              'hidden h-7 w-px sm:block',
+              onInk ? 'bg-ink-border dark:bg-border' : 'bg-border',
+            )}
             aria-hidden="true"
           />
-          <TeslaBadge className="hidden sm:flex" variant={onInk ? "ink" : "default"} />
+          <TeslaBadge
+            className="hidden origin-left scale-95 sm:flex"
+            variant={onInk ? 'ink' : 'default'}
+          />
         </div>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
@@ -77,7 +72,7 @@ export function SiteHeader() {
             <a
               key={link.href}
               href={link.href}
-              className={cn("text-sm font-medium transition-colors", inkMuted)}
+              className={cn('text-sm font-medium transition-colors', inkMuted)}
             >
               {link.label}
             </a>
@@ -85,16 +80,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle
-            className={cn(
-              onInk &&
-                "text-ink-muted hover:bg-ink-raised hover:text-ink-foreground dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground",
-            )}
-          />
           <a
             href="#login"
             className={cn(
-              "hidden rounded-full px-4 py-2 text-sm font-medium transition-colors lg:inline-flex",
+              'hidden rounded-full px-4 py-2 text-sm font-medium transition-colors lg:inline-flex',
               inkMuted,
             )}
           >
@@ -109,13 +98,13 @@ export function SiteHeader() {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            /* No explicit text colour: it inherits the header's, which already
-               accounts for whether it is floating over the hero or on a panel. */
             className={cn(
-              "inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors lg:hidden",
-              onInk ? "hover:bg-ink-raised dark:hover:bg-muted" : "hover:bg-muted",
+              'inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors lg:hidden',
+              onInk
+                ? 'hover:bg-ink-raised dark:hover:bg-muted'
+                : 'hover:bg-muted',
             )}
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -132,7 +121,10 @@ export function SiteHeader() {
             transition={{ duration: 0.2 }}
             className="border-b border-border bg-background/95 backdrop-blur-xl lg:hidden"
           >
-            <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6" aria-label="Mobile">
+            <nav
+              className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6"
+              aria-label="Mobile"
+            >
               {navLinks.map((link) => (
                 <a
                   key={link.href}

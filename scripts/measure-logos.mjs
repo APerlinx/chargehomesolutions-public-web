@@ -1,20 +1,10 @@
-/**
- * Measures the real ink bounds of every partner logo.
- *
- * The viewBox is not a reliable guide to how big a logo *looks*: several of these
- * files pad the artwork inside a square 24x24 box, so sizing by viewBox height
- * makes the padded ones read smaller than the tightly cropped ones. Rendering each
- * file and trimming to its actual pixels gives the true optical extents, which is
- * what the layout needs to normalise against.
- *
- * Run: node scripts/measure-logos.mjs
- */
+
 import { readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
 import sharp from "sharp"
 
 const DIR = "public/logos"
-/** Render tall so thin wordmarks still produce enough pixels to measure. */
+
 const RENDER_HEIGHT = 400
 
 const files = readdirSync(DIR)
@@ -33,8 +23,6 @@ for (const file of files) {
   const [, , vbW, vbH] = viewBox.split(/[\s,]+/).map(Number)
   const vbRatio = vbW / vbH
 
-  // Force a known render height, then flatten onto black so any white artwork
-  // still registers, and measure the alpha channel's non-empty bounds.
   const png = await sharp(Buffer.from(raw), { density: 300 })
     .resize({ height: RENDER_HEIGHT, fit: "inside" })
     .png()
@@ -50,7 +38,6 @@ for (const file of files) {
   let maxY = -1
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      // Alpha is the only reliable signal: fills vary from black to white.
       if (data[(y * width + x) * 4 + 3] > 12) {
         if (x < minX) minX = x
         if (x > maxX) maxX = x
@@ -71,7 +58,6 @@ for (const file of files) {
     name: path.basename(file, ".svg"),
     vbRatio: +vbRatio.toFixed(3),
     inkRatio: +(inkW / inkH).toFixed(3),
-    // How much of the rendered box the artwork actually fills, vertically.
     fillY: +(inkH / height).toFixed(3),
     fillX: +(inkW / width).toFixed(3),
   })

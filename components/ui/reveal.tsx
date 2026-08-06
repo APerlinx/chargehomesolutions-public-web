@@ -3,10 +3,7 @@
 import { motion, useReducedMotion } from "motion/react"
 import type { ReactNode } from "react"
 
-/**
- * Quiet entrance for content as it scrolls into view. One consistent motion
- * signature across the page rather than a different effect per section.
- */
+
 export function Reveal({
   children,
   delay = 0,

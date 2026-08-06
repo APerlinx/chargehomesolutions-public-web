@@ -11,7 +11,7 @@ export function CaseStudy() {
 
         <Reveal className="mx-auto mt-14 max-w-4xl">
           <div className="relative grid gap-px overflow-hidden rounded-3xl border border-border bg-border md:grid-cols-2">
-            {/* Before */}
+            {}
             <div className="bg-card p-8 sm:p-10">
               <span className="eyebrow text-muted-foreground">{caseStudy.before.label}</span>
               <div className="mt-6">
@@ -33,7 +33,7 @@ export function CaseStudy() {
               </div>
             </div>
 
-            {/* After */}
+            {}
             <div className="relative bg-card p-8 sm:p-10">
               <span className="eyebrow text-primary">{caseStudy.after.label}</span>
               <div className="mt-6">
@@ -52,7 +52,7 @@ export function CaseStudy() {
               </div>
             </div>
 
-            {/* Center connector */}
+            {}
             <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:block">
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-8 ring-background">
                 <Zap className="h-5 w-5" aria-hidden="true" />

@@ -22,8 +22,7 @@ export function Coverage() {
             >
               <g>
                 {statePaths.map((d, i) => (
-                  /* Light needs a slightly stronger fill than dark to read against the
-                     near-white panel; the dark override restores the original 0.05. */
+                  
                   <path
                     key={i}
                     d={d}

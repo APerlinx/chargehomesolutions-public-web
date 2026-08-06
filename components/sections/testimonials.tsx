@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { motion, AnimatePresence, useReducedMotion } from "motion/react"
-import { Star, ChevronLeft, ChevronRight, Zap } from "lucide-react"
-import { Container, Section, SectionHeader } from "@/components/ui/section"
-import { Reveal } from "@/components/ui/reveal"
-import { testimonials } from "@/lib/content"
-import { cn } from "@/lib/utils"
+import { useState } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
+import { Star, ChevronLeft, ChevronRight, Zap } from 'lucide-react'
+import { Container, Section, SectionHeader } from '@/components/ui/section'
+import { Reveal } from '@/components/ui/reveal'
+import { testimonials } from '@/lib/content'
+import { cn } from '@/lib/utils'
 
 export function Testimonials() {
   const [active, setActive] = useState(0)
@@ -18,11 +18,15 @@ export function Testimonials() {
   return (
     <Section id="testimonials" tone="panel">
       <Container>
-        <SectionHeader eyebrow={testimonials.eyebrow} title={testimonials.title} tone="panel" />
+        <SectionHeader
+          eyebrow={testimonials.eyebrow}
+          title={testimonials.title}
+          tone="panel"
+        />
 
-        {/* Carousel */}
+        {}
         <Reveal className="relative mx-auto mt-14 max-w-3xl">
-          <div className="min-h-[16rem] rounded-3xl border border-panel-border bg-panel-raised/50 p-8 sm:p-12">
+          <div className="min-h-64 rounded-3xl border border-panel-border bg-panel-raised/50 p-8 sm:p-12">
             <AnimatePresence mode="wait">
               <motion.figure
                 key={active}
@@ -33,7 +37,10 @@ export function Testimonials() {
               >
                 <div className="flex gap-1" aria-hidden="true">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                    <Star
+                      key={i}
+                      className="h-4 w-4 fill-primary text-primary"
+                    />
                   ))}
                 </div>
                 <blockquote className="mt-6 text-balance text-xl font-medium leading-relaxed sm:text-2xl">
@@ -44,8 +51,12 @@ export function Testimonials() {
                     {testimonials.items[active].initials}
                   </span>
                   <div>
-                    <p className="font-semibold">{testimonials.items[active].name}</p>
-                    <p className="text-sm text-panel-muted">{testimonials.items[active].role}</p>
+                    <p className="font-semibold">
+                      {testimonials.items[active].name}
+                    </p>
+                    <p className="text-sm text-panel-muted">
+                      {testimonials.items[active].role}
+                    </p>
                   </div>
                   <span className="ml-auto hidden rounded-full bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary sm:inline-flex">
                     {testimonials.items[active].metric}
@@ -71,8 +82,10 @@ export function Testimonials() {
                   type="button"
                   onClick={() => setActive(i)}
                   className={cn(
-                    "h-2 rounded-full transition-all",
-                    i === active ? "w-6 bg-primary" : "w-2 bg-panel-border hover:bg-panel-muted",
+                    'h-2 rounded-full transition-all',
+                    i === active
+                      ? 'w-6 bg-primary'
+                      : 'w-2 bg-panel-border hover:bg-panel-muted',
                   )}
                   aria-label={`Go to testimonial ${i + 1}`}
                   aria-current={i === active}
@@ -90,7 +103,7 @@ export function Testimonials() {
           </div>
         </Reveal>
 
-        {/* Live feed */}
+        {}
         <Reveal delay={0.1} className="mx-auto mt-20 max-w-3xl">
           <div className="mb-6 flex items-center justify-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-panel-border bg-panel-raised/60 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
@@ -100,7 +113,9 @@ export function Testimonials() {
               </span>
               Live feed
             </span>
-            <span className="text-sm text-panel-muted">{testimonials.feedLabel}</span>
+            <span className="text-sm text-panel-muted">
+              {testimonials.feedLabel}
+            </span>
           </div>
 
           <ul className="flex flex-col gap-3">
@@ -109,7 +124,7 @@ export function Testimonials() {
                 key={item.job}
                 initial={reduceMotion ? false : { opacity: 0, x: -12 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
+                viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 className="flex items-center gap-4 rounded-2xl border border-panel-border bg-panel-raised/40 px-5 py-4"
               >
@@ -120,8 +135,12 @@ export function Testimonials() {
                   <p className="truncate text-sm font-semibold">{item.job}</p>
                   <p className="text-xs text-panel-muted">{item.location}</p>
                 </div>
-                <span className="text-sm font-semibold text-primary">{item.value}</span>
-                <span className="hidden text-xs text-panel-muted sm:block">{item.time}</span>
+                <span className="text-sm font-semibold text-primary">
+                  {item.value}
+                </span>
+                <span className="hidden text-xs text-panel-muted sm:block">
+                  {item.time}
+                </span>
               </motion.li>
             ))}
           </ul>

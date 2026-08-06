@@ -2,36 +2,16 @@ import Image from "next/image"
 import { Container } from "@/components/ui/section"
 import { partners } from "@/lib/content"
 
-/**
- * Logos are matched by optical area rather than by height.
- *
- * Pinning every logo to one height is what caused the mismatch: at a shared 32px,
- * Lucid's 17.6:1 wordmark stretched past 500px wide while Maserati's 0.71:1 trident
- * was only 23px. Equal area instead gives each mark the same amount of ink on the
- * page, so a tall badge and a long wordmark read as the same size.
- *
- * The constant is anchored to Lexus, the reference: it lands at 138x23px, matching
- * how it already looked.
- */
+
 const TARGET_AREA = 3240
-/**
- * Keeps near-square badges from towering over the wordmarks. Equal area alone would
- * push Polestar's roundel to 57px tall, so this trades a little of its area for a
- * row that stays level.
- */
+
 const MAX_HEIGHT = 40
-/** Keeps Lucid's and Jaguar's very long wordmarks from dominating the row. */
+
 const MAX_WIDTH = 176
-/**
- * Floor for very wide wordmarks. Lucid is 17.6:1, so the width cap alone would
- * leave it only 10px tall -- the thinnest thing in the row, the opposite of the
- * problem the cap exists to solve. Letting it exceed MAX_WIDTH slightly is a
- * better trade than a sliver of a logo.
- */
+
 const MIN_HEIGHT = 14
 
 function logoSize(ratio: number) {
-  // Equal area: height * (height * ratio) = TARGET_AREA.
   let height = Math.sqrt(TARGET_AREA / ratio)
   let width = height * ratio
 

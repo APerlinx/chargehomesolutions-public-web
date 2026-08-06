@@ -7,9 +7,7 @@ export function FinalCta() {
   return (
     <section id="work-with-us" className="relative overflow-hidden bg-panel py-24 text-panel-foreground sm:py-32">
       <div
-        /* The blue spotlight reads much hotter against the near-white light panel
-           than against the dark one, so light gets a softer wash. The dark override
-           restores the original 50%. */
+        
         className="pointer-events-none absolute inset-0 opacity-40 dark:opacity-50"
         style={{
           backgroundImage:

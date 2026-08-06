@@ -26,7 +26,7 @@ export function Section({
     default: "bg-background text-foreground",
     muted: "bg-muted text-foreground",
     ink: "bg-ink text-ink-foreground",
-    /* Alternating band. Dark in dark mode, soft blue-tinted near-white in light. */
+    
     panel: "bg-panel text-panel-foreground",
   }
 
@@ -37,7 +37,7 @@ export function Section({
   )
 }
 
-/** Label + rule colours per surface. `ink` is still used by the legal-page header. */
+
 const labelTones = {
   default: { text: "text-muted-foreground", rule: "bg-border" },
   ink: { text: "text-ink-muted", rule: "bg-ink-border" },
@@ -46,7 +46,7 @@ const labelTones = {
 
 type LabelTone = keyof typeof labelTones
 
-/** Tracked-out monospace label. Repeated above every section heading. */
+
 export function Eyebrow({ children, tone = "default" }: { children: ReactNode; tone?: LabelTone }) {
   return (
     <span className={`eyebrow flex items-center gap-3 ${labelTones[tone].text}`}>

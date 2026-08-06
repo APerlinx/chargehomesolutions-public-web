@@ -1,8 +1,4 @@
-/**
- * Single source of truth for the homepage copy.
- * Content mirrors the live Charge Home Solutions site — this file exists so the
- * redesign stays a visual refactor and copy edits never require touching layout.
- */
+
 
 export const site = {
   name: "Charge Home Solutions",
@@ -27,13 +23,7 @@ export const hero = {
   secondaryCta: { label: "See How It Works", href: "/#how-it-works" },
 } as const
 
-/**
- * Partner logos, with each mark's true width/height ratio after its empty margin
- * was cropped away (see scripts/tighten-logos.mjs). The spread is enormous --
- * Maserati's trident is taller than it is wide at 0.71, Lucid's wordmark is 17.6x
- * wider than tall -- so the row sizes each logo from its ratio rather than pinning
- * them all to one height, which would leave the wide ones huge and the rest tiny.
- */
+
 export const partners = [
   { name: "Kia", file: "kia", ratio: 4.2254 },
   { name: "Lexus", file: "lexus", ratio: 5.8729 },
@@ -196,12 +186,7 @@ export const coverage = {
   subtitle: "We match jobs to electricians in every state. See where work is available now.",
 } as const
 
-/**
- * Approximate [longitude, latitude] of network hubs, sized by relative volume.
- * Size drives both the dot radius and whether it pulses: size >= 2 gets an
- * animated ring, size 1 renders as a static dot, which keeps ~120 markers on
- * screen without running ~120 simultaneous animations.
- */
+
 export const coverageMarkers: Array<{ city: string; coords: [number, number]; size: number }> = [
   { city: "Los Angeles", coords: [-118.24, 34.05], size: 3 },
   { city: "San Francisco", coords: [-122.42, 37.77], size: 2 },
@@ -254,16 +239,12 @@ export const coverageMarkers: Array<{ city: string; coords: [number, number]; si
   { city: "Portland ME", coords: [-70.255, 43.662], size: 1 },
   { city: "Charleston", coords: [-79.931, 32.777], size: 1 },
 
-  // Alaska and Hawaii. geoAlbersUsa places these in its standard insets below the
-  // mainland; without markers they were the only dark, unexplained land on a map
-  // headlined "Active in All 50 States".
   { city: "Anchorage", coords: [-149.9, 61.218], size: 2 },
   { city: "Fairbanks", coords: [-147.716, 64.838], size: 1 },
   { city: "Juneau", coords: [-134.42, 58.302], size: 1 },
   { city: "Honolulu", coords: [-157.858, 21.307], size: 2 },
   { city: "Hilo", coords: [-155.089, 19.706], size: 1 },
 
-  // West
   { city: "San Diego", coords: [-117.161, 32.716], size: 2 },
   { city: "Sacramento", coords: [-121.494, 38.582], size: 2 },
   { city: "San Jose", coords: [-121.887, 37.339], size: 1 },
@@ -279,7 +260,6 @@ export const coverageMarkers: Array<{ city: string; coords: [number, number]; si
   { city: "Colorado Springs", coords: [-104.821, 38.834], size: 1 },
   { city: "Santa Fe", coords: [-105.937, 35.687], size: 1 },
 
-  // Midwest
   { city: "Fargo", coords: [-96.79, 46.877], size: 1 },
   { city: "Bismarck", coords: [-100.784, 46.808], size: 1 },
   { city: "Rapid City", coords: [-103.231, 44.081], size: 1 },
@@ -295,7 +275,6 @@ export const coverageMarkers: Array<{ city: string; coords: [number, number]; si
   { city: "Cincinnati", coords: [-84.512, 39.103], size: 1 },
   { city: "Grand Rapids", coords: [-85.668, 42.963], size: 1 },
 
-  // South
   { city: "Tulsa", coords: [-95.993, 36.154], size: 1 },
   { city: "El Paso", coords: [-106.485, 31.762], size: 1 },
   { city: "Lubbock", coords: [-101.855, 33.578], size: 1 },
@@ -321,7 +300,6 @@ export const coverageMarkers: Array<{ city: string; coords: [number, number]; si
   { city: "Pensacola", coords: [-87.217, 30.421], size: 1 },
   { city: "Fort Myers", coords: [-81.873, 26.64], size: 1 },
 
-  // Northeast
   { city: "Baltimore", coords: [-76.612, 39.29], size: 2 },
   { city: "Wilmington", coords: [-75.546, 39.739], size: 1 },
   { city: "Newark", coords: [-74.172, 40.736], size: 1 },
