@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
 
+import { cn } from "@/lib/utils"
+
 /** `className` lets the header recolour it while floating over the dark hero. */
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme()

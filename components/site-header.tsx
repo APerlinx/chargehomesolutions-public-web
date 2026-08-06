@@ -85,7 +85,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle />
+          <ThemeToggle
+            className={cn(
+              onInk &&
+                "text-ink-muted hover:bg-ink-raised hover:text-ink-foreground dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground",
+            )}
+          />
           <a
             href="#login"
             className={cn(
