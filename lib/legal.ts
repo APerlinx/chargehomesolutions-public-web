@@ -36,29 +36,92 @@ export type LegalDoc = {
 
 /** Shared entity details. Fill these once and both documents update. */
 export const legalEntity = {
-  /** Registered legal name, including entity suffix (LLC, Inc., etc.). */
-  name: "[Charge Home Solutions legal entity name, e.g. Charge Home Solutions LLC]",
+  /**
+   * TODO(business): replace with the exact registered name from the Florida
+   * Division of Corporations, including the entity suffix (LLC, Inc., etc.).
+   * The trade name is used here because the registered filing was not on hand;
+   * it is accurate but less precise than a registered name should be in a
+   * contract, and a mismatch can be raised against an arbitration clause.
+   */
+  name: "Charge Home Solutions",
   tradeName: "Charge Home Solutions",
   short: "CHS",
-  address: "[street address, city, state, ZIP]",
-  /** Privacy requests and data-rights inquiries. */
-  email: "[privacy@yourdomain.com]",
   /**
-   * Contractual and dispute notices. Kept separate from the privacy inbox on
-   * purpose: arbitration opt-outs and pre-suit notices carry hard deadlines, so
-   * they should not land in a queue triaged for data-rights requests.
+   * TODO(business): add the street address and ZIP. A city-and-state address is
+   * not sufficient for serving legal notice under the Terms.
    */
-  legalEmail: "[legal@yourdomain.com]",
-  supportEmail: "[support@yourdomain.com]",
-  phone: "[business phone number]",
-  website: "[yourdomain.com]",
+  address: "Titusville, Florida",
+  /**
+   * One shared inbox currently covers privacy, legal, and support. The three
+   * fields below are kept separate so each can be pointed at its own address
+   * later without touching document text; `contactBlock` collapses duplicates
+   * so readers do not see the same address listed twice.
+   */
+  email: "Operation@chargehomesolutions.com",
+  legalEmail: "Operation@chargehomesolutions.com",
+  supportEmail: "Operation@chargehomesolutions.com",
+  phone: "904-712-6790",
+  website: "chargehomesolutions.com",
   /** Governing law selected by the business. */
   state: "Florida",
-  venueCounty: "[county] County, Florida",
+  /** Titusville is the Brevard County seat, so venue follows the office location. */
+  venueCounty: "Brevard County, Florida",
 } as const
 
-/** Builds a closing contact section, routing readers to the right inbox. */
+/**
+ * Retention window stated in the Privacy Policy, in years.
+ *
+ * Set to 5 to match Florida's five-year statute of limitations on actions
+ * founded on a written contract (Fla. Stat. sec. 95.11(2)(b)), so records
+ * survive as long as a contract claim can be brought. Records with a longer
+ * statutory floor (tax, for example) are already covered by the "where a longer
+ * period is required by law, that period controls" sentence in the same section.
+ *
+ * TODO(business): confirm against your accountant's guidance.
+ */
+const RETENTION_YEARS = 5
+
+/**
+ * Payment window for referral-fee invoices, in days. Net 30 is the customary
+ * commercial default.
+ *
+ * TODO(business): change if your invoices state different terms -- this text and
+ * the actual invoices must agree, or the invoice terms will likely govern.
+ */
+const INVOICE_DUE_DAYS = 30
+
+/**
+ * Renders the entity as "Name, doing business as TradeName" only when those two
+ * actually differ, so a shared value does not read as "X doing business as X".
+ * Once the registered legal name is filled in above, the DBA clause reappears
+ * automatically with no edits to document text.
+ */
+const entityPhrase =
+  legalEntity.name === legalEntity.tradeName
+    ? legalEntity.name
+    : `${legalEntity.name}, doing business as ${legalEntity.tradeName}`
+
+/**
+ * Builds a closing contact section, routing readers to the right inbox.
+ *
+ * Labels pointing at the same address are merged ("Legal and dispute notices"
+ * plus "General support" become one line) so a single shared inbox does not
+ * render as the same address repeated.
+ */
 function contactBlock(emails: Array<[string, string]>): LegalBlock[] {
+  const byAddress = new Map<string, string[]>()
+  for (const [label, address] of emails) {
+    byAddress.set(address, [...(byAddress.get(address) ?? []), label])
+  }
+
+  const merged = [...byAddress].map(([address, labels]): [string, string] => {
+    const joined =
+      labels.length > 1
+        ? `${labels.slice(0, -1).join(", ")} and ${labels[labels.length - 1].toLowerCase()}`
+        : labels[0]
+    return [joined, address]
+  })
+
   return [
     {
       kind: "p",
@@ -69,7 +132,7 @@ function contactBlock(emails: Array<[string, string]>): LegalBlock[] {
       items: [
         `Entity: ${legalEntity.name}`,
         `Mailing address: ${legalEntity.address}`,
-        ...emails.map(([label, address]) => `${label}: ${address}`),
+        ...merged.map(([label, address]) => `${label}: ${address}`),
         `Phone: ${legalEntity.phone}`,
       ],
     },
@@ -94,8 +157,8 @@ const TERMS_CONTACT_BLOCK = contactBlock([
 export const privacyPolicy: LegalDoc = {
   eyebrow: "Legal",
   title: "Privacy Policy",
-  effectiveDate: "[Month D, YYYY]",
-  lastUpdated: "[Month D, YYYY]",
+  effectiveDate: "August 6, 2026",
+  lastUpdated: "August 6, 2026",
   summary:
     "This policy explains what personal information Charge Home Solutions collects, why we collect it, who we share it with, and the choices and legal rights you have over it.",
   sections: [
@@ -105,7 +168,7 @@ export const privacyPolicy: LegalDoc = {
       blocks: [
         {
           kind: "p",
-          text: `${legalEntity.name} (doing business as ${legalEntity.tradeName}, and referred to in this policy as "${legalEntity.short}," "we," "us," or "our") operates a technology platform that books residential and commercial electrical service appointments and delivers those appointments to independent licensed electricians by text message. This Privacy Policy describes how we collect, use, disclose, and safeguard personal information.`,
+          text: `${entityPhrase} (referred to in this policy as "${legalEntity.short}," "we," "us," or "our") operates a technology platform that books residential and commercial electrical service appointments and delivers those appointments to independent licensed electricians by text message. This Privacy Policy describes how we collect, use, disclose, and safeguard personal information.`,
         },
         {
           kind: "p",
@@ -303,7 +366,7 @@ export const privacyPolicy: LegalDoc = {
         },
         {
           kind: "p",
-          text: "The periods below describe our general practice. Confirm each one against your actual systems and your accountant's guidance before publishing.",
+          text: "The periods below describe our general retention practice. Where a longer period is required by law, that period controls.",
         },
         {
           kind: "table",
@@ -311,7 +374,7 @@ export const privacyPolicy: LegalDoc = {
           rows: [
             [
               "Account and profile records",
-              "For the life of the account, then [number] years after closure to resolve disputes and enforce agreements.",
+              `For the life of the account, then ${RETENTION_YEARS} years after closure to resolve disputes and enforce agreements.`,
             ],
             [
               "SMS consent and opt-out records",
@@ -319,7 +382,7 @@ export const privacyPolicy: LegalDoc = {
             ],
             [
               "Appointment and job records",
-              "[number] years after the appointment date, for dispute resolution, fee reconciliation, and quality review.",
+              `${RETENTION_YEARS} years after the appointment date, for dispute resolution, fee reconciliation, and quality review.`,
             ],
             [
               "Billing, invoices, and tax records",
@@ -327,7 +390,7 @@ export const privacyPolicy: LegalDoc = {
             ],
             [
               "Electrician licensing and insurance verification",
-              "For the life of the network relationship, then [number] years, to evidence that we verified credentials at the time of each referral.",
+              `For the life of the network relationship, then ${RETENTION_YEARS} years, to evidence that we verified credentials at the time of each referral.`,
             ],
             [
               "Website usage and analytics data",
@@ -456,8 +519,8 @@ export const privacyPolicy: LegalDoc = {
 export const termsOfService: LegalDoc = {
   eyebrow: "Legal",
   title: "Terms of Service",
-  effectiveDate: "[Month D, YYYY]",
-  lastUpdated: "[Month D, YYYY]",
+  effectiveDate: "August 6, 2026",
+  lastUpdated: "August 6, 2026",
   summary:
     "These terms are the binding agreement between Charge Home Solutions and everyone who uses our platform, including the electricians in our network and the customers who book appointments.",
   sections: [
@@ -467,7 +530,7 @@ export const termsOfService: LegalDoc = {
       blocks: [
         {
           kind: "p",
-          text: `These Terms of Service (the "Terms") form a legally binding agreement between you and ${legalEntity.name}, doing business as ${legalEntity.tradeName} ("${legalEntity.short}," "we," "us," or "our"), and govern your access to and use of our website, our SMS appointment-delivery program, and all related services (the "Services").`,
+          text: `These Terms of Service (the "Terms") form a legally binding agreement between you and ${entityPhrase} ("${legalEntity.short}," "we," "us," or "our"), and govern your access to and use of our website, our SMS appointment-delivery program, and all related services (the "Services").`,
         },
         {
           kind: "p",
@@ -625,7 +688,7 @@ export const termsOfService: LegalDoc = {
         {
           kind: "list",
           items: [
-            `Invoicing and terms: Referral Fees are invoiced following the Appointment and are due within ${"[number]"} days of the invoice date, or on the schedule stated in the invoice.`,
+            `Invoicing and terms: Referral Fees are invoiced following the Appointment and are due within ${INVOICE_DUE_DAYS} days of the invoice date, or on the schedule stated in the invoice.`,
             "Late amounts: past-due balances may accrue interest at the lesser of one and one-half percent (1.5%) per month or the maximum rate permitted by applicable law, and you are responsible for reasonable costs of collection, including attorneys' fees, to the extent permitted by law.",
             "Suspension for non-payment: we may suspend Appointment delivery and your account while amounts remain past due.",
             "Billing disputes: notify us in writing within thirty (30) days of an invoice date if you dispute a charge, with the reason and supporting detail. Charges not disputed within that period are deemed accepted. We will review disputes in good faith.",
