@@ -7,6 +7,8 @@
  * `currentColor`. That keeps one asset working on both light and dark backgrounds.
  */
 
+import { cn } from "@/lib/utils"
+
 /** Intrinsic size of the trimmed mask, used to lock the aspect ratio. */
 const LOGO_RATIO = "793 / 376"
 const LOGO_MASK = "/brand/chs-logo-mask.png"
@@ -16,7 +18,9 @@ export function ChsLogo({ className = "" }: { className?: string }) {
     <span
       role="img"
       aria-label="Charge Home Solutions"
-      className={`inline-block shrink-0 bg-current ${className}`}
+      /* cn so a caller passing its own display utility (e.g. "hidden") overrides
+         the base "inline-block" instead of losing to it on stylesheet order. */
+      className={cn("inline-block shrink-0 bg-current", className)}
       style={{
         aspectRatio: LOGO_RATIO,
         maskImage: `url("${LOGO_MASK}")`,

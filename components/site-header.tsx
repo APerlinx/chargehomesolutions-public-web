@@ -39,9 +39,16 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
         <div className="flex items-center gap-3">
           <a href="/" className="flex items-center gap-3" aria-label="Charge Home Solutions home">
-            <ChsLogo className="h-11 w-auto lg:h-14" />
+            {/*
+             * Paired with the Tesla badge, so the two are matched on cap height rather
+             * than box height. The CHS lockup is stacked (icon / wordmark / rule) and
+             * "ChargeHome" occupies 22.6% of the mask's 376px height, so 44px puts its
+             * caps at ~9.9px — level with the 10px Tesla wordmark. Equalising the
+             * bounding boxes instead would crush "ChargeHome" to ~6px and lose it.
+             */}
+            <ChsLogo className="h-10 w-auto lg:h-11" />
           </a>
-          <span className="hidden h-6 w-px bg-border sm:block" aria-hidden="true" />
+          <span className="hidden h-7 w-px bg-border sm:block" aria-hidden="true" />
           <TeslaBadge className="hidden sm:flex" />
         </div>
 

@@ -9,7 +9,9 @@ export function SiteFooter() {
       <Container className="py-16">
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div className="max-w-xs">
-            <ChsLogo className="h-16 w-auto" />
+            {/* Same 44px cap-height pairing as the header, since the Tesla badge below
+                shares this column and the two would otherwise read at odd sizes. */}
+            <ChsLogo className="h-11 w-auto" />
             <p className="mt-5 text-sm leading-relaxed text-ink-muted">{site.tagline}</p>
             <div className="mt-6">
               <TeslaBadge variant="light" />
