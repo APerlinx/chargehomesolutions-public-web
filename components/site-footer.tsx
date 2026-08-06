@@ -5,14 +5,18 @@ import { footer, site } from "@/lib/content"
 
 export function SiteFooter() {
   return (
-    <footer className="bg-ink text-ink-foreground">
+    /* Light mode closes on near-white, matching the scrolled header, with a hairline
+       rule dividing it from the CTA above. The dark border is `border-ink` — the same
+       colour as the footer itself — because a transparent border would let the lighter
+       body background show through as a bright seam between two dark surfaces. */
+    <footer className="border-t border-border bg-background text-foreground dark:border-ink dark:bg-ink dark:text-ink-foreground">
       <Container className="py-16">
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div className="max-w-xs">
             {/* Same 44px cap-height pairing as the header, since the Tesla badge below
                 shares this column and the two would otherwise read at odd sizes. */}
             <ChsLogo className="h-11 w-auto" />
-            <p className="mt-5 text-sm leading-relaxed text-ink-muted">{site.tagline}</p>
+            <p className="mt-5 text-sm leading-relaxed text-muted-foreground dark:text-ink-muted">{site.tagline}</p>
             <div className="mt-6">
               <TeslaBadge variant="light" />
             </div>
@@ -20,13 +24,13 @@ export function SiteFooter() {
 
           {footer.columns.map((column) => (
             <nav key={column.title} aria-label={column.title}>
-              <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">{column.title}</h3>
+              <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground dark:text-ink-muted">{column.title}</h3>
               <ul className="mt-5 flex flex-col gap-3">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-ink-foreground/80 transition-colors hover:text-ink-foreground"
+                      className="text-sm text-foreground/80 transition-colors hover:text-foreground dark:text-ink-foreground/80 dark:hover:text-ink-foreground"
                     >
                       {link.label}
                     </a>
@@ -37,14 +41,14 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-ink-border pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-ink-muted">
+        <div className="mt-14 flex flex-col gap-4 border-t border-border pt-8 dark:border-ink-border sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted-foreground dark:text-ink-muted">
             &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
           <ul className="flex items-center gap-6">
             {footer.legal.map((link) => (
               <li key={link.label}>
-                <a href={link.href} className="text-xs text-ink-muted transition-colors hover:text-ink-foreground">
+                <a href={link.href} className="text-xs text-muted-foreground transition-colors hover:text-foreground dark:text-ink-muted dark:hover:text-ink-foreground">
                   {link.label}
                 </a>
               </li>

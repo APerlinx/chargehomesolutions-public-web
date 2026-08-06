@@ -16,9 +16,21 @@ export function TeslaBadge({
   variant = "default",
 }: {
   className?: string
-  variant?: "default" | "light"
+  /**
+   * Names the surface the badge sits on, which decides the caption colour:
+   * - `default` — the normal page surface, in either theme.
+   * - `ink` — a surface that is dark in BOTH themes (the unscrolled header over the hero).
+   * - `light` — the footer, which is near-white in light mode and dark in dark mode.
+   *
+   * Each `dark:` half pins dark mode to the value it already rendered.
+   */
+  variant?: "default" | "light" | "ink"
 }) {
-  const isLight = variant === "light"
+  const captionTones = {
+    default: "text-muted-foreground",
+    ink: "text-ink-muted dark:text-muted-foreground",
+    light: "text-muted-foreground dark:text-ink-muted",
+  }
   return (
     /*
      * cn (tailwind-merge) rather than string concatenation: the base "inline-flex"
@@ -65,9 +77,10 @@ export function TeslaBadge({
          * splits the credential and pushes the header row taller.
          */}
         <span
-          className={`mt-[3px] whitespace-nowrap font-mono text-[6.5px] leading-none tracking-[0.185em] ${
-            isLight ? "text-ink-muted" : "text-muted-foreground"
-          }`}
+          className={cn(
+            "mt-[3px] whitespace-nowrap font-mono text-[6.5px] leading-none tracking-[0.185em]",
+            captionTones[variant],
+          )}
         >
           CERTIFIED INSTALLER
         </span>

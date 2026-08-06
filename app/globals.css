@@ -21,6 +21,16 @@
   --color-ink-foreground: var(--ink-foreground);
   --color-ink-muted: var(--ink-muted);
   --color-ink-border: var(--ink-border);
+  --color-ink-raised: var(--ink-raised);
+
+  /* `panel` is the full-bleed alternating section band; `ink` stays reserved for
+     genuinely dark objects (phone bezel, fees header, vision card, legal header).
+     They were one token, which is why the band could not simply be lightened. */
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-panel-muted: var(--panel-muted);
+  --color-panel-border: var(--panel-border);
+  --color-panel-raised: var(--panel-raised);
 
   --radius: 0.75rem;
 
@@ -45,11 +55,22 @@
   --accent: oklch(0.63 0.15 156);
   --accent-foreground: oklch(0.99 0 0);
 
-  /* Inverted band used for stats, vision, and closing panels. */
+  /* Inverted surface for genuinely dark objects: the SMS phone bezel, the fees
+     table header, the About vision card, and the legal-page headers. */
   --ink: oklch(0.19 0.016 264);
   --ink-foreground: oklch(0.98 0.002 250);
   --ink-muted: oklch(0.71 0.014 258);
   --ink-border: oklch(0.29 0.018 264);
+  --ink-raised: oklch(0.25 0.018 264);
+
+  /* Section band. Deliberately 0.938, not ~0.96: `--muted` is already 0.965 and
+     the page is 0.988, so a lighter panel would make Sms -> WhyUs read as one
+     block. This keeps three distinct light levels. `raised` lifts toward white. */
+  --panel: oklch(0.938 0.008 252);
+  --panel-foreground: oklch(0.17 0.012 262);
+  --panel-muted: oklch(0.5 0.015 258);
+  --panel-border: oklch(0.885 0.007 255);
+  --panel-raised: oklch(0.995 0.002 250);
 }
 
 .dark {
@@ -69,6 +90,15 @@
   --ink-foreground: oklch(0.975 0.002 250);
   --ink-muted: oklch(0.66 0.014 258);
   --ink-border: oklch(0.245 0.016 264);
+  --ink-raised: oklch(0.175 0.014 264);
+
+  /* Identical to the `ink` values above, so every band that moved from `ink` to
+     `panel` renders unchanged in dark mode. Only light mode diverges. */
+  --panel: oklch(0.115 0.012 264);
+  --panel-foreground: oklch(0.975 0.002 250);
+  --panel-muted: oklch(0.66 0.014 258);
+  --panel-border: oklch(0.245 0.016 264);
+  --panel-raised: oklch(0.175 0.014 264);
 }
 
 @layer base {

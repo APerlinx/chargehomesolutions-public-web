@@ -20,12 +20,14 @@ export function Section({
   children: ReactNode
   id?: string
   className?: string
-  tone?: "default" | "muted" | "ink"
+  tone?: "default" | "muted" | "ink" | "panel"
 }) {
   const tones = {
     default: "bg-background text-foreground",
     muted: "bg-muted text-foreground",
     ink: "bg-ink text-ink-foreground",
+    /* Alternating band. Dark in dark mode, soft blue-tinted near-white in light. */
+    panel: "bg-panel text-panel-foreground",
   }
 
   return (
@@ -35,11 +37,20 @@ export function Section({
   )
 }
 
+/** Label + rule colours per surface. `ink` is still used by the legal-page header. */
+const labelTones = {
+  default: { text: "text-muted-foreground", rule: "bg-border" },
+  ink: { text: "text-ink-muted", rule: "bg-ink-border" },
+  panel: { text: "text-panel-muted", rule: "bg-panel-border" },
+}
+
+type LabelTone = keyof typeof labelTones
+
 /** Tracked-out monospace label. Repeated above every section heading. */
-export function Eyebrow({ children, tone = "default" }: { children: ReactNode; tone?: "default" | "ink" }) {
+export function Eyebrow({ children, tone = "default" }: { children: ReactNode; tone?: LabelTone }) {
   return (
-    <span className={`eyebrow flex items-center gap-3 ${tone === "ink" ? "text-ink-muted" : "text-muted-foreground"}`}>
-      <span aria-hidden="true" className={`h-px w-6 ${tone === "ink" ? "bg-ink-border" : "bg-border"}`} />
+    <span className={`eyebrow flex items-center gap-3 ${labelTones[tone].text}`}>
+      <span aria-hidden="true" className={`h-px w-6 ${labelTones[tone].rule}`} />
       {children}
     </span>
   )
@@ -56,7 +67,7 @@ export function SectionHeader({
   title: ReactNode
   subtitle?: string
   align?: "center" | "left"
-  tone?: "default" | "ink"
+  tone?: LabelTone
 }) {
   const isCentered = align === "center"
 
@@ -66,9 +77,7 @@ export function SectionHeader({
       <h2 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">{title}</h2>
       {subtitle ? (
         <p
-          className={`max-w-2xl text-pretty text-base leading-relaxed sm:text-lg ${
-            tone === "ink" ? "text-ink-muted" : "text-muted-foreground"
-          }`}
+          className={`max-w-2xl text-pretty text-base leading-relaxed sm:text-lg ${labelTones[tone].text}`}
         >
           {subtitle}
         </p>

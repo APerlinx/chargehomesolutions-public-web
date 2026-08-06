@@ -5,9 +5,12 @@ import { finalCta } from "@/lib/content"
 
 export function FinalCta() {
   return (
-    <section id="work-with-us" className="relative overflow-hidden bg-ink py-24 text-ink-foreground sm:py-32">
+    <section id="work-with-us" className="relative overflow-hidden bg-panel py-24 text-panel-foreground sm:py-32">
       <div
-        className="pointer-events-none absolute inset-0 opacity-50"
+        /* The blue spotlight reads much hotter against the near-white light panel
+           than against the dark one, so light gets a softer wash. The dark override
+           restores the original 50%. */
+        className="pointer-events-none absolute inset-0 opacity-40 dark:opacity-50"
         style={{
           backgroundImage:
             "radial-gradient(50% 100% at 50% 100%, color-mix(in oklch, var(--primary) 45%, transparent), transparent 70%)",
@@ -19,7 +22,7 @@ export function FinalCta() {
           <h2 className="text-balance text-4xl font-semibold tracking-[-0.03em] sm:text-5xl lg:text-6xl">
             {finalCta.title}
           </h2>
-          <p className="mt-5 max-w-xl text-pretty leading-relaxed text-ink-muted">{finalCta.body}</p>
+          <p className="mt-5 max-w-xl text-pretty leading-relaxed text-panel-muted">{finalCta.body}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
               href={finalCta.primary.href}
@@ -30,7 +33,7 @@ export function FinalCta() {
             </a>
             <a
               href={finalCta.secondary.href}
-              className="inline-flex items-center justify-center rounded-full border border-ink-border bg-ink-raised/40 px-8 py-4 text-sm font-semibold text-ink-foreground backdrop-blur-sm transition-colors hover:bg-ink-raised"
+              className="inline-flex items-center justify-center rounded-full border border-panel-border bg-panel-raised/40 px-8 py-4 text-sm font-semibold text-panel-foreground backdrop-blur-sm transition-colors hover:bg-panel-raised"
             >
               {finalCta.secondary.label}
             </a>

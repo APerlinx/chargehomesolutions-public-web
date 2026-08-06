@@ -16,13 +16,13 @@ export function Testimonials() {
   const go = (dir: number) => setActive((prev) => (prev + dir + count) % count)
 
   return (
-    <Section id="testimonials" tone="ink">
+    <Section id="testimonials" tone="panel">
       <Container>
-        <SectionHeader eyebrow={testimonials.eyebrow} title={testimonials.title} tone="ink" />
+        <SectionHeader eyebrow={testimonials.eyebrow} title={testimonials.title} tone="panel" />
 
         {/* Carousel */}
         <Reveal className="relative mx-auto mt-14 max-w-3xl">
-          <div className="min-h-[16rem] rounded-3xl border border-ink-border bg-ink-raised/50 p-8 sm:p-12">
+          <div className="min-h-[16rem] rounded-3xl border border-panel-border bg-panel-raised/50 p-8 sm:p-12">
             <AnimatePresence mode="wait">
               <motion.figure
                 key={active}
@@ -45,7 +45,7 @@ export function Testimonials() {
                   </span>
                   <div>
                     <p className="font-semibold">{testimonials.items[active].name}</p>
-                    <p className="text-sm text-ink-muted">{testimonials.items[active].role}</p>
+                    <p className="text-sm text-panel-muted">{testimonials.items[active].role}</p>
                   </div>
                   <span className="ml-auto hidden rounded-full bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary sm:inline-flex">
                     {testimonials.items[active].metric}
@@ -59,7 +59,7 @@ export function Testimonials() {
             <button
               type="button"
               onClick={() => go(-1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-ink-border text-ink-foreground transition-colors hover:bg-ink-raised"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-panel-border text-panel-foreground transition-colors hover:bg-panel-raised"
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -72,7 +72,7 @@ export function Testimonials() {
                   onClick={() => setActive(i)}
                   className={cn(
                     "h-2 rounded-full transition-all",
-                    i === active ? "w-6 bg-primary" : "w-2 bg-ink-border hover:bg-ink-muted",
+                    i === active ? "w-6 bg-primary" : "w-2 bg-panel-border hover:bg-panel-muted",
                   )}
                   aria-label={`Go to testimonial ${i + 1}`}
                   aria-current={i === active}
@@ -82,7 +82,7 @@ export function Testimonials() {
             <button
               type="button"
               onClick={() => go(1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-ink-border text-ink-foreground transition-colors hover:bg-ink-raised"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-panel-border text-panel-foreground transition-colors hover:bg-panel-raised"
               aria-label="Next testimonial"
             >
               <ChevronRight className="h-4 w-4" />
@@ -93,14 +93,14 @@ export function Testimonials() {
         {/* Live feed */}
         <Reveal delay={0.1} className="mx-auto mt-20 max-w-3xl">
           <div className="mb-6 flex items-center justify-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-ink-border bg-ink-raised/60 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-panel-border bg-panel-raised/60 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-70" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
               </span>
               Live feed
             </span>
-            <span className="text-sm text-ink-muted">{testimonials.feedLabel}</span>
+            <span className="text-sm text-panel-muted">{testimonials.feedLabel}</span>
           </div>
 
           <ul className="flex flex-col gap-3">
@@ -111,17 +111,17 @@ export function Testimonials() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="flex items-center gap-4 rounded-2xl border border-ink-border bg-ink-raised/40 px-5 py-4"
+                className="flex items-center gap-4 rounded-2xl border border-panel-border bg-panel-raised/40 px-5 py-4"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
                   <Zap className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold">{item.job}</p>
-                  <p className="text-xs text-ink-muted">{item.location}</p>
+                  <p className="text-xs text-panel-muted">{item.location}</p>
                 </div>
                 <span className="text-sm font-semibold text-primary">{item.value}</span>
-                <span className="hidden text-xs text-ink-muted sm:block">{item.time}</span>
+                <span className="hidden text-xs text-panel-muted sm:block">{item.time}</span>
               </motion.li>
             ))}
           </ul>

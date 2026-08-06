@@ -27,6 +27,22 @@ export function SiteHeader() {
     }
   }, [open])
 
+  /*
+   * Unscrolled, the header is transparent and floats over the hero's dark `--ink`
+   * band, but its contents inherited the page-level `--foreground`. In light mode
+   * that is near-black, so the masked logo (painted with `bg-current`) vanished and
+   * the nav sat at ~2.9:1 contrast. Scrolled, the header gains a `bg-background`
+   * panel and the page tokens become correct again — hence the two sets.
+   *
+   * The `dark:` halves pin dark mode to the values it already used, so this only
+   * changes light mode.
+   */
+  const onInk = !scrolled
+  const inkText = onInk ? "text-ink-foreground dark:text-foreground" : "text-foreground"
+  const inkMuted = onInk
+    ? "text-ink-muted hover:text-ink-foreground dark:text-muted-foreground dark:hover:text-foreground"
+    : "text-muted-foreground hover:text-foreground"
+
   return (
     <header
       className={cn(
@@ -34,6 +50,7 @@ export function SiteHeader() {
         scrolled
           ? "border-b border-border/70 bg-background/80 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent",
+        inkText,
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
@@ -48,8 +65,11 @@ export function SiteHeader() {
              */}
             <ChsLogo className="h-10 w-auto lg:h-11" />
           </a>
-          <span className="hidden h-7 w-px bg-border sm:block" aria-hidden="true" />
-          <TeslaBadge className="hidden sm:flex" />
+          <span
+            className={cn("hidden h-7 w-px sm:block", onInk ? "bg-ink-border dark:bg-border" : "bg-border")}
+            aria-hidden="true"
+          />
+          <TeslaBadge className="hidden sm:flex" variant={onInk ? "ink" : "default"} />
         </div>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
@@ -57,7 +77,7 @@ export function SiteHeader() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className={cn("text-sm font-medium transition-colors", inkMuted)}
             >
               {link.label}
             </a>
@@ -68,7 +88,10 @@ export function SiteHeader() {
           <ThemeToggle />
           <a
             href="#login"
-            className="hidden rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
+            className={cn(
+              "hidden rounded-full px-4 py-2 text-sm font-medium transition-colors lg:inline-flex",
+              inkMuted,
+            )}
           >
             Log In
           </a>
@@ -81,7 +104,12 @@ export function SiteHeader() {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted lg:hidden"
+            /* No explicit text colour: it inherits the header's, which already
+               accounts for whether it is floating over the hero or on a panel. */
+            className={cn(
+              "inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors lg:hidden",
+              onInk ? "hover:bg-ink-raised dark:hover:bg-muted" : "hover:bg-muted",
+            )}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >

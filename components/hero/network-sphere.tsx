@@ -90,7 +90,11 @@ function readColors() {
   const accent = styles.getPropertyValue("--primary").trim() || "#2563eb"
   const accentRgb = toRgbParts(accent)
   return {
-    node: styles.getPropertyValue("--foreground").trim() || "#111827",
+    /* `--ink-foreground`, not `--foreground`: the sphere is painted on the hero's
+       dark `--ink` band, not on the page background. In light mode `--foreground`
+       is near-black, so the dots were invisible against a near-black band. In dark
+       mode the two tokens hold the same value, so nothing changes there. */
+    node: styles.getPropertyValue("--ink-foreground").trim() || "#f8fafc",
     accent,
     /** Mid-glow, and a fully transparent edge so the falloff has no hard rim. */
     accentSoft: `rgba(${accentRgb}, 0.45)`,
