@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Outfit, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SITE_URL } from "@/lib/site"
 import "./globals.css"
 
 // Geometric grotesque matching the reference: light weights for large display type.
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chargehomesolutions.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Charge Home Solutions — Real Electrician Appointments by SMS",
     template: "%s | Charge Home Solutions",
