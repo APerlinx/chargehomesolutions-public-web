@@ -147,6 +147,19 @@
     background-size: 5.5rem 5.5rem;
     mask-image: radial-gradient(ellipse 100% 70% at 50% 40%, black 20%, transparent 78%);
   }
+
+  /*
+   * Halo ring on a coverage-map marker. `transform-box: fill-box` is required:
+   * without it an SVG element's transform-origin resolves against the whole
+   * viewBox, so the ring would scale away from its own city toward the map's
+   * centre instead of outward from the dot.
+   */
+  .map-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: map-pulse var(--pulse-duration, 3.4s) ease-out var(--pulse-delay, 0s) infinite;
+    will-change: transform, opacity;
+  }
 }
 
 @keyframes marquee {
@@ -166,6 +179,29 @@
   70%,
   100% {
     transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/*
+ * Expanding halo for the coverage-map markers.
+ *
+ * Opacity starts and ends at 0 so an infinite loop always restarts on an
+ * invisible frame; ramping to the peak by 18% keeps the leading edge crisp
+ * rather than fading in slowly. Per-marker scale and brightness come from
+ * --pulse-scale / --pulse-peak, set inline, so one keyframe drives every dot
+ * size. The reduced-motion block below already disables this.
+ */
+@keyframes map-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  18% {
+    opacity: var(--pulse-peak, 0.3);
+  }
+  100% {
+    transform: scale(var(--pulse-scale, 3));
     opacity: 0;
   }
 }
