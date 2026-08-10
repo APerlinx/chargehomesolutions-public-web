@@ -26,14 +26,19 @@ function loadTurnstile(): Promise<void> {
   if (scriptPromise) return scriptPromise
 
   scriptPromise = new Promise<void>((resolve, reject) => {
+    // On failure, drop the cached promise and the dead <script> so a later mount
+    // can retry the load instead of being stuck on a permanently-rejected promise.
+    const fail = (script: HTMLScriptElement | null) => {
+      scriptPromise = null
+      script?.remove()
+      reject(new Error("Failed to load Turnstile"))
+    }
     const existing = document.getElementById(
       SCRIPT_ID,
     ) as HTMLScriptElement | null
     if (existing) {
       existing.addEventListener("load", () => resolve())
-      existing.addEventListener("error", () =>
-        reject(new Error("Failed to load Turnstile")),
-      )
+      existing.addEventListener("error", () => fail(existing))
       return
     }
     const script = document.createElement("script")
@@ -42,9 +47,7 @@ function loadTurnstile(): Promise<void> {
     script.async = true
     script.defer = true
     script.addEventListener("load", () => resolve())
-    script.addEventListener("error", () =>
-      reject(new Error("Failed to load Turnstile")),
-    )
+    script.addEventListener("error", () => fail(script))
     document.head.appendChild(script)
   })
   return scriptPromise
