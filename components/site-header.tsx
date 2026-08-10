@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react'
 import { ChsLogo } from '@/components/brand/chs-logo'
 import { TeslaBadge } from '@/components/brand/tesla-badge'
 import { nav as navLinks } from '@/lib/content'
+import { LOGIN_URL } from '@/lib/site'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
@@ -81,7 +82,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <a
-            href="#login"
+            href={LOGIN_URL}
             className={cn(
               'hidden rounded-full px-4 py-2 text-sm font-medium transition-colors lg:inline-flex',
               inkMuted,
@@ -89,12 +90,12 @@ export function SiteHeader() {
           >
             Log In
           </a>
-          <a
-            href="#work-with-us"
+          <Link
+            href="/#plans"
             className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03] active:scale-95 lg:inline-flex"
           >
             Work With Us
-          </a>
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -137,19 +138,19 @@ export function SiteHeader() {
               ))}
               <div className="mt-3 flex flex-col gap-2 border-t border-border pt-4">
                 <a
-                  href="#login"
+                  href={LOGIN_URL}
                   onClick={() => setOpen(false)}
                   className="rounded-full border border-border px-5 py-3 text-center text-sm font-semibold text-foreground"
                 >
                   Log In
                 </a>
-                <a
-                  href="#work-with-us"
+                <Link
+                  href="/#plans"
                   onClick={() => setOpen(false)}
                   className="rounded-full bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
                 >
                   Work With Us
-                </a>
+                </Link>
               </div>
             </nav>
           </motion.div>

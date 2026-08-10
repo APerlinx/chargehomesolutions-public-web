@@ -2,6 +2,7 @@ import { Check, ShieldCheck } from "lucide-react"
 import { Container, Section, SectionHeader } from "@/components/ui/section"
 import { Reveal } from "@/components/ui/reveal"
 import { plans } from "@/lib/content"
+import { workWithUsUrl } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 export function Plans() {
@@ -55,7 +56,7 @@ export function Plans() {
               </ul>
 
               <a
-                href="#work-with-us"
+                href={workWithUsUrl(tier.plan)}
                 className={cn(
                   "mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-95",
                   tier.featured

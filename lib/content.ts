@@ -321,6 +321,7 @@ export const plans = {
   tiers: [
     {
       name: "Starter",
+      plan: "BASIC",
       price: "$0.00",
       period: "/month",
       body: "Free account setup, service radius, basic appointment access.",
@@ -335,6 +336,7 @@ export const plans = {
     },
     {
       name: "Professional",
+      plan: "TRAINING",
       price: "$99.00",
       period: "/month",
       body: "First month free. Priority appointments, Tesla training access, more Tesla jobs.",
@@ -351,6 +353,7 @@ export const plans = {
     },
     {
       name: "Elite",
+      plan: "FULL_ACCESS",
       price: "$199.00",
       period: "/month",
       body: "First access, max priority, full Tesla access, highest paying jobs.",
