@@ -21,6 +21,14 @@ export const US_STATES = [
   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC",
 ] as const
 
+// Appointment windows the customer can book. Values must match the API's
+// AppointmentWindow enum; the backend maps each to a local time + label.
+export const APPOINTMENT_WINDOWS = [
+  { value: "MORNING", label: "Morning (8:00 AM - 12:00 PM)" },
+  { value: "AFTERNOON", label: "Afternoon (12:00 PM - 4:00 PM)" },
+  { value: "EVENING", label: "Evening (4:00 PM - 8:00 PM)" },
+] as const
+
 export type ServiceRequestInput = {
   firstName: string
   lastName: string
@@ -31,9 +39,11 @@ export type ServiceRequestInput = {
   state: string
   zipCode: string
   type: string
+  // Booking: exact date ("YYYY-MM-DD") + a window; the backend sets scheduledAt.
+  scheduledLocalDate: string
+  appointmentWindow: string
   customerComments?: string
-  customerAvailability?: string
-  // Cloudflare Turnstile token — omitted in dev (server skips when unconfigured).
+  // Cloudflare Turnstile token from the widget; verified server-side.
   turnstileToken?: string
   // Honeypot: real users leave this empty; a filled value is dropped server-side.
   company?: string

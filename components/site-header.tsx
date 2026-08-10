@@ -49,9 +49,9 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
         <div className="flex items-center gap-3">
           <Link
-            href="/"
+            href="/for-electricians"
             className="flex items-center gap-3"
-            aria-label="Charge Home Solutions home"
+            aria-label="Charge Home Solutions for electricians"
           >
             <ChsLogo className="h-9 w-auto lg:h-10" />
           </Link>
@@ -91,7 +91,7 @@ export function SiteHeader() {
             Log In
           </a>
           <Link
-            href="/#plans"
+            href="/for-electricians#plans"
             className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03] active:scale-95 lg:inline-flex"
           >
             Work With Us
@@ -145,7 +145,7 @@ export function SiteHeader() {
                   Log In
                 </a>
                 <Link
-                  href="/#plans"
+                  href="/for-electricians#plans"
                   onClick={() => setOpen(false)}
                   className="rounded-full bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
                 >

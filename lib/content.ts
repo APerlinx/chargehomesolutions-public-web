@@ -7,11 +7,11 @@ export const site = {
 } as const
 
 export const nav = [
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "About Us", href: "/#about" },
-  { label: "Plans", href: "/#plans" },
-  { label: "Fees", href: "/#fees" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "How It Works", href: "/for-electricians#how-it-works" },
+  { label: "About Us", href: "/for-electricians#about" },
+  { label: "Plans", href: "/for-electricians#plans" },
+  { label: "Fees", href: "/for-electricians#fees" },
+  { label: "FAQ", href: "/for-electricians#faq" },
 ] as const
 
 export const hero = {
@@ -19,8 +19,8 @@ export const hero = {
   titleLead: "Grow Your Business with",
   titleBrand: "Charge Home Solutions",
   body: "We don't sell leads. We book real customer appointments and send them straight to your phone by SMS — no app needed. From EV installs and Powerwall to panel upgrades, new construction and service calls, in all 50 states. Just show up, quote, and close.",
-  primaryCta: { label: "Get Started Free", href: "/#plans" },
-  secondaryCta: { label: "See How It Works", href: "/#how-it-works" },
+  primaryCta: { label: "Get Started Free", href: "/for-electricians#plans" },
+  secondaryCta: { label: "See How It Works", href: "/for-electricians#how-it-works" },
 } as const
 
 
@@ -63,7 +63,7 @@ export const sms = {
   eyebrow: "SMS Appointments",
   titleLines: ["Real Appointments.", "Straight to Your Phone."],
   body: "No app to download, no dashboard to check. When a customer books, you get an SMS with all the details. Reply YES, and you're confirmed.",
-  cta: { label: "Start Getting Appointments", href: "/#plans" },
+  cta: { label: "Start Getting Appointments", href: "/for-electricians#plans" },
   features: [
     {
       icon: "message",
@@ -533,8 +533,8 @@ export const faq = {
 export const finalCta = {
   title: "Start getting real appointments",
   body: "Join a nationwide network of licensed electricians. Free to join, no app required, and you only pay after you get paid.",
-  primary: { label: "Work With Us", href: "/#plans" },
-  secondary: { label: "See the fees", href: "/#fees" },
+  primary: { label: "Work With Us", href: "/for-electricians#plans" },
+  secondary: { label: "See the fees", href: "/for-electricians#fees" },
 } as const
 
 export const footer = {
@@ -542,28 +542,28 @@ export const footer = {
     {
       title: "Company",
       links: [
-        { label: "About Us", href: "/#about" },
-        { label: "How It Works", href: "/#how-it-works" },
-        { label: "Coverage", href: "/#coverage" },
-        { label: "Our Work", href: "/#projects" },
+        { label: "About Us", href: "/for-electricians#about" },
+        { label: "How It Works", href: "/for-electricians#how-it-works" },
+        { label: "Coverage", href: "/for-electricians#coverage" },
+        { label: "Our Work", href: "/for-electricians#projects" },
       ],
     },
     {
       title: "Electricians",
       links: [
-        { label: "Membership Plans", href: "/#plans" },
-        { label: "Referral Fees", href: "/#fees" },
-        { label: "Certifications", href: "/#certifications" },
-        { label: "FAQ", href: "/#faq" },
+        { label: "Membership Plans", href: "/for-electricians#plans" },
+        { label: "Referral Fees", href: "/for-electricians#fees" },
+        { label: "Certifications", href: "/for-electricians#certifications" },
+        { label: "FAQ", href: "/for-electricians#faq" },
       ],
     },
     {
       title: "Services",
       links: [
-        { label: "EV Charger Installation", href: "/#projects" },
-        { label: "Tesla Powerwall", href: "/#projects" },
-        { label: "Panel Upgrades", href: "/#projects" },
-        { label: "New Construction", href: "/#projects" },
+        { label: "EV Charger Installation", href: "/for-electricians#projects" },
+        { label: "Tesla Powerwall", href: "/for-electricians#projects" },
+        { label: "Panel Upgrades", href: "/for-electricians#projects" },
+        { label: "New Construction", href: "/for-electricians#projects" },
       ],
     },
   ],
