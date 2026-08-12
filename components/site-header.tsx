@@ -90,12 +90,12 @@ export function SiteHeader() {
           >
             Log In
           </a>
-          <Link
+          <a
             href="/for-electricians#plans"
             className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03] active:scale-95 lg:inline-flex"
           >
             Work With Us
-          </Link>
+          </a>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -144,13 +144,13 @@ export function SiteHeader() {
                 >
                   Log In
                 </a>
-                <Link
+                <a
                   href="/for-electricians#plans"
                   onClick={() => setOpen(false)}
                   className="rounded-full bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
                 >
                   Work With Us
-                </Link>
+                </a>
               </div>
             </nav>
           </motion.div>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { Reveal } from "@/components/ui/reveal"
+import { cn } from "@/lib/utils"
 
 export function Container({
   children,
@@ -31,7 +32,7 @@ export function Section({
   }
 
   return (
-    <section id={id} className={`scroll-mt-24 py-20 sm:py-28 ${tones[tone]} ${className}`}>
+    <section id={id} className={cn("scroll-mt-24 py-20 sm:py-28", tones[tone], className)}>
       {children}
     </section>
   )

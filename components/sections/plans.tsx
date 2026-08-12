@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils"
 
 export function Plans() {
   return (
-    <Section id="plans">
+    <Section id="plans" className="py-14 sm:py-20">
       <Container>
-        <Reveal className="mx-auto mb-12 flex max-w-xl items-center justify-center gap-2 rounded-full border border-border bg-muted px-5 py-3 text-center text-sm">
+        <Reveal className="mx-auto mb-8 flex max-w-xl items-center justify-center gap-2 rounded-full border border-border bg-muted px-5 py-3 text-center text-sm">
           <ShieldCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
           <span className="text-muted-foreground">
             <span className="font-semibold text-foreground">{plans.notice.text}</span>{" "}
@@ -21,7 +21,7 @@ export function Plans() {
 
         <SectionHeader eyebrow={plans.eyebrow} title={plans.title} subtitle={plans.subtitle} />
 
-        <div className="mt-16 grid items-start gap-6 lg:grid-cols-3">
+        <div className="mt-10 grid items-start gap-6 lg:grid-cols-3">
           {plans.tiers.map((tier, i) => (
             <Reveal
               key={tier.name}
