@@ -47,6 +47,9 @@ function todayLocalISO(): string {
 // @IsPhoneNumber('US')) stays the source of truth. A US number is 10 digits, or
 // 11 digits starting with the country code 1.
 function isLikelyUsPhone(value: string): boolean {
+  // Reject stray letters/symbols first, so e.g. "abc3125550111" doesn't pass by
+  // having its digits counted.
+  if (!/^[0-9\s().+-]+$/.test(value)) return false
   const digits = value.replace(/\D/g, "")
   return digits.length === 10 || (digits.length === 11 && digits.startsWith("1"))
 }
