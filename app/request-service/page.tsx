@@ -43,6 +43,19 @@ function todayLocalISO(): string {
   return `${y}-${m}-${day}`
 }
 
+// Immediate feedback for the common cases; the server (libphonenumber via
+// @IsPhoneNumber('US')) stays the source of truth. A US number is 10 digits, or
+// 11 digits starting with the country code 1.
+function isLikelyUsPhone(value: string): boolean {
+  // Reject stray letters/symbols first, so e.g. "abc3125550111" doesn't pass by
+  // having its digits counted.
+  if (!/^[0-9\s().+-]+$/.test(value)) return false
+  const digits = value.replace(/\D/g, "")
+  return digits.length === 10 || (digits.length === 11 && digits.startsWith("1"))
+}
+
+const PHONE_ERROR = "Enter a valid US phone number, e.g. (312) 555-0111."
+
 const inputClass =
   "w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30"
 const labelClass = "mb-1.5 block text-sm font-medium text-foreground"
@@ -53,6 +66,7 @@ export default function RequestServicePage() {
     "idle",
   )
   const [error, setError] = useState<string | null>(null)
+  const [phoneError, setPhoneError] = useState<string | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const [turnstileKey, setTurnstileKey] = useState(0)
 
@@ -71,6 +85,10 @@ export default function RequestServicePage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
+    if (!isLikelyUsPhone(form.phone)) {
+      setPhoneError(PHONE_ERROR)
+      return
+    }
     if (needsTurnstile && !token) {
       setError("Please complete the verification below.")
       return
@@ -193,10 +211,23 @@ export default function RequestServicePage() {
                     type="tel"
                     className={inputClass}
                     value={form.phone}
-                    onChange={set("phone")}
+                    onChange={(e) => {
+                      set("phone")(e)
+                      if (phoneError) setPhoneError(null)
+                    }}
                     required
                     maxLength={30}
+                    aria-invalid={phoneError ? true : undefined}
+                    aria-describedby={phoneError ? "phone-error" : undefined}
                   />
+                  {phoneError ? (
+                    <p
+                      id="phone-error"
+                      className="mt-1.5 text-sm text-red-700 dark:text-red-400"
+                    >
+                      {phoneError}
+                    </p>
+                  ) : null}
                 </div>
               </div>
 
