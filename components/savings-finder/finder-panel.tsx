@@ -38,12 +38,14 @@ export function FinderPanel() {
 
   const result = submitted ? rebates.find((r) => r.state === submitted) : undefined
 
-  // Carry the user's context into the booking flow so the estimate is pre-framed.
+  // Carry only non-personal context (state + projects) into the booking flow to
+  // pre-frame the estimate. The address is deliberately kept out of the URL — it
+  // is PII that would otherwise persist in browser history and server logs; the
+  // booking form collects it directly instead.
   const bookingHref = submitted
     ? `${site.consultationHref}?${new URLSearchParams({
         state: submitted,
         projects: selected.join(","),
-        ...(address ? { address } : {}),
       }).toString()}`
     : site.consultationHref
 
@@ -110,6 +112,8 @@ export function FinderPanel() {
               <select
                 id="finder-state"
                 value={state}
+                aria-invalid={error}
+                aria-describedby={error ? "finder-state-error" : undefined}
                 onChange={(event) => {
                   setState(event.target.value)
                   setSubmitted(null)
@@ -139,7 +143,9 @@ export function FinderPanel() {
           </button>
         </div>
         {error ? (
-          <p className="mt-3 text-sm text-primary">Pick your state to see the programs you may qualify for.</p>
+          <p id="finder-state-error" role="alert" className="mt-3 text-sm text-primary">
+            Pick your state to see the programs you may qualify for.
+          </p>
         ) : null}
       </form>
 
