@@ -7,41 +7,67 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  /* light surface */
-  --color-background: #ffffff;
-  --color-foreground: #333333;
-  --color-muted: #f5f5f3;
-  --color-muted-foreground: #6c6c68;
-  --color-border: #e3e3df;
+  /* Colors resolve through CSS variables (defined in :root below) so the
+     for-electricians sub-site can override them per scope for its dark theme. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-border: var(--ink-border);
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-panel-muted: var(--panel-muted);
+  --color-panel-border: var(--panel-border);
+  --color-panel-raised: var(--panel-raised);
 
   /* Sampled from the solar-roof photo's sky so a section can extend the image
      upward with no visible seam. */
   --color-sky: #f2f1f4;
-
-  /* brand */
-  --color-primary: #1f47f0;
-  --color-primary-foreground: #ffffff;
-  --color-primary-hover: #1638cc;
-
-  /* dark surface (footer / utility bar) */
-  --color-ink: #0e0f12;
-  --color-ink-raised: #16181c;
-  --color-ink-foreground: #e8e8e3;
-  --color-ink-muted: #9c9c98;
-  --color-ink-border: #26282d;
-
-  /* Panel tokens used by the for-electricians sub-site sections. */
-  --color-panel: oklch(0.938 0.008 252);
-  --color-panel-foreground: oklch(0.17 0.012 262);
-  --color-panel-muted: oklch(0.5 0.015 258);
-  --color-panel-border: oklch(0.885 0.007 255);
-  --color-panel-raised: oklch(0.995 0.002 250);
 
   --radius: 0.5rem;
 
   /* header geometry — shared by the header and the hero offset */
   --header-utility-h: 2.75rem;
   --header-nav-h: 4.5rem;
+}
+
+/* Marketing-site defaults (the new palette). The for-electricians sub-site
+   overrides these under .electrician-site further down. */
+:root {
+  --background: #ffffff;
+  --foreground: #333333;
+  --card: #ffffff;
+  --card-foreground: #333333;
+  --muted: #f5f5f3;
+  --muted-foreground: #6c6c68;
+  --border: #e3e3df;
+  --primary: #1f47f0;
+  --primary-foreground: #ffffff;
+  --primary-hover: #1638cc;
+  --accent: oklch(0.63 0.15 156);
+  --accent-foreground: oklch(0.99 0 0);
+  --ink: #0e0f12;
+  --ink-raised: #16181c;
+  --ink-foreground: #e8e8e3;
+  --ink-muted: #9c9c98;
+  --ink-border: #26282d;
+  --panel: oklch(0.938 0.008 252);
+  --panel-foreground: oklch(0.17 0.012 262);
+  --panel-muted: oklch(0.5 0.015 258);
+  --panel-border: oklch(0.885 0.007 255);
+  --panel-raised: oklch(0.995 0.002 250);
 }
 
 @layer base {
@@ -102,45 +128,49 @@
    adds `.dark` on <html>, and `.dark .electrician-site` swaps the values.
    -------------------------------------------------------------------------- */
 .electrician-site {
-  --color-background: oklch(0.988 0.002 250);
-  --color-foreground: oklch(0.17 0.012 262);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.17 0.012 262);
-  --color-muted: oklch(0.965 0.004 250);
-  --color-muted-foreground: oklch(0.53 0.015 258);
-  --color-border: oklch(0.906 0.006 255);
-  --color-primary: oklch(0.555 0.21 258);
-  --color-primary-foreground: oklch(0.99 0 0);
-  --color-ink: oklch(0.19 0.016 264);
-  --color-ink-foreground: oklch(0.98 0.002 250);
-  --color-ink-muted: oklch(0.71 0.014 258);
-  --color-ink-border: oklch(0.29 0.018 264);
-  --color-ink-raised: oklch(0.25 0.018 264);
-  --color-panel: oklch(0.938 0.008 252);
-  --color-panel-foreground: oklch(0.17 0.012 262);
-  --color-panel-muted: oklch(0.5 0.015 258);
-  --color-panel-border: oklch(0.885 0.007 255);
-  --color-panel-raised: oklch(0.995 0.002 250);
+  --background: oklch(0.988 0.002 250);
+  --foreground: oklch(0.17 0.012 262);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.17 0.012 262);
+  --muted: oklch(0.965 0.004 250);
+  --muted-foreground: oklch(0.53 0.015 258);
+  --border: oklch(0.906 0.006 255);
+  --primary: oklch(0.555 0.21 258);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.63 0.15 156);
+  --accent-foreground: oklch(0.99 0 0);
+  --ink: oklch(0.19 0.016 264);
+  --ink-foreground: oklch(0.98 0.002 250);
+  --ink-muted: oklch(0.71 0.014 258);
+  --ink-border: oklch(0.29 0.018 264);
+  --ink-raised: oklch(0.25 0.018 264);
+  --panel: oklch(0.938 0.008 252);
+  --panel-foreground: oklch(0.17 0.012 262);
+  --panel-muted: oklch(0.5 0.015 258);
+  --panel-border: oklch(0.885 0.007 255);
+  --panel-raised: oklch(0.995 0.002 250);
 }
 
 .dark .electrician-site {
-  --color-background: oklch(0.155 0.014 264);
-  --color-foreground: oklch(0.975 0.002 250);
-  --color-card: oklch(0.196 0.016 264);
-  --color-card-foreground: oklch(0.975 0.002 250);
-  --color-muted: oklch(0.226 0.016 264);
-  --color-muted-foreground: oklch(0.685 0.014 258);
-  --color-border: oklch(0.283 0.018 264);
-  --color-primary: oklch(0.645 0.19 258);
-  --color-primary-foreground: oklch(0.14 0.014 264);
-  --color-ink: oklch(0.115 0.012 264);
-  --color-ink-foreground: oklch(0.975 0.002 250);
-  --color-ink-muted: oklch(0.66 0.014 258);
-  --color-ink-border: oklch(0.245 0.016 264);
-  --color-ink-raised: oklch(0.175 0.014 264);
-  --color-panel: oklch(0.115 0.012 264);
-  --color-panel-foreground: oklch(0.975 0.002 250);
-  --color-panel-muted: oklch(0.66 0.014 258);
-  --color-panel-border: oklch(0.245 0.016 264);
-  --color-panel-raised: oklch(0.175 0.014 264);
+  --background: oklch(0.155 0.014 264);
+  --foreground: oklch(0.975 0.002 250);
+  --card: oklch(0.196 0.016 264);
+  --card-foreground: oklch(0.975 0.002 250);
+  --muted: oklch(0.226 0.016 264);
+  --muted-foreground: oklch(0.685 0.014 258);
+  --border: oklch(0.283 0.018 264);
+  --primary: oklch(0.645 0.19 258);
+  --primary-foreground: oklch(0.14 0.014 264);
+  --accent: oklch(0.72 0.16 158);
+  --accent-foreground: oklch(0.14 0.014 264);
+  --ink: oklch(0.115 0.012 264);
+  --ink-foreground: oklch(0.975 0.002 250);
+  --ink-muted: oklch(0.66 0.014 258);
+  --ink-border: oklch(0.245 0.016 264);
+  --ink-raised: oklch(0.175 0.014 264);
+  --panel: oklch(0.115 0.012 264);
+  --panel-foreground: oklch(0.975 0.002 250);
+  --panel-muted: oklch(0.66 0.014 258);
+  --panel-border: oklch(0.245 0.016 264);
+  --panel-raised: oklch(0.175 0.014 264);
 }
