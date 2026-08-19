@@ -1,7 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Phone } from "lucide-react"
+import { ArrowRight, Phone, Search } from "lucide-react"
 
+import { coverage } from "@/lib/savings-finder"
 import { site } from "@/lib/site"
 
 export function Hero() {
@@ -52,6 +53,31 @@ export function Hero() {
               <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
               {site.phone}
             </a>
+          </div>
+
+          {/* Savings Finder entry point. Deliberately typographic, not a card,
+              so it reads as a quiet third option over the photo. */}
+          <div className="mt-9 max-w-md border-t border-border/70 pt-6">
+            <Link href="/savings-finder" className="group flex items-start gap-3.5">
+              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-background/70 backdrop-blur transition-colors group-hover:border-primary">
+                <Search className="h-4 w-4 text-primary" aria-hidden="true" />
+              </span>
+              <span>
+                <span className="flex items-center gap-1.5 text-[0.9375rem] font-semibold text-foreground">
+                  Check your rebates first
+                  <ArrowRight
+                    className="h-3.5 w-3.5 text-primary transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span className="mt-1 block text-pretty text-sm leading-relaxed text-muted-foreground">
+                  State, utility and federal programs matched to your address in about a minute. Free.
+                </span>
+              </span>
+            </Link>
+            <p className="label-mono mt-3.5 text-muted-foreground">
+              {coverage.programs} programs · {coverage.states} states · Verified {coverage.verified}
+            </p>
           </div>
         </div>
       </div>
