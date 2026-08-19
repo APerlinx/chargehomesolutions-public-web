@@ -176,3 +176,23 @@ export const legalLinks = [
 export function stateHref(state: string) {
   return `/locations/${state.toLowerCase().replace(/\s+/g, "-")}/`
 }
+
+// --- Retained from the pre-redesign site (sitemap, robots, electrician CTA) ---
+
+// Marketing site absolute URL, for sitemap/robots/OG metadata.
+export const SITE_URL = "https://chargehomesolutions.com"
+
+// The CRM app hosts electrician onboarding + login (outside the marketing site).
+// Configurable so dev (Vite on :5173) and prod point at the right host.
+export const CRM_URL =
+  process.env.NEXT_PUBLIC_CRM_URL ?? "http://localhost:5173"
+
+// Electrician onboarding entry point in the CRM, optionally pre-selecting a plan.
+export function workWithUsUrl(plan?: string): string {
+  return plan
+    ? `${CRM_URL}/work-with-us?plan=${plan}`
+    : `${CRM_URL}/work-with-us`
+}
+
+// Routes included in the sitemap.
+export const ROUTES = ["/", "/privacy", "/terms"] as const
