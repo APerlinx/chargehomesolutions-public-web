@@ -26,18 +26,42 @@ export function Logo({
           isLight ? "bg-ink-foreground text-ink" : "bg-foreground text-background",
         )}
       >
-        <svg viewBox="0 0 24 24" className="h-[1.15rem] w-[1.15rem]" aria-hidden="true" fill="currentColor">
-          <path d="M13.6 2 5 13.4h5.2L9.3 22l8.9-11.7h-5.4z" />
+        {/* House outline with a bolt struck through it. The bolt is stroked in
+            the tile's own background color with paint-order:stroke, so the
+            stroke reads as a clean gap where it crosses the house. */}
+        <svg viewBox="0 0 24 24" className="h-[1.3rem] w-[1.3rem]" aria-hidden="true">
+          <g
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.3}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3.4 11.6 12 3.6l8.6 8" />
+            <path d="M5.4 11.4v9.2h13.2v-9.2" />
+          </g>
+          <path
+            d="M14.6 4.9 6.9 14.7h4l-1.5 7.9 7.7-10.2h-4.2z"
+            fill="currentColor"
+            stroke="currentColor"
+            strokeWidth={2.6}
+            strokeLinejoin="round"
+            paintOrder="stroke"
+            className={isLight ? "stroke-ink-foreground" : "stroke-foreground"}
+          />
         </svg>
       </span>
       <span className="flex flex-col leading-none">
+        {/* Two weights in one word, as in the logo: "Charge" set bold, "Home"
+            set regular so the compound reads as two parts without a space. */}
         <span
           className={cn(
-            "text-[1.0625rem] font-semibold tracking-[-0.02em]",
+            "text-[1.0625rem] tracking-[-0.02em]",
             isLight ? "text-ink-foreground" : "text-foreground",
           )}
         >
-          ChargeHome
+          <span className="font-semibold">Charge</span>
+          <span className="font-normal">Home</span>
         </span>
         <span
           className={cn(
