@@ -15,8 +15,9 @@ export function generateStaticParams(): Params[] {
   return rebates.map((s) => ({ state: s.slug }))
 }
 
-export function generateMetadata({ params }: { params: Params }): Metadata {
-  const data = getStateRebates(params.state)
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  const { state } = await params
+  const data = getStateRebates(state)
   if (!data) return {}
   const title = `${data.state} EV Charger, Battery & Electrical Rebates (${new Date().getFullYear()})`
   const description = `${data.programs.length} state, utility and federal rebate programs for EV chargers, batteries and panel upgrades in ${data.state}. Verified ${REBATES_VERIFIED}.`
@@ -28,8 +29,9 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   }
 }
 
-export default function StateRebatesPage({ params }: { params: Params }) {
-  const data = getStateRebates(params.state)
+export default async function StateRebatesPage({ params }: { params: Promise<Params> }) {
+  const { state } = await params
+  const data = getStateRebates(state)
   if (!data) notFound()
 
   return (
