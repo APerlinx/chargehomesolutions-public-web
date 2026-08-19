@@ -233,7 +233,7 @@ export const primaryNav: NavItem[] = [
         links: [
           { label: "Learn (Blog)", href: "/learn/" },
           { label: "Cost Guides", href: "/cost-guides/" },
-          { label: "Rebates & Incentives", href: "/rebates-incentives/" },
+          { label: "Rebates & Incentives", href: "/rebates" },
           { label: "Calculators", href: "/calculators/" },
           { label: "Common Questions", href: "/common-questions/" },
         ],
