@@ -1,72 +1,60 @@
-import type { Metadata, Viewport } from 'next'
-import { Outfit, Geist_Mono } from 'next/font/google'
-import { ThemeProvider } from '@/components/theme-provider'
-import { SITE_URL } from '@/lib/site'
-import './globals.css'
+import type { Metadata, Viewport } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
+import { site } from "@/lib/site"
+import "./globals.css"
+
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+  display: "swap",
 })
 
 const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-geist-mono',
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Charge Home Solutions — Real Electrician Appointments by SMS',
-    template: '%s | Charge Home Solutions',
+    default: `${site.name} — Tesla-Certified Electricians, Nationwide`,
+    template: `%s — ${site.name}`,
   },
   description:
-    "We don't sell leads. Charge Home Solutions books real customer appointments — EV chargers, Tesla Powerwall, panel upgrades and more — and sends them straight to licensed electricians by SMS. Free to join, no app required.",
-  keywords: [
-    'EV charger installation',
-    'Tesla Powerwall installer',
-    'electrician appointments',
-    'panel upgrade jobs',
-    'electrician network',
-  ],
+    "Tesla-certified electricians for EV charger installation, Powerwall and home electrical work in all 50 states. Book a free in-home consultation.",
+  applicationName: site.name,
   openGraph: {
-    title: 'Charge Home Solutions — Real Electrician Appointments by SMS',
+    title: `${site.name} — Tesla-Certified Electricians, Nationwide`,
     description:
-      'Booked customer appointments sent straight to your phone. EV chargers, Powerwall, panel upgrades and more. Free to join, no app required.',
-    type: 'website',
-    siteName: 'Charge Home Solutions',
+      "EV charger installation, Tesla Powerwall and licensed electrical service in all 50 states. Free in-home consultation.",
+    siteName: site.name,
+    type: "website",
   },
+  robots: { index: true, follow: true },
 }
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  themeColor: "#ffffff",
+  width: "device-width",
   initialScale: 1,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fbfbfc' },
-    { media: '(prefers-color-scheme: dark)', color: '#111318' },
-  ],
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`bg-background ${outfit.variable} ${geistMono.variable}`}
-    >
-      <body className="font-sans antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+    <html lang="en" className={`bg-background ${geistSans.variable} ${geistMono.variable}`}>
+      <body className="font-sans">
+        <SiteHeader />
+        {/* Apple-style offset: content clears the header by exactly its own height. */}
+        <div aria-hidden="true" className="h-[calc(var(--header-utility-h)+var(--header-nav-h))]" />
+        <main>{children}</main>
+        <SiteFooter />
       </body>
     </html>
   )

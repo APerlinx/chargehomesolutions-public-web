@@ -1,161 +1,424 @@
-'use client'
+"use client"
 
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import { Menu, X } from 'lucide-react'
-import { ChsLogo } from '@/components/brand/chs-logo'
-import { TeslaBadge } from '@/components/brand/tesla-badge'
-import { nav as navLinks } from '@/lib/content'
-import { LOGIN_URL } from '@/lib/site'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
+import { useCallback, useEffect, useRef, useState } from "react"
+import Link from "next/link"
+import { ArrowRight, ChevronDown, Menu, Phone, X } from "lucide-react"
+
+import { primaryNav, type NavItem } from "@/lib/nav"
+import { site, trustSignals } from "@/lib/site"
+import { FlagGlyph, Logo, TeslaCertifiedBadge } from "@/components/brand"
+import { cn } from "@/lib/utils"
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  // Collapse the panel as soon as the user starts scrolling the page.
+  useEffect(() => {
+    if (openIndex === null) return
+    const onScroll = () => setOpenIndex(null)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [openIndex])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return
+      setOpenIndex(null)
+      setMobileOpen(false)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
+    document.body.style.overflow = mobileOpen ? "hidden" : ""
     return () => {
-      document.body.style.overflow = ''
+      document.body.style.overflow = ""
     }
-  }, [open])
+  }, [mobileOpen])
 
-  const onInk = !scrolled
-  const inkText = onInk
-    ? 'text-ink-foreground dark:text-foreground'
-    : 'text-foreground'
-  const inkMuted = onInk
-    ? 'text-ink-muted hover:text-ink-foreground dark:text-muted-foreground dark:hover:text-foreground'
-    : 'text-muted-foreground hover:text-foreground'
+  const openPanel = useCallback((index: number) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    setOpenIndex(index)
+  }, [])
+
+  const scheduleClose = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => setOpenIndex(null), 120)
+  }, [])
+
+  const activeItem = openIndex === null ? null : primaryNav[openIndex]
 
   return (
-    <header
-      className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-all duration-300',
-        scrolled
-          ? 'border-b border-border/70 bg-background/80 backdrop-blur-xl'
-          : 'border-b border-transparent bg-transparent',
-        inkText,
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/for-electricians"
-            className="flex items-center gap-3"
-            aria-label="Charge Home Solutions for electricians"
-          >
-            <ChsLogo className="h-9 w-auto lg:h-10" />
-          </Link>
-          <span
-            className={cn(
-              'hidden h-7 w-px sm:block',
-              onInk ? 'bg-ink-border dark:bg-border' : 'bg-border',
-            )}
-            aria-hidden="true"
-          />
-          <TeslaBadge
-            className="hidden origin-left scale-95 sm:flex"
-            variant={onInk ? 'ink' : 'default'}
-          />
+    <header className="fixed inset-x-0 top-0 z-50">
+      {/* Background plate: invisible at rest, frosted once the page moves. */}
+      <div
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-0 transition-[background-color,box-shadow,border-color] duration-300",
+          scrolled || openIndex !== null
+            ? "border-b border-border bg-background/72 shadow-[0_1px_24px_-12px_rgba(0,0,0,0.28)] backdrop-blur-xl backdrop-saturate-150"
+            : "border-b border-transparent bg-transparent",
+        )}
+      />
+
+      <div className="relative">
+        {/* Utility row — retires on scroll. */}
+        <div
+          className={cn(
+            "overflow-hidden transition-all duration-400 ease-out",
+            scrolled ? "max-h-0 -translate-y-1 opacity-0" : "max-h-(--header-utility-h) translate-y-0 opacity-100",
+          )}
+        >
+          <div className="mx-auto flex h-(--header-utility-h) max-w-[92rem] items-center gap-6 px-5 lg:px-8">
+            <div className="flex min-w-0 items-center gap-4">
+              <span className="flex items-center gap-2">
+                <FlagGlyph />
+                <span className="label-mono whitespace-nowrap text-foreground">Proudly American</span>
+              </span>
+
+              <span aria-hidden="true" className="hidden h-3 w-px bg-border md:block" />
+
+              <ul className="hidden items-center gap-4 md:flex">
+                {trustSignals.map((signal) => (
+                  <li key={signal} className="label-mono whitespace-nowrap text-muted-foreground">
+                    {signal}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="ml-auto flex items-center gap-4">
+              <a href={site.phoneHref} className="group flex items-center gap-2">
+                <Phone className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                <span className="flex flex-col leading-none">
+                  <span className="label-mono text-muted-foreground">Call us 24/7</span>
+                  <span className="mt-0.5 font-mono text-[0.8125rem] font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
+                    {site.phone}
+                  </span>
+                </span>
+              </a>
+
+              <ConsultationButton className="hidden sm:inline-flex">
+                Book your free in-home consultation
+              </ConsultationButton>
+            </div>
+          </div>
         </div>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={cn('text-sm font-medium transition-colors', inkMuted)}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        {/* Nav row */}
+        <div onMouseLeave={scheduleClose}>
+          <div className="mx-auto flex h-(--header-nav-h) max-w-[92rem] items-center gap-5 px-5 lg:px-8">
+            <div className="flex shrink-0 items-center gap-4">
+              <Logo />
+              {/* Only shown once the nav, phone and CTA all have room to spare. */}
+              <span aria-hidden="true" className="hidden h-8 w-px bg-border min-[1800px]:block" />
+              <TeslaCertifiedBadge className="hidden min-[1800px]:flex" />
+            </div>
 
-        <div className="flex items-center gap-2">
-          <a
-            href={LOGIN_URL}
-            className={cn(
-              'hidden rounded-full px-4 py-2 text-sm font-medium transition-colors lg:inline-flex',
-              inkMuted,
-            )}
-          >
-            Log In
-          </a>
-          <a
-            href="/for-electricians#plans"
-            className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.03] active:scale-95 lg:inline-flex"
-          >
-            Work With Us
-          </a>
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            className={cn(
-              'inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors lg:hidden',
-              onInk
-                ? 'hover:bg-ink-raised dark:hover:bg-muted'
-                : 'hover:bg-muted',
-            )}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+            <nav aria-label="Primary" className="mx-auto hidden items-center lg:flex">
+              <ul className="flex items-center">
+                {primaryNav.map((item, index) => (
+                  <li key={item.label} className="shrink-0">
+                    <NavTrigger
+                      item={item}
+                      isOpen={openIndex === index}
+                      onOpen={() => openPanel(index)}
+                      onClose={() => setOpenIndex(null)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Crossfades in as the utility row retires, so the CTA never leaves. */}
+            <div
+              className={cn(
+                "hidden shrink-0 items-center gap-2 overflow-hidden transition-all duration-400 ease-out 2xl:flex",
+                scrolled ? "ml-3 max-w-[22rem] opacity-100" : "ml-0 max-w-0 opacity-0",
+              )}
+              aria-hidden={!scrolled}
+            >
+              <a
+                href={site.phoneHref}
+                className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-border px-3.5 py-2 font-mono text-[0.8125rem] font-semibold tracking-tight text-foreground transition-colors hover:border-primary hover:text-primary min-[1800px]:flex"
+              >
+                <Phone className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                {site.phone}
+              </a>
+              <ConsultationButton tabIndex={scrolled ? 0 : -1}>Free consultation</ConsultationButton>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-expanded={mobileOpen}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              className="ml-auto flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-foreground lg:hidden"
+            >
+              {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
+
+          {activeItem?.groups ? (
+            <MegaPanel item={activeItem} onMouseEnter={() => openIndex !== null && openPanel(openIndex)} />
+          ) : null}
         </div>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-            className="border-b border-border bg-background/95 backdrop-blur-xl lg:hidden"
-          >
-            <nav
-              className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6"
-              aria-label="Mobile"
-            >
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <div className="mt-3 flex flex-col gap-2 border-t border-border pt-4">
-                <a
-                  href={LOGIN_URL}
-                  onClick={() => setOpen(false)}
-                  className="rounded-full border border-border px-5 py-3 text-center text-sm font-semibold text-foreground"
-                >
-                  Log In
-                </a>
-                <a
-                  href="/for-electricians#plans"
-                  onClick={() => setOpen(false)}
-                  className="rounded-full bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
-                >
-                  Work With Us
-                </a>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileOpen ? <MobileMenu onNavigate={() => setMobileOpen(false)} /> : null}
     </header>
+  )
+}
+
+function ConsultationButton({
+  children,
+  className,
+  tabIndex,
+  onNavigate,
+}: {
+  children: React.ReactNode
+  className?: string
+  tabIndex?: number
+  onNavigate?: () => void
+}) {
+  return (
+    <Link
+      href={site.consultationHref}
+      tabIndex={tabIndex}
+      onClick={onNavigate}
+      className={cn(
+        "group inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 py-2.5 text-[0.75rem] font-semibold tracking-[0.01em] text-primary-foreground transition-colors hover:bg-primary-hover",
+        className,
+      )}
+    >
+      {children}
+      <ArrowRight
+        className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+        aria-hidden="true"
+      />
+    </Link>
+  )
+}
+
+function NavTrigger({
+  item,
+  isOpen,
+  onOpen,
+  onClose,
+}: {
+  item: NavItem
+  isOpen: boolean
+  onOpen: () => void
+  onClose: () => void
+}) {
+  const shared =
+    "relative flex shrink-0 items-center gap-1 whitespace-nowrap px-2 py-2 text-[0.8125rem] font-medium text-foreground transition-colors hover:text-primary xl:px-3"
+
+  const underline = (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "absolute inset-x-2 -bottom-0.5 h-px origin-left bg-primary transition-transform duration-300 xl:inset-x-3",
+        isOpen ? "scale-x-100" : "scale-x-0",
+      )}
+    />
+  )
+
+  if (!item.groups) {
+    return (
+      <Link href={item.href} className={shared} onMouseEnter={onClose}>
+        {item.label}
+      </Link>
+    )
+  }
+
+  return (
+    <button
+      type="button"
+      aria-expanded={isOpen}
+      onMouseEnter={onOpen}
+      onFocus={onOpen}
+      onClick={() => (isOpen ? onClose() : onOpen())}
+      className={shared}
+    >
+      {item.label}
+      <ChevronDown
+        className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-300", isOpen && "rotate-180")}
+        aria-hidden="true"
+      />
+      {underline}
+    </button>
+  )
+}
+
+function MegaPanel({ item, onMouseEnter }: { item: NavItem; onMouseEnter: () => void }) {
+  return (
+    <div
+      onMouseEnter={onMouseEnter}
+      className="absolute inset-x-0 top-full border-b border-border bg-background shadow-[0_28px_48px_-28px_rgba(0,0,0,0.32)]"
+    >
+      <div className="mx-auto flex max-w-[92rem] gap-12 px-5 py-9 lg:px-8">
+        <div className="flex flex-1 gap-10">
+          {item.groups?.map((group) => (
+            <div key={group.title} className="min-w-0 flex-1">
+              <h2 className="label-mono mb-4 text-muted-foreground">{group.title}</h2>
+              <ul className="flex flex-col gap-0.5">
+                {group.links.map((link) => (
+                  <li key={link.href + link.label}>
+                    <Link
+                      href={link.href}
+                      className="group flex items-baseline gap-2 rounded py-1.5 text-[0.875rem] leading-snug text-foreground transition-colors hover:text-primary"
+                    >
+                      <span className="text-pretty">{link.label}</span>
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="h-3 w-3 shrink-0 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100"
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {item.feature ? (
+          <Link
+            href={item.feature.href}
+            className="group flex w-[19rem] shrink-0 flex-col justify-between rounded-xl bg-muted p-6 transition-colors hover:bg-foreground"
+          >
+            <div>
+              <span className="label-mono text-primary">{item.feature.eyebrow}</span>
+              <p className="mt-3 text-[1.0625rem] font-semibold leading-snug tracking-tight text-foreground transition-colors group-hover:text-background">
+                {item.feature.title}
+              </p>
+              <p className="mt-2 text-[0.8125rem] leading-relaxed text-muted-foreground transition-colors group-hover:text-border">
+                {item.feature.body}
+              </p>
+            </div>
+            <span className="mt-6 inline-flex items-center gap-2 text-[0.8125rem] font-semibold text-primary transition-colors group-hover:text-background">
+              {item.feature.cta}
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+            </span>
+          </Link>
+        ) : null}
+      </div>
+
+      {item.viewAll ? (
+        <div className="border-t border-border">
+          <div className="mx-auto max-w-[92rem] px-5 py-3.5 lg:px-8">
+            <Link
+              href={item.viewAll.href}
+              className="group inline-flex items-center gap-2 text-[0.8125rem] font-medium text-primary"
+            >
+              {item.viewAll.label}
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
+  return (
+    <div className="absolute inset-x-0 top-full max-h-[calc(100dvh-var(--header-nav-h))] overflow-y-auto border-b border-border bg-background lg:hidden">
+      <div className="px-5 pb-8 pt-4">
+        <div className="flex flex-col gap-3 pb-5">
+          <ConsultationButton
+            className="justify-center py-3 text-[0.8125rem]"
+            onNavigate={onNavigate}
+          >
+            Book your free in-home consultation
+          </ConsultationButton>
+          <a
+            href={site.phoneHref}
+            className="flex items-center justify-center gap-2 rounded-full border border-border py-3 font-mono text-sm font-semibold text-foreground"
+          >
+            <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
+            {site.phone}
+            <span className="label-mono text-muted-foreground">24/7</span>
+          </a>
+        </div>
+
+        <ul className="flex flex-col">
+          {primaryNav.map((item) =>
+            item.groups ? (
+              <li key={item.label} className="border-t border-border">
+                <details className="group">
+                  <summary className="flex cursor-pointer list-none items-center justify-between py-3.5 text-[0.9375rem] font-medium text-foreground">
+                    {item.label}
+                    <ChevronDown
+                      className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180"
+                      aria-hidden="true"
+                    />
+                  </summary>
+                  <div className="pb-4">
+                    {item.groups.map((group) => (
+                      <div key={group.title} className="pb-3">
+                        <h3 className="label-mono py-2 text-muted-foreground">{group.title}</h3>
+                        <ul className="flex flex-col">
+                          {group.links.map((link) => (
+                            <li key={link.href + link.label}>
+                              <Link
+                                href={link.href}
+                                onClick={onNavigate}
+                                className="block py-2 text-[0.875rem] text-muted-foreground"
+                              >
+                                {link.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                    {item.viewAll ? (
+                      <Link
+                        href={item.viewAll.href}
+                        onClick={onNavigate}
+                        className="inline-flex items-center gap-2 py-1 text-[0.8125rem] font-medium text-primary"
+                      >
+                        {item.viewAll.label}
+                        <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      </Link>
+                    ) : null}
+                  </div>
+                </details>
+              </li>
+            ) : (
+              <li key={item.label} className="border-t border-border">
+                <Link
+                  href={item.href}
+                  onClick={onNavigate}
+                  className="block py-3.5 text-[0.9375rem] font-medium text-foreground"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ),
+          )}
+        </ul>
+
+        <div className="mt-6 flex items-center gap-4 border-t border-border pt-5">
+          <span className="flex items-center gap-2">
+            <FlagGlyph />
+            <span className="label-mono text-foreground">Proudly American</span>
+          </span>
+          <TeslaCertifiedBadge className="ml-auto" />
+        </div>
+      </div>
+    </div>
   )
 }

@@ -1,97 +1,37 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
-  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-ink: var(--ink);
-  --color-ink-foreground: var(--ink-foreground);
-  --color-ink-muted: var(--ink-muted);
-  --color-ink-border: var(--ink-border);
-  --color-ink-raised: var(--ink-raised);
+  /* light surface */
+  --color-background: #ffffff;
+  --color-foreground: #333333;
+  --color-muted: #f5f5f3;
+  --color-muted-foreground: #6c6c68;
+  --color-border: #e3e3df;
 
-  
-  --color-panel: var(--panel);
-  --color-panel-foreground: var(--panel-foreground);
-  --color-panel-muted: var(--panel-muted);
-  --color-panel-border: var(--panel-border);
-  --color-panel-raised: var(--panel-raised);
+  /* Sampled from the solar-roof photo's sky so a section can extend the image
+     upward with no visible seam. */
+  --color-sky: #f2f1f4;
 
-  --radius: 0.75rem;
+  /* brand */
+  --color-primary: #1f47f0;
+  --color-primary-foreground: #ffffff;
+  --color-primary-hover: #1638cc;
 
-  
-  --animate-marquee: marquee 125s linear infinite;
-  --animate-pulse-ring: pulse-ring 3s ease-out infinite;
-  --animate-ticker: ticker 1.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
+  /* dark surface (footer / utility bar) */
+  --color-ink: #0e0f12;
+  --color-ink-raised: #16181c;
+  --color-ink-foreground: #e8e8e3;
+  --color-ink-muted: #9c9c98;
+  --color-ink-border: #26282d;
 
+  --radius: 0.5rem;
 
-:root {
-  --background: oklch(0.988 0.002 250);
-  --foreground: oklch(0.17 0.012 262);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.17 0.012 262);
-  --muted: oklch(0.965 0.004 250);
-  --muted-foreground: oklch(0.53 0.015 258);
-  --border: oklch(0.906 0.006 255);
-  --primary: oklch(0.555 0.21 258);
-  --primary-foreground: oklch(0.99 0 0);
-  --accent: oklch(0.63 0.15 156);
-  --accent-foreground: oklch(0.99 0 0);
-
-  
-  --ink: oklch(0.19 0.016 264);
-  --ink-foreground: oklch(0.98 0.002 250);
-  --ink-muted: oklch(0.71 0.014 258);
-  --ink-border: oklch(0.29 0.018 264);
-  --ink-raised: oklch(0.25 0.018 264);
-
-  
-  --panel: oklch(0.938 0.008 252);
-  --panel-foreground: oklch(0.17 0.012 262);
-  --panel-muted: oklch(0.5 0.015 258);
-  --panel-border: oklch(0.885 0.007 255);
-  --panel-raised: oklch(0.995 0.002 250);
-}
-
-.dark {
-  --background: oklch(0.155 0.014 264);
-  --foreground: oklch(0.975 0.002 250);
-  --card: oklch(0.196 0.016 264);
-  --card-foreground: oklch(0.975 0.002 250);
-  --muted: oklch(0.226 0.016 264);
-  --muted-foreground: oklch(0.685 0.014 258);
-  --border: oklch(0.283 0.018 264);
-  --primary: oklch(0.645 0.19 258);
-  --primary-foreground: oklch(0.14 0.014 264);
-  --accent: oklch(0.72 0.16 158);
-  --accent-foreground: oklch(0.14 0.014 264);
-
-  --ink: oklch(0.115 0.012 264);
-  --ink-foreground: oklch(0.975 0.002 250);
-  --ink-muted: oklch(0.66 0.014 258);
-  --ink-border: oklch(0.245 0.016 264);
-  --ink-raised: oklch(0.175 0.014 264);
-
-  
-  --panel: oklch(0.115 0.012 264);
-  --panel-foreground: oklch(0.975 0.002 250);
-  --panel-muted: oklch(0.66 0.014 258);
-  --panel-border: oklch(0.245 0.016 264);
-  --panel-raised: oklch(0.175 0.014 264);
+  /* header geometry — shared by the header and the hero offset */
+  --header-utility-h: 2.75rem;
+  --header-nav-h: 4.5rem;
 }
 
 @layer base {
@@ -101,15 +41,14 @@
 
   html {
     scroll-behavior: smooth;
-    
-    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
   }
 
   ::selection {
@@ -118,39 +57,16 @@
   }
 }
 
-@layer components {
-  
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    line-height: 1;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-
-  
-  .marquee-mask {
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
-
-  
-  .schematic-grid {
-    background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
-    background-size: 5.5rem 5.5rem;
-    mask-image: radial-gradient(ellipse 100% 70% at 50% 40%, black 20%, transparent 78%);
-  }
-
-  
-  .map-pulse {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: map-pulse var(--pulse-duration, 3.4s) ease-out var(--pulse-delay, 0s) infinite;
-    will-change: transform, opacity;
-  }
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-@keyframes marquee {
+/* Credential marquee. The track holds two identical halves, so translating
+   it by -50% loops seamlessly. */
+@keyframes marquee-x {
   from {
     transform: translateX(0);
   }
@@ -159,54 +75,13 @@
   }
 }
 
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.7;
-  }
-  70%,
-  100% {
-    transform: scale(2.4);
-    opacity: 0;
-  }
-}
-
-
-@keyframes map-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0;
-  }
-  18% {
-    opacity: var(--pulse-peak, 0.3);
-  }
-  100% {
-    transform: scale(var(--pulse-scale, 3));
-    opacity: 0;
-  }
-}
-
-@keyframes ticker {
-  from {
-    opacity: 0;
-    transform: translateY(0.5em);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@utility marquee-track {
+  width: max-content;
+  animation: marquee-x 48s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .marquee-track {
+    animation: none;
   }
 }
