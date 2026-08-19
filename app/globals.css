@@ -11,6 +11,10 @@
   --color-muted-foreground: #6c6c68;
   --color-border: #e3e3df;
 
+  /* Sampled from the solar-roof photo's sky so a section can extend the image
+     upward with no visible seam. */
+  --color-sky: #f2f1f4;
+
   /* brand */
   --color-primary: #1f47f0;
   --color-primary-foreground: #ffffff;

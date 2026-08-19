@@ -6,8 +6,23 @@ import { networkStats, services } from "@/lib/home"
 
 export function Services() {
   return (
-    <section aria-labelledby="services-heading" className="bg-background pt-20 lg:pt-28">
-      <div className="mx-auto max-w-[92rem] px-5 lg:px-8">
+    /* The roof photo is the section's own backdrop: it's pinned to the bottom
+       at its natural aspect ratio, and bg-sky (sampled from the photo's sky)
+       extends it upward so the heading and cards sit on a seamless surface. */
+    <section
+      aria-labelledby="services-heading"
+      className="relative overflow-hidden bg-sky pt-20 pb-[56vw] sm:pb-[42vw] lg:pt-28 lg:pb-[30vw]"
+    >
+      <Image
+        src="/images/solar-roof.png"
+        alt="Solar panels on the standing-seam metal roof of a modern home"
+        width={1672}
+        height={941}
+        sizes="100vw"
+        className="pointer-events-none absolute inset-x-0 bottom-0 w-full"
+      />
+
+      <div className="relative mx-auto max-w-[92rem] px-5 lg:px-8">
         {/* The link lives up here on the open sky rather than below the grid,
             where it would fall on the low-contrast roof. */}
         <div className="flex flex-wrap items-end justify-between gap-6">
@@ -50,18 +65,6 @@ export function Services() {
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* Full-bleed closing band. The roofline is anchored to the bottom so the
-          panels sit in frame with clear sky above — no overlay, no fade. */}
-      <div className="relative mt-20 h-64 w-full sm:h-80 lg:mt-24 lg:h-[26rem]">
-        <Image
-          src="/images/solar-roof.png"
-          alt="Solar panels on the standing-seam metal roof of a modern home"
-          fill
-          sizes="100vw"
-          className="object-cover object-bottom"
-        />
       </div>
     </section>
   )

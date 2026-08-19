@@ -5,9 +5,9 @@ import { Assurances, Reviews } from "@/components/home/reviews"
 
 export default function HomePage() {
   return (
-    /* Full-bleed bands separated by a visible gutter, the way apple.com stacks
-       them: the parent's color shows through the gap as a thin divider. */
-    <div className="flex flex-col gap-2.5 bg-border">
+    /* Full-bleed bands separated by a gutter of plain page background, so the
+       stack reads as one row of grid cells with no divider line. */
+    <div className="flex flex-col gap-5 bg-background">
       <Hero />
       <TrustStatement />
       <CredentialMarquee />
