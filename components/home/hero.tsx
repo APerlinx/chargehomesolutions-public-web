@@ -14,8 +14,11 @@ export function Hero() {
       aria-labelledby="hero-heading"
       /* From lg up, hero + the header-height offset above it add up to exactly
          one viewport. Below lg the finder panel stacks under the copy, so the
-         section grows instead of clipping its own content. */
-      className="relative flex min-h-[calc(100svh-var(--header-utility-h)-var(--header-nav-h))] items-center overflow-hidden bg-background py-14 lg:h-[calc(100svh-var(--header-utility-h)-var(--header-nav-h))] lg:min-h-[34rem] lg:py-0"
+         section grows instead of clipping its own content.
+         lg:items-stretch lets the inner column span the full hero height, which
+         is what allows the finder panel to sit at the very bottom; lg:py-10
+         becomes its margin from the bottom edge. */
+      className="relative flex min-h-[calc(100svh-var(--header-utility-h)-var(--header-nav-h))] items-center overflow-hidden bg-background py-14 lg:h-[calc(100svh-var(--header-utility-h)-var(--header-nav-h))] lg:min-h-[34rem] lg:items-stretch lg:py-10"
     >
       <Image
         src="/images/hero-ev-charging.png"
@@ -30,9 +33,9 @@ export function Hero() {
       />
 
       <div className="relative mx-auto w-full max-w-[92rem] px-5 lg:px-8">
-        {/* Copy left, Savings Finder right, tops aligned. */}
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-14">
-          <div className="max-w-xl">
+        {/* Copy left (vertically centred), Savings Finder pinned to the bottom right. */}
+        <div className="flex flex-col gap-10 lg:h-full lg:flex-row lg:items-start lg:justify-between lg:gap-14">
+          <div className="max-w-xl lg:my-auto">
             <p className="label-mono text-primary">Tesla-Certified · All 50 States</p>
             <h1
               id="hero-heading"
@@ -63,16 +66,14 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Savings Finder entry point, as a landscape band sitting low on the
-              right: copy on top, then the checks list and the action side by
-              side so the shape stays wider than it is tall. */}
+          {/* Savings Finder entry point, as a landscape band at the bottom right:
+              copy on top, then the checks list and the action side by side so the
+              shape stays wider than it is tall. */}
           <aside
             aria-labelledby="hero-finder-heading"
-            /* Nearly clear so the house behind reads through. The tint is even
-               rather than fading out at the bottom, because the panel's lower
-               half sits over the brightest part of the photo. Legibility comes
-               from the blur, not from opacity. */
-            className="w-full rounded-2xl border border-border/60 bg-background/30 p-6 backdrop-blur-md lg:max-w-lg lg:self-end"
+            /* Nearly clear so the house behind reads through, with an even tint
+               and only a light blur so the photo stays recognisable. */
+            className="w-full rounded-2xl border border-border/60 bg-background/30 p-6 backdrop-blur-sm lg:max-w-lg lg:self-end"
           >
             <h2 id="hero-finder-heading" className="text-pretty text-lg font-semibold leading-snug text-foreground">
               See what your address qualifies for
