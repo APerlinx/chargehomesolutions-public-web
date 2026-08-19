@@ -9,7 +9,7 @@ import { costServices, formatUsd } from "@/lib/cost-guide"
 import { site } from "@/lib/site"
 
 export const metadata: Metadata = {
-  title: "EV Charger, Panel, Powerwall & Electrical Cost Guide (2026)",
+  title: `EV Charger, Panel, Powerwall & Electrical Cost Guide (${new Date().getFullYear()})`,
   description:
     "What home electrical work really costs — EV charger, 200A panel upgrade, Tesla Powerwall, standby generator and whole-house rewiring. Estimate your project in seconds.",
   alternates: { canonical: "/cost-guides" },

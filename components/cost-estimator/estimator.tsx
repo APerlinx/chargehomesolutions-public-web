@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { costServices, formatUsd, getCostService } from "@/lib/cost-guide"
+import { site } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 /**
@@ -98,7 +99,7 @@ export function CostEstimator() {
       ) : null}
 
       {/* Result */}
-      <div className="mt-8 rounded-2xl bg-muted px-6 py-6">
+      <div role="status" aria-live="polite" className="mt-8 rounded-2xl bg-muted px-6 py-6">
         <p className="label-mono text-muted-foreground">Estimated range · {service.unit}</p>
         <p className="mt-2 text-3xl font-semibold tracking-[-0.02em] text-foreground sm:text-4xl">
           {formatUsd(low)}–{formatUsd(high)}
@@ -120,7 +121,7 @@ export function CostEstimator() {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
         <Link
-          href="/request-service"
+          href={site.consultationHref}
           className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[0.9375rem] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Get an exact price — free in-home estimate
