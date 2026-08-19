@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Menu, X } from 'lucide-react'
-import { ChsLogo } from '@/components/brand/chs-logo'
+import { Logo } from '@/components/brand'
 import { TeslaBadge } from '@/components/brand/tesla-badge'
 import { nav as navLinks } from '@/lib/content'
 import { LOGIN_URL } from '@/lib/site'
@@ -58,13 +58,7 @@ export function ElectricianHeader() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
         <div className="flex items-center gap-3">
-          <Link
-            href="/for-electricians"
-            className="flex items-center gap-3"
-            aria-label="Charge Home Solutions for electricians"
-          >
-            <ChsLogo className="h-9 w-auto lg:h-10" />
-          </Link>
+          <Logo href="/for-electricians" tone={onInk ? 'light' : 'dark'} />
           <span
             className={cn(
               'hidden h-7 w-px sm:block',

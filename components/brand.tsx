@@ -7,16 +7,18 @@ import { cn } from "@/lib/utils"
  */
 export function Logo({
   tone = "dark",
+  href = "/",
   className,
 }: {
   tone?: "dark" | "light"
+  href?: string
   className?: string
 }) {
   const isLight = tone === "light"
 
   return (
     <Link
-      href="/"
+      href={href}
       aria-label={`Charge Home Solutions, home`}
       className={cn("group flex shrink-0 items-center gap-2.5 whitespace-nowrap", className)}
     >

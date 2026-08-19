@@ -1,4 +1,4 @@
-import { ChsLogo } from '@/components/brand/chs-logo'
+import { Logo } from '@/components/brand'
 import { TeslaBadge } from '@/components/brand/tesla-badge'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Container } from '@/components/ui/section'
@@ -10,7 +10,7 @@ export function ElectricianFooter() {
       <Container className="py-16">
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div className="max-w-xs">
-            <ChsLogo className="h-10 w-auto" />
+            <Logo href="/for-electricians" tone="dark" />
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground dark:text-ink-muted">
               {site.tagline}
             </p>
