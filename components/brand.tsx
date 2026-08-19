@@ -85,8 +85,10 @@ export function TeslaCertifiedBadge({
         )}
         aria-hidden="true"
       >
-        <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
-          <path d="M3 4h18v3h-7.4v13h-3.2V7H3z" />
+        {/* Official Tesla mark (from public/logos/tesla-mark.svg), inlined so it
+            inherits the tile's ink/light color instead of the brand red. */}
+        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor">
+          <path d="M12 5.362l2.475-3.026s4.245.09 8.471 2.054c-1.082 1.636-3.231 2.438-3.231 2.438-.146-1.439-1.154-1.79-4.354-1.79L12 24 8.619 5.034c-3.18 0-4.188.354-4.335 1.792 0 0-2.146-.795-3.229-2.43C5.28 2.431 9.525 2.34 9.525 2.34L12 5.362l-.004.002H12v-.002zm0-3.899c3.415-.03 7.326.528 11.328 2.28.535-.968.672-1.395.672-1.395C19.625.612 15.528.015 12 0 8.472.015 4.375.61 0 2.349c0 0 .195.525.672 1.396C4.674 1.989 8.585 1.435 12 1.46v.003z" />
         </svg>
       </span>
       <span className="flex flex-col leading-none">
@@ -101,25 +103,24 @@ export function TeslaCertifiedBadge({
   )
 }
 
-/** Chamber of Commerce verified-member seal, rendered as a typographic crest. */
+/** Chamber of Commerce verified-member seal (links to the directory listing). */
 export function ChamberBadge({ href, className }: { href: string; className?: string }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn(
-        "flex w-fit flex-col items-center gap-1.5 rounded-full border border-ink-border bg-ink-raised px-6 py-5 text-center transition-colors hover:border-ink-muted",
-        className,
-      )}
+      aria-label="Chamber of Commerce verified member"
+      className={cn("inline-block w-fit transition-opacity hover:opacity-90", className)}
     >
-      <span className="font-mono text-[0.5625rem] tracking-[0.22em] text-ink-muted">CHAMBER OF COMMERCE</span>
-      <span className="text-sm font-semibold tracking-tight text-ink-foreground">Verified Member</span>
-      <span aria-hidden="true" className="mt-0.5 flex gap-1">
-        {[0, 1, 2].map((i) => (
-          <span key={i} className="h-1 w-1 rounded-full bg-primary" />
-        ))}
-      </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/COF-Badge.png"
+        alt="Chamber of Commerce Verified Member"
+        width={151}
+        height={150}
+        className="h-auto w-[132px]"
+      />
     </a>
   )
 }
