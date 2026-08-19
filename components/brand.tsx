@@ -18,7 +18,7 @@ export function Logo({
     <Link
       href="/"
       aria-label={`Charge Home Solutions, home`}
-      className={cn("group flex items-center gap-2.5", className)}
+      className={cn("group flex shrink-0 items-center gap-2.5 whitespace-nowrap", className)}
     >
       <span
         className={cn(

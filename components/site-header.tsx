@@ -119,16 +119,17 @@ export function SiteHeader() {
         {/* Nav row */}
         <div onMouseLeave={scheduleClose}>
           <div className="mx-auto flex h-(--header-nav-h) max-w-[92rem] items-center gap-5 px-5 lg:px-8">
-            <div className="flex items-center gap-4">
+            <div className="flex shrink-0 items-center gap-4">
               <Logo />
-              <span aria-hidden="true" className="hidden h-8 w-px bg-border 2xl:block" />
-              <TeslaCertifiedBadge className="hidden 2xl:flex" />
+              {/* Only shown once the nav, phone and CTA all have room to spare. */}
+              <span aria-hidden="true" className="hidden h-8 w-px bg-border min-[1800px]:block" />
+              <TeslaCertifiedBadge className="hidden min-[1800px]:flex" />
             </div>
 
-            <nav aria-label="Primary" className="ml-auto hidden items-center lg:flex">
+            <nav aria-label="Primary" className="mx-auto hidden items-center lg:flex">
               <ul className="flex items-center">
                 {primaryNav.map((item, index) => (
-                  <li key={item.label}>
+                  <li key={item.label} className="shrink-0">
                     <NavTrigger
                       item={item}
                       isOpen={openIndex === index}
@@ -143,8 +144,8 @@ export function SiteHeader() {
             {/* Crossfades in as the utility row retires, so the CTA never leaves. */}
             <div
               className={cn(
-                "ml-auto hidden items-center gap-2 overflow-hidden transition-all duration-400 ease-out lg:flex",
-                scrolled ? "max-w-[24rem] opacity-100" : "max-w-0 opacity-0",
+                "hidden shrink-0 items-center gap-2 overflow-hidden transition-all duration-400 ease-out 2xl:flex",
+                scrolled ? "ml-3 max-w-[22rem] opacity-100" : "ml-0 max-w-0 opacity-0",
               )}
               aria-hidden={!scrolled}
             >
@@ -219,13 +220,13 @@ function NavTrigger({
   onClose: () => void
 }) {
   const shared =
-    "relative flex items-center gap-1 px-3 py-2 text-[0.8125rem] font-medium text-foreground transition-colors hover:text-primary"
+    "relative flex shrink-0 items-center gap-1 whitespace-nowrap px-2 py-2 text-[0.8125rem] font-medium text-foreground transition-colors hover:text-primary xl:px-3"
 
   const underline = (
     <span
       aria-hidden="true"
       className={cn(
-        "absolute inset-x-3 -bottom-0.5 h-px origin-left bg-primary transition-transform duration-300",
+        "absolute inset-x-2 -bottom-0.5 h-px origin-left bg-primary transition-transform duration-300 xl:inset-x-3",
         isOpen ? "scale-x-100" : "scale-x-0",
       )}
     />
@@ -262,7 +263,7 @@ function MegaPanel({ item, onMouseEnter }: { item: NavItem; onMouseEnter: () => 
   return (
     <div
       onMouseEnter={onMouseEnter}
-      className="absolute inset-x-0 top-full border-b border-border bg-background/95 shadow-[0_28px_48px_-28px_rgba(0,0,0,0.32)] backdrop-blur-xl backdrop-saturate-150"
+      className="absolute inset-x-0 top-full border-b border-border bg-background shadow-[0_28px_48px_-28px_rgba(0,0,0,0.32)]"
     >
       <div className="mx-auto flex max-w-[92rem] gap-12 px-5 py-9 lg:px-8">
         <div className="flex flex-1 gap-10">
