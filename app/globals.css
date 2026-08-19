@@ -41,6 +41,28 @@
   /* header geometry — shared by the header and the hero offset */
   --header-utility-h: 2.75rem;
   --header-nav-h: 4.5rem;
+
+  /* Brand marquee (Partners section). */
+  --animate-marquee: marquee 125s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
 }
 
 /* Marketing-site defaults (the new palette). The for-electricians sub-site

@@ -89,13 +89,13 @@ function Phone() {
       </motion.div>
       <motion.div
         {...floater(0.8, 0)}
-        className="absolute -right-4 top-1/2 z-20 hidden rounded-2xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-primary shadow-xl sm:block"
+        className="absolute -left-24 top-[48%] z-20 hidden rounded-2xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-primary shadow-xl sm:block"
       >
         {sms.floaters[1].label}
       </motion.div>
       <motion.div
         {...floater(1.1, 0)}
-        className="absolute -bottom-3 left-6 z-20 hidden items-center gap-1.5 rounded-2xl border border-border bg-card px-4 py-2.5 text-xs font-semibold shadow-xl sm:flex"
+        className="absolute -right-10 bottom-12 z-20 hidden items-center gap-1.5 rounded-2xl border border-border bg-card px-4 py-2.5 text-xs font-semibold shadow-xl sm:flex"
       >
         <MapPin className="h-3.5 w-3.5 text-primary" />
         {sms.floaters[2].label}

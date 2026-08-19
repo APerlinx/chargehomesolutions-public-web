@@ -4,7 +4,6 @@ import { Sms } from "@/components/sections/sms"
 import { WhyUs } from "@/components/sections/why-us"
 import { Projects } from "@/components/sections/projects"
 import { Certifications } from "@/components/sections/certifications"
-import { Coverage } from "@/components/sections/coverage"
 import { Plans } from "@/components/sections/plans"
 import { Fees } from "@/components/sections/fees"
 import { CaseStudy } from "@/components/sections/case-study"
@@ -24,7 +23,6 @@ export default function ForElectriciansPage() {
       <WhyUs />
       <Projects />
       <Certifications />
-      <Coverage />
       <Plans />
       <Fees />
       <CaseStudy />
