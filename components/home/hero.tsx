@@ -63,46 +63,45 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Savings Finder entry point. A single button plus the three things
-              it checks, so the offer is clear without rebuilding the tool here.
-              mt-9 offsets the eyebrow line's height so the panel's first rule
-              sits level with the top of the headline. */}
+          {/* Savings Finder entry point, as a landscape band sitting low on the
+              right: copy on top, then the checks list and the action side by
+              side so the shape stays wider than it is tall. */}
           <aside
             aria-labelledby="hero-finder-heading"
-            /* Nearly clear so the house behind reads through. The tint stays
-               low and the legibility comes from the blur instead, which softens
-               the busy photo without hiding it. */
-            className="w-full max-w-sm rounded-2xl border border-border/60 bg-gradient-to-b from-background/30 to-background/15 p-6 backdrop-blur-md lg:mt-9 lg:shrink-0"
+            /* Nearly clear so the house behind reads through. The tint is even
+               rather than fading out at the bottom, because the panel's lower
+               half sits over the brightest part of the photo. Legibility comes
+               from the blur, not from opacity. */
+            className="w-full rounded-2xl border border-border/60 bg-background/30 p-6 backdrop-blur-md lg:max-w-lg lg:self-end"
           >
             <h2 id="hero-finder-heading" className="text-pretty text-lg font-semibold leading-snug text-foreground">
               See what your address qualifies for
             </h2>
-            <p className="mt-2.5 text-pretty text-sm leading-relaxed text-muted-foreground">
-              Rebates, incentives and installation costs, matched to your address in about a minute. Free, no obligation.
+            <p className="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">
+              Rebates, incentives and installation costs, matched to your address in about a minute. Free.
             </p>
 
-            <ul className="mt-5 flex flex-col gap-2.5 border-t border-border/60 pt-5">
-              {finderChecks.map((item) => (
-                <li key={item} className="flex items-center gap-2.5 text-sm text-foreground">
-                  <Check className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <div className="mt-5 flex flex-col gap-5 border-t border-border/60 pt-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+              <ul className="flex flex-col gap-2">
+                {finderChecks.map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-sm text-foreground">
+                    <Check className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
 
-            <Link
-              href="/savings-finder"
-              className="group mt-6 flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[0.9375rem] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
-            >
-              Check my savings
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-            </Link>
+              <Link
+                href="/savings-finder"
+                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[0.9375rem] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+              >
+                Check my savings
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              </Link>
+            </div>
 
-            {/* Split across two lines rather than letting the single line wrap. */}
-            <p className="label-mono mt-4 text-center leading-relaxed text-muted-foreground">
-              {coverage.programs} programs · {coverage.states} states
-              <br />
-              Verified {coverage.verified}
+            <p className="label-mono mt-5 text-muted-foreground">
+              {coverage.programs} programs · {coverage.states} states · Verified {coverage.verified}
             </p>
           </aside>
         </div>
