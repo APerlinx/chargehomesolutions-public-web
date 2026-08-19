@@ -69,7 +69,10 @@ export function Hero() {
               sits level with the top of the headline. */}
           <aside
             aria-labelledby="hero-finder-heading"
-            className="w-full max-w-sm rounded-2xl border border-border bg-background/80 p-6 backdrop-blur-md lg:mt-9 lg:shrink-0"
+            /* Nearly clear so the house behind reads through. The tint stays
+               low and the legibility comes from the blur instead, which softens
+               the busy photo without hiding it. */
+            className="w-full max-w-sm rounded-2xl border border-border/60 bg-gradient-to-b from-background/30 to-background/15 p-6 backdrop-blur-md lg:mt-9 lg:shrink-0"
           >
             <h2 id="hero-finder-heading" className="text-pretty text-lg font-semibold leading-snug text-foreground">
               See what your address qualifies for
@@ -78,7 +81,7 @@ export function Hero() {
               Rebates, incentives and installation costs, matched to your address in about a minute. Free, no obligation.
             </p>
 
-            <ul className="mt-5 flex flex-col gap-2.5 border-t border-border pt-5">
+            <ul className="mt-5 flex flex-col gap-2.5 border-t border-border/60 pt-5">
               {finderChecks.map((item) => (
                 <li key={item} className="flex items-center gap-2.5 text-sm text-foreground">
                   <Check className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
