@@ -34,6 +34,9 @@ export function EvSavingsCalculator() {
 
   const result = useMemo(() => computeEvSavings(values), [values])
   const saves = result.annualSavings > 0
+  // A zero efficiency or MPG has no meaningful cost — don't show a result until
+  // both denominators are positive.
+  const valid = values.evEfficiency > 0 && values.gasMpg > 0
 
   return (
     <div className="rounded-3xl border border-border bg-background p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-8">
@@ -76,26 +79,34 @@ export function EvSavingsCalculator() {
       {/* Result */}
       <div role="status" aria-live="polite" className="mt-8 rounded-2xl bg-muted px-6 py-6">
         <p className="label-mono text-muted-foreground">Charging at home vs gas</p>
-        <p className="mt-2 text-3xl font-semibold tracking-[-0.02em] text-foreground sm:text-4xl">
-          {saves ? `Save ${formatUsd(result.annualSavings)}/yr` : "No fuel savings"}
-        </p>
-        {saves ? (
-          <p className="mt-1 text-sm text-muted-foreground">about {formatUsd(result.monthlySavings)}/month</p>
+        {valid ? (
+          <>
+            <p className="mt-2 text-3xl font-semibold tracking-[-0.02em] text-foreground sm:text-4xl">
+              {saves ? `Save ${formatUsd(result.annualSavings)}/yr` : "No fuel savings"}
+            </p>
+            {saves ? (
+              <p className="mt-1 text-sm text-muted-foreground">about {formatUsd(result.monthlySavings)}/month</p>
+            ) : (
+              <p className="mt-1 text-sm text-muted-foreground">
+                At these numbers, home charging isn&rsquo;t cheaper — try your real rates below.
+              </p>
+            )}
+            <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+              <div className="rounded-xl bg-background px-4 py-3">
+                <p className="text-muted-foreground">Home charging</p>
+                <p className="mt-0.5 font-semibold text-foreground">{formatUsd(result.evAnnualCost)}/yr</p>
+              </div>
+              <div className="rounded-xl bg-background px-4 py-3">
+                <p className="text-muted-foreground">Gasoline</p>
+                <p className="mt-0.5 font-semibold text-foreground">{formatUsd(result.gasAnnualCost)}/yr</p>
+              </div>
+            </div>
+          </>
         ) : (
-          <p className="mt-1 text-sm text-muted-foreground">
-            At these numbers, home charging isn&rsquo;t cheaper — try your real rates below.
+          <p className="mt-2 text-lg font-medium text-foreground">
+            Enter an EV efficiency and gas MPG above 0 to see your savings.
           </p>
         )}
-        <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-          <div className="rounded-xl bg-background px-4 py-3">
-            <p className="text-muted-foreground">Home charging</p>
-            <p className="mt-0.5 font-semibold text-foreground">{formatUsd(result.evAnnualCost)}/yr</p>
-          </div>
-          <div className="rounded-xl bg-background px-4 py-3">
-            <p className="text-muted-foreground">Gasoline</p>
-            <p className="mt-0.5 font-semibold text-foreground">{formatUsd(result.gasAnnualCost)}/yr</p>
-          </div>
-        </div>
       </div>
 
       {/* Editable assumptions — transparent, so the number is defensible. */}
