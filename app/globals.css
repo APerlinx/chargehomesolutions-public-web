@@ -59,3 +59,25 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
+/* Credential marquee. The track holds two identical halves, so translating
+   it by -50% loops seamlessly. */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility marquee-track {
+  width: max-content;
+  animation: marquee-x 48s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
