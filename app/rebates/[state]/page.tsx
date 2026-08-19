@@ -83,7 +83,7 @@ export default async function StateRebatesPage({ params }: { params: Promise<Par
           <div className="mx-auto max-w-5xl px-5 lg:px-8">
             <ul className="grid gap-4 sm:grid-cols-2">
               {data.programs.map((program) => (
-                <RebateCard key={program.name} program={program} />
+                <RebateCard key={`${program.officialUrl}-${program.name}`} program={program} />
               ))}
             </ul>
 

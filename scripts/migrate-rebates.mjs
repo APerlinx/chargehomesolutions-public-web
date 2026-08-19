@@ -29,7 +29,7 @@ const decode = (s) =>
     .trim()
 
 async function get(url) {
-  const r = await fetch(url, UA)
+  const r = await fetch(url, { ...UA, signal: AbortSignal.timeout(20_000) })
   if (!r.ok) throw new Error(`${url} -> HTTP ${r.status}`)
   return r.text()
 }
@@ -43,26 +43,33 @@ const stateName = (slug) =>
 const CARD =
   /<div class="rounded-xl border border-white\/10 bg-\[#0a1120\] p-5">([\s\S]*?)(?=<div class="rounded-xl border border-white\/10 bg-\[#0a1120\] p-5">|<\/main>|<footer)/g
 
-function parseState(html) {
+const CATEGORIES = new Set(["Federal", "State", "Utility"])
+
+function parseState(html, slug) {
   const programs = []
   for (const m of html.matchAll(CARD)) {
     const c = m[1]
     const badge = c.match(/<span class="rounded bg-white\/10[^"]*"[^>]*>([\s\S]*?)<\/span>/)
-    const name = c.match(/<h3[^>]*>([\s\S]*?)<\/h3>/)
-    const amount = c.match(/<span class="shrink-0 rounded-lg bg-brand\/15[^"]*"[^>]*>([\s\S]*?)<\/span>/)
+    const nameM = c.match(/<h3[^>]*>([\s\S]*?)<\/h3>/)
+    const amountM = c.match(/<span class="shrink-0 rounded-lg bg-brand\/15[^"]*"[^>]*>([\s\S]*?)<\/span>/)
     const ps = [...c.matchAll(/<p class="mt-1\.5 text-sm leading-relaxed[^"]*">([\s\S]*?)<\/p>/g)].map((p) =>
       decode(p[1]),
     )
     const url = c.match(/<a href="(https?:\/\/[^"]+)"/)
-    if (!name) continue
-    programs.push({
-      category: badge ? decode(badge[1]) : "Utility",
-      name: decode(name[1]),
-      amount: amount ? decode(amount[1]) : "",
-      eligibility: ps[0] || "",
-      detail: ps[1] || null,
-      officialUrl: url ? url[1] : "",
-    })
+    if (!nameM) continue
+
+    const name = decode(nameM[1])
+    const category = badge ? decode(badge[1]) : ""
+    const amount = amountM ? decode(amountM[1]) : ""
+    const officialUrl = url ? url[1] : ""
+
+    // Fail loudly if the source markup drifts: a silent bad record would emit an
+    // invalid category (breaking card styling) or an empty href (a dead link).
+    if (!CATEGORIES.has(category)) throw new Error(`${slug}: unknown category "${category}" for "${name}"`)
+    if (!amount) throw new Error(`${slug}: missing amount for "${name}"`)
+    if (!officialUrl) throw new Error(`${slug}: missing officialUrl for "${name}"`)
+
+    programs.push({ category, name, amount, eligibility: ps[0] || "", detail: ps[1] || null, officialUrl })
   }
   return programs
 }
@@ -73,17 +80,27 @@ const slugs = [...new Set([...index.matchAll(/href="\/rebates\/([a-z-]+)\/"/g)].
 )
 
 const data = []
+const failures = []
 for (const slug of slugs) {
   try {
-    const programs = parseState(await get(`${BASE}/rebates/${slug}/`))
+    const programs = parseState(await get(`${BASE}/rebates/${slug}/`), slug)
     if (programs.length === 0) continue // skip category index pages
     data.push({ slug, state: stateName(slug), programs })
     process.stdout.write(`${slug}:${programs.length} `)
   } catch (e) {
+    failures.push(`${slug}: ${e.message}`)
     console.log(`\nFAIL ${slug}: ${e.message}`)
   }
 }
 console.log("\n")
+
+// Never overwrite the catalog from a partial run: a transient fetch failure
+// would silently drop states. Abort with a non-zero exit instead.
+if (failures.length > 0) {
+  console.error(`Aborting without writing lib/rebates.ts — ${failures.length} state(s) failed:`)
+  for (const f of failures) console.error(`  - ${f}`)
+  process.exit(1)
+}
 
 data.sort((a, b) => a.state.localeCompare(b.state))
 const totalPrograms = data.reduce((n, s) => n + s.programs.length, 0)
