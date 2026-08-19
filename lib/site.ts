@@ -194,5 +194,8 @@ export function workWithUsUrl(plan?: string): string {
     : `${CRM_URL}/work-with-us`
 }
 
+// Electrician login lives in the CRM.
+export const LOGIN_URL = `${CRM_URL}/login`
+
 // Routes included in the sitemap.
 export const ROUTES = ["/", "/privacy", "/terms"] as const

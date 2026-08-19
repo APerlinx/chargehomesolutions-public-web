@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { site } from "@/lib/site"
 import "./globals.css"
 
@@ -48,14 +46,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`bg-background ${geistSans.variable} ${geistMono.variable}`}>
-      <body className="font-sans">
-        <SiteHeader />
-        {/* Apple-style offset: content clears the header by exactly its own height. */}
-        <div aria-hidden="true" className="h-[calc(var(--header-utility-h)+var(--header-nav-h))]" />
-        <main>{children}</main>
-        <SiteFooter />
-      </body>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`bg-background ${geistSans.variable} ${geistMono.variable}`}
+    >
+      {/* Each page/section owns its own chrome (the marketing homepage renders
+          the SiteHeader/Footer; /for-electricians has its own header/footer). */}
+      <body className="font-sans">{children}</body>
     </html>
   )
 }
