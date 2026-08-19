@@ -3,11 +3,13 @@
  * and restructured so each block maps to one section of the redesign.
  */
 
-/** Program coverage, dated so the page can state when it was last verified. */
+import { rebateTotals, REBATES_VERIFIED } from "@/lib/rebates"
+
+/** Program coverage, derived from the real rebate dataset so it stays truthful. */
 export const coverage = {
-  programs: 108,
-  states: 43,
-  verified: "July 2026",
+  programs: rebateTotals.programs,
+  states: rebateTotals.states,
+  verified: REBATES_VERIFIED,
 }
 
 export const projectOptions = [
