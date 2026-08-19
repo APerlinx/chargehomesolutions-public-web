@@ -1,34 +1,58 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowRight, ChevronDown, MapPin, Plus } from "lucide-react"
+import Link from "next/link"
+import { ArrowRight, ChevronDown, MapPin, Phone, Plus } from "lucide-react"
 
+import { RebateCard } from "@/components/rebates/rebate-card"
 import { finderStates, projectOptions, sweepLayers } from "@/lib/savings-finder"
+import { rebates } from "@/lib/rebates"
+import { site } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 /**
- * The tool's input surface. Selection state is local for now — the submit
- * handler is intentionally inert until the matching logic is wired up.
+ * The tool's input surface. On submit it resolves the chosen state to the real
+ * programs from the rebate dataset and shows them inline (value first), then
+ * offers the free in-home estimate carrying the user's context along.
  */
 export function FinderPanel() {
   const [selected, setSelected] = useState<string[]>(["ev-charger"])
   const [address, setAddress] = useState("")
   const [state, setState] = useState("")
+  const [submitted, setSubmitted] = useState<string | null>(null)
+  const [error, setError] = useState(false)
 
   function toggle(id: string) {
     setSelected((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]))
   }
 
+  function onSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    if (!state) {
+      setError(true)
+      return
+    }
+    setError(false)
+    setSubmitted(state)
+  }
+
+  const result = submitted ? rebates.find((r) => r.state === submitted) : undefined
+
+  // Carry the user's context into the booking flow so the estimate is pre-framed.
+  const bookingHref = submitted
+    ? `${site.consultationHref}?${new URLSearchParams({
+        state: submitted,
+        projects: selected.join(","),
+        ...(address ? { address } : {}),
+      }).toString()}`
+    : site.consultationHref
+
   return (
     <div className="rounded-3xl border border-border bg-background p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-8">
-      <form
-        onSubmit={(event) => {
-          event.preventDefault()
-        }}
-      >
+      <form onSubmit={onSubmit}>
         <div>
           <label htmlFor="finder-address" className="label-mono text-muted-foreground">
-            Your address
+            Your address <span className="font-sans normal-case tracking-normal">(optional)</span>
           </label>
           <div className="mt-3 flex items-center gap-3 rounded-full border border-border bg-muted px-5 py-3.5 transition-colors focus-within:border-primary">
             <MapPin className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
@@ -43,7 +67,7 @@ export function FinderPanel() {
             />
           </div>
           <p className="mt-2.5 pl-1 text-sm leading-relaxed text-muted-foreground">
-            We use it to auto-match your state, utility and local incentives.
+            We bring it to your free estimate. Pick your state below to see programs now.
           </p>
         </div>
 
@@ -80,13 +104,17 @@ export function FinderPanel() {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-end">
           <div className="sm:w-56">
             <label htmlFor="finder-state" className="label-mono text-muted-foreground">
-              Or pick your state
+              Your state
             </label>
             <div className="relative mt-3">
               <select
                 id="finder-state"
                 value={state}
-                onChange={(event) => setState(event.target.value)}
+                onChange={(event) => {
+                  setState(event.target.value)
+                  setSubmitted(null)
+                  if (event.target.value) setError(false)
+                }}
                 className="w-full appearance-none rounded-full border border-border bg-muted pl-5 pr-11 py-3.5 text-[0.9375rem] text-foreground outline-none transition-colors focus:border-primary"
               >
                 <option value="">My state</option>
@@ -110,16 +138,65 @@ export function FinderPanel() {
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
           </button>
         </div>
+        {error ? (
+          <p className="mt-3 text-sm text-primary">Pick your state to see the programs you may qualify for.</p>
+        ) : null}
       </form>
 
-      {/* The four layers the sweep covers, as a hairline strip under the form. */}
-      <ul className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-        {sweepLayers.map((layer) => (
-          <li key={layer} className="bg-muted px-4 py-3.5 text-xs font-medium leading-snug text-muted-foreground">
-            {layer}
-          </li>
-        ))}
-      </ul>
+      {submitted ? (
+        <div role="status" aria-live="polite" className="mt-8 border-t border-border pt-8">
+          {result ? (
+            <>
+              <p className="text-lg font-semibold text-foreground">
+                You may qualify for {result.programs.length} program{result.programs.length === 1 ? "" : "s"} in{" "}
+                {result.state}
+              </p>
+              <ul className="mt-5 grid gap-4">
+                {result.programs.map((program) => (
+                  <RebateCard key={`${program.officialUrl}-${program.name}`} program={program} />
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              We don&rsquo;t track a state or utility program in {submitted} yet. Your free in-home estimate still covers
+              every federal and manufacturer option you qualify for.
+            </p>
+          )}
+
+          <div className="mt-6 rounded-2xl bg-muted px-6 py-6">
+            <p className="font-semibold text-foreground">Want us to lock these in?</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+              We confirm which programs you qualify for and file the paperwork — free.
+            </p>
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link
+                href={bookingHref}
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[0.9375rem] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+              >
+                Book my free estimate
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              </Link>
+              <a
+                href={site.phoneHref}
+                className="inline-flex items-center justify-center gap-2 font-mono text-[0.9375rem] font-semibold text-foreground transition-colors hover:text-primary"
+              >
+                <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
+                {site.phone}
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* The four layers the sweep covers, as a hairline strip under the form. */
+        <ul className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          {sweepLayers.map((layer) => (
+            <li key={layer} className="bg-muted px-4 py-3.5 text-xs font-medium leading-snug text-muted-foreground">
+              {layer}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
