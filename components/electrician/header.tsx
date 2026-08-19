@@ -8,7 +8,6 @@ import { TeslaBadge } from '@/components/brand/tesla-badge'
 import { nav as navLinks } from '@/lib/content'
 import { LOGIN_URL } from '@/lib/site'
 import { cn } from '@/lib/utils'
-import Link from 'next/link'
 
 export function ElectricianHeader() {
   const [scrolled, setScrolled] = useState(false)

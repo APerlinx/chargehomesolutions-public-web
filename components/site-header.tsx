@@ -141,24 +141,6 @@ export function SiteHeader() {
               </ul>
             </nav>
 
-            {/* Crossfades in as the utility row retires, so the CTA never leaves. */}
-            <div
-              className={cn(
-                "hidden shrink-0 items-center gap-2 overflow-hidden transition-all duration-400 ease-out 2xl:flex",
-                scrolled ? "ml-3 max-w-[22rem] opacity-100" : "ml-0 max-w-0 opacity-0",
-              )}
-              aria-hidden={!scrolled}
-            >
-              <a
-                href={site.phoneHref}
-                className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-border px-3.5 py-2 font-mono text-[0.8125rem] font-semibold tracking-tight text-foreground transition-colors hover:border-primary hover:text-primary min-[1800px]:flex"
-              >
-                <Phone className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-                {site.phone}
-              </a>
-              <ConsultationButton tabIndex={scrolled ? 0 : -1}>Free consultation</ConsultationButton>
-            </div>
-
             <button
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
