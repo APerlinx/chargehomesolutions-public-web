@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight, Phone } from "lucide-react"
 
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { CoverageBand, IncentivesChecked } from "@/components/savings-finder/coverage"
 import { LongTail, StackIllustrated, WhyCheckFirst } from "@/components/savings-finder/explainer"
 import { FinderPanel } from "@/components/savings-finder/finder-panel"
@@ -25,6 +27,12 @@ export const metadata: Metadata = {
 export default function SavingsFinderPage() {
   return (
     <>
+      <SiteHeader />
+      <div
+        aria-hidden="true"
+        className="h-[calc(var(--header-utility-h)+var(--header-nav-h))]"
+      />
+      <main>
       <section aria-labelledby="finder-heading" className="bg-background pt-16 pb-20 lg:pt-20 lg:pb-28">
         <div className="mx-auto max-w-[92rem] px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
@@ -76,6 +84,8 @@ export default function SavingsFinderPage() {
       <PathToInstall />
       <FinderFaq />
       <FinderCta />
+      </main>
+      <SiteFooter />
     </>
   )
 }

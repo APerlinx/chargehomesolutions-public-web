@@ -11,7 +11,7 @@ export default function ForElectriciansLayout({
 }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="light">
-      <div className="flex min-h-dvh flex-col">
+      <div className="electrician-site flex min-h-dvh flex-col bg-background text-foreground">
         <ElectricianHeader />
         <main className="flex-1">{children}</main>
         <ElectricianFooter />

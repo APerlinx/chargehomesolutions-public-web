@@ -28,6 +28,16 @@ export function ElectricianHeader() {
     }
   }, [open])
 
+  // Close the mobile menu once the desktop nav takes over at lg.
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const onChange = () => {
+      if (mq.matches) setOpen(false)
+    }
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
   const onInk = !scrolled
   const inkText = onInk
     ? 'text-ink-foreground dark:text-foreground'
