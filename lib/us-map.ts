@@ -9,6 +9,9 @@ import { coverageMarkers } from "@/lib/content"
 export const MAP_WIDTH = 975
 export const MAP_HEIGHT = 610
 
+// us-atlas ships a plain JSON topology whose shape doesn't line up cleanly with
+// topojson-client's generics, so it's treated as untyped at this boundary.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const topo = states10m as any
 
 export type ProjectedMarker = { city: string; x: number; y: number; size: number }

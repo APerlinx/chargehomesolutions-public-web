@@ -185,15 +185,18 @@ function ConsultationButton({
   children,
   className,
   tabIndex,
+  onNavigate,
 }: {
   children: React.ReactNode
   className?: string
   tabIndex?: number
+  onNavigate?: () => void
 }) {
   return (
     <Link
       href={site.consultationHref}
       tabIndex={tabIndex}
+      onClick={onNavigate}
       className={cn(
         "group inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 py-2.5 text-[0.75rem] font-semibold tracking-[0.01em] text-primary-foreground transition-colors hover:bg-primary-hover",
         className,
@@ -334,7 +337,10 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
     <div className="absolute inset-x-0 top-full max-h-[calc(100dvh-var(--header-nav-h))] overflow-y-auto border-b border-border bg-background lg:hidden">
       <div className="px-5 pb-8 pt-4">
         <div className="flex flex-col gap-3 pb-5">
-          <ConsultationButton className="justify-center py-3 text-[0.8125rem]">
+          <ConsultationButton
+            className="justify-center py-3 text-[0.8125rem]"
+            onNavigate={onNavigate}
+          >
             Book your free in-home consultation
           </ConsultationButton>
           <a

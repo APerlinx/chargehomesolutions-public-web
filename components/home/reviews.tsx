@@ -6,7 +6,7 @@ import { site } from "@/lib/site"
 
 function Stars() {
   return (
-    <div className="flex items-center gap-0.5" aria-label="Rated 5 out of 5">
+    <div role="img" className="flex items-center gap-0.5" aria-label="Rated 5 out of 5">
       {Array.from({ length: 5 }).map((_, index) => (
         <Star key={index} className="h-3.5 w-3.5 fill-primary text-primary" aria-hidden="true" />
       ))}
@@ -51,7 +51,7 @@ export function Reviews() {
           ))}
 
           {/* Sits in the grid as the fifth card, matching the old site's layout. */}
-          <div className="flex flex-col justify-between rounded-2xl bg-primary p-7 lg:col-span-3 xl:col-span-1">
+          <div className="flex flex-col justify-between rounded-2xl bg-primary p-7 sm:col-span-2 lg:col-span-2 xl:col-span-1">
             <div>
               <h3 className="text-balance text-2xl font-semibold leading-[1.12] tracking-[-0.02em] text-primary-foreground">
                 Ready to power your home?
