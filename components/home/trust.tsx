@@ -15,15 +15,9 @@ export function TrustStatement() {
         alt="A home battery mounted on the exterior wall of a modern white house"
         fill
         sizes="100vw"
-        className="object-cover object-left"
-      />
-
-      {/* The photo's sky is on the right, so the copy sits there over a soft wash.
-          Narrow screens get a near-solid wash instead — no clear space to use. */}
-      <div aria-hidden="true" className="absolute inset-0 bg-background/85 lg:hidden" />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 hidden bg-gradient-to-l from-background from-20% via-background/80 via-50% to-transparent to-80% lg:block"
+        /* No overlay. The copy sits on the open sky, so narrow screens crop
+           right to that sky and wide screens crop left to keep the battery. */
+        className="object-cover object-right lg:object-left"
       />
 
       <div className="relative mx-auto w-full max-w-[92rem] px-5 lg:px-8">

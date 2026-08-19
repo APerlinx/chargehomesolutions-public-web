@@ -17,15 +17,10 @@ export function Hero() {
         fill
         priority
         sizes="100vw"
-        className="object-cover object-right"
-      />
-
-      {/* Narrow screens have no clear space beside the car, so the photo gets a
-          near-solid wash; wide screens only need a left-to-right falloff. */}
-      <div aria-hidden="true" className="absolute inset-0 bg-background/85 lg:hidden" />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 hidden bg-gradient-to-r from-background from-20% via-background/85 via-50% to-transparent to-80% lg:block"
+        /* No overlay on the photo. The copy sits in the frame's empty area
+           instead, so narrow screens crop left (blank wall) and wide screens
+           crop right to keep the car and charger in view. */
+        className="object-cover object-left lg:object-right"
       />
 
       <div className="relative mx-auto w-full max-w-[92rem] px-5 lg:px-8">
