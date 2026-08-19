@@ -411,6 +411,19 @@ export default function RequestServicePage() {
               >
                 {status === "submitting" ? "Submitting…" : "Book Appointment"}
               </button>
+
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                By booking, you agree to receive SMS about your appointment from
+                Charge Home Solutions. Msg &amp; data rates may apply. Reply STOP
+                to opt out.{" "}
+                <a
+                  href="/privacy"
+                  className="underline underline-offset-2 hover:text-foreground"
+                >
+                  Privacy Policy
+                </a>
+                .
+              </p>
             </form>
           </Container>
         </Section>
