@@ -19,6 +19,9 @@ export type ServicePageData = {
   }[]
   faqs: { question: string; answer: string }[]
   related: { label: string; href: string }[]
+  ctaHeading?: string
+  ctaBody?: string
+  relatedHeading?: string
 }
 
 export function EvChargingServicePage({
@@ -30,6 +33,9 @@ export function EvChargingServicePage({
   sections,
   faqs,
   related,
+  ctaHeading = "Get a charging setup built around your home, panel, and driving habits.",
+  ctaBody = "Talk with a licensed electrician, get a clear recommendation, and confirm the best charger, breaker, and routing path before any work starts.",
+  relatedHeading = "Explore related EV charging solutions",
 }: ServicePageData) {
   return (
     <>
@@ -149,12 +155,9 @@ export function EvChargingServicePage({
             <div className="rounded-[2rem] border border-border bg-background p-8 sm:p-10">
               <p className="label-mono text-primary">Free estimate</p>
               <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-4xl">
-                Get a charging setup built around your home, panel, and driving habits.
+                {ctaHeading}
               </h2>
-              <p className="mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
-                Talk with a licensed electrician, get a clear recommendation, and confirm the best charger, breaker, and
-                routing path before any work starts.
-              </p>
+              <p className="mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">{ctaBody}</p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
@@ -178,7 +181,7 @@ export function EvChargingServicePage({
 
         <Section>
           <Container className="max-w-5xl">
-            <SectionHeader eyebrow="More services" title="Explore related EV charging solutions" align="left" />
+            <SectionHeader eyebrow="More services" title={relatedHeading} align="left" />
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((link) => (
                 <Link

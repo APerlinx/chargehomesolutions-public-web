@@ -6,6 +6,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Energy storage and solar services for whole-home resilience.",
     description:
       "Tesla Powerwall, home batteries, solar-plus-storage, and whole-home backup power. Every job is performed by a licensed, Tesla-certified electrician with a free in-home estimate.",
+    ctaHeading: "Get a battery and solar system built around your home, usage, and outage history.",
+    ctaBody:
+      "Talk with a licensed, Tesla-certified electrician, get a clear system recommendation, and confirm sizing and incentives before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Powerwall systems sized from your actual utility usage data",
       "Solar arrays matched to your consumption and roof",
@@ -62,10 +66,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Solar Panel Installation", href: "/solar-panel-installation/" },
-      { label: "Home Battery Installation", href: "/home-battery-installation/" },
-      { label: "Backup Power Systems", href: "/backup-power-systems/" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Solar Panel Installation", href: "/solar-panel-installation" },
+      { label: "Home Battery Installation", href: "/home-battery-installation" },
+      { label: "Backup Power Systems", href: "/backup-power-systems" },
     ],
   },
   "tesla-powerwall-installation": {
@@ -73,6 +77,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Tesla Powerwall installation from a certified installer.",
     description:
       "Powerwall stores energy, from solar or the grid, to power your home through outages and cut expensive peak-rate electricity. We handle design, the Backup Gateway, permitting, and Tesla app commissioning.",
+    ctaHeading: "Get a Powerwall system sized to your essential loads and outage history.",
+    ctaBody:
+      "Talk with a certified installer, get a clear unit-count recommendation, and confirm your incentive stack before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Whole-home or essentials-only backup, sized to your loads",
       "Automatic switchover the instant the grid goes down",
@@ -129,10 +137,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Powerwall 3 Installation", href: "/powerwall-3-installation/" },
-      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation/" },
-      { label: "Home Battery Installation", href: "/home-battery-installation/" },
-      { label: "Solar Panel Installation", href: "/solar-panel-installation/" },
+      { label: "Powerwall 3 Installation", href: "/powerwall-3-installation" },
+      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation" },
+      { label: "Home Battery Installation", href: "/home-battery-installation" },
+      { label: "Solar Panel Installation", href: "/solar-panel-installation" },
     ],
   },
   "powerwall-3-installation": {
@@ -140,6 +148,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Powerwall 3 installation with a built-in solar inverter.",
     description:
       "Powerwall 3 delivers 13.5kWh of storage and 11.5kW of output with an integrated solar inverter, installed by certified electricians for reliable whole-home backup.",
+    ctaHeading: "Get a Powerwall 3 system sized to your real electrical loads.",
+    ctaBody:
+      "Talk with a certified installer, get a clear recommendation on unit count, and confirm your incentive stack before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "13.5kWh storage, 11.5kW continuous output",
       "Built-in solar inverter simplifies new solar-plus-storage installs",
@@ -192,14 +204,14 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       {
         question: "Does Powerwall 3 qualify for tax credits?",
         answer:
-          "The federal Residential Clean Energy Credit ended for property placed in service after December 31, 2025. State storage rebates and utility programs are what reduce the cost now.",
+          "The federal Residential Clean Energy Credit (Section 25D) doesn't apply to expenditures made after December 31, 2025, based on when installation was completed rather than only the placed-in-service date. State storage rebates and utility programs are what reduce the cost now.",
       },
     ],
     related: [
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation/" },
-      { label: "Solar Panel Installation", href: "/solar-panel-installation/" },
-      { label: "Backup Power Systems", href: "/backup-power-systems/" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation" },
+      { label: "Solar Panel Installation", href: "/solar-panel-installation" },
+      { label: "Backup Power Systems", href: "/backup-power-systems" },
     ],
   },
   "multi-powerwall-installation": {
@@ -207,6 +219,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Multi-Powerwall installation for true whole-home backup.",
     description:
       "Two, three, or more Powerwalls for backup that covers everything, A/C, EV charging, well pumps, and every circuit in between, sized from your actual usage data.",
+    ctaHeading: "Get a multi-Powerwall system built for true whole-home backup.",
+    ctaBody:
+      "Talk with a certified installer, get a load-based unit-count recommendation, and confirm panel capacity before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Whole-home backup including A/C, EV charging, and well pumps",
       "System sizing based on your real interval usage data",
@@ -263,10 +279,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Powerwall 3 Installation", href: "/powerwall-3-installation/" },
-      { label: "Backup Power Systems", href: "/backup-power-systems/" },
-      { label: "Home Energy Monitoring", href: "/home-energy-monitoring/" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Powerwall 3 Installation", href: "/powerwall-3-installation" },
+      { label: "Backup Power Systems", href: "/backup-power-systems" },
+      { label: "Home Energy Monitoring", href: "/home-energy-monitoring" },
     ],
   },
   "home-battery-installation": {
@@ -274,6 +290,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Home battery installation for backup power and energy savings.",
     description:
       "We install Tesla Powerwall and other leading home batteries, sized to your essential loads, for reliable backup power and lower energy costs.",
+    ctaHeading: "Get a home battery system sized to your essential circuits.",
+    ctaBody:
+      "Talk with a licensed electrician, get a clear brand and sizing recommendation, and confirm your incentive stack before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Support for Powerwall and other leading battery brands",
       "Sized to your essential loads with a free load assessment",
@@ -330,10 +350,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Solar Battery Installation", href: "/solar-battery-installation/" },
-      { label: "Backup Power Systems", href: "/backup-power-systems/" },
-      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation/" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Solar Battery Installation", href: "/solar-battery-installation" },
+      { label: "Backup Power Systems", href: "/backup-power-systems" },
+      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation" },
     ],
   },
   "solar-battery-installation": {
@@ -341,6 +361,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Solar battery installation to use your own power day and night.",
     description:
       "Pairing solar with battery storage lets you use your own clean power day and night and stay powered through outages. State and utility programs, not the expired federal credit, are where the savings are now.",
+    ctaHeading: "Get a solar-plus-storage system sized to your production and usage.",
+    ctaBody:
+      "Talk with a licensed electrician, confirm inverter compatibility, and get a clear sizing recommendation before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Store daytime solar production for evening and overnight use",
       "Automatic backup during grid outages",
@@ -397,10 +421,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Solar Panel Installation", href: "/solar-panel-installation/" },
-      { label: "Solar Storage Retrofit", href: "/solar-storage-retrofit/" },
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Home Battery Installation", href: "/home-battery-installation/" },
+      { label: "Solar Panel Installation", href: "/solar-panel-installation" },
+      { label: "Solar Storage Retrofit", href: "/solar-storage-retrofit" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Home Battery Installation", href: "/home-battery-installation" },
     ],
   },
   "solar-panel-installation": {
@@ -408,6 +432,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Solar panel installation designed around your usage and roof.",
     description:
       "Home solar panels turn your roof into a power plant, generating clean electricity, slashing your utility bills, and protecting you from rising rates. We handle design, permitting, and interconnection end to end.",
+    ctaHeading: "Get a solar system designed around your roof, usage, and rates.",
+    ctaBody:
+      "Talk with a licensed electrician, get a clear system-size recommendation, and confirm your incentive stack before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "System sized to your usage and roof, not a generic package",
       "Permitting and utility interconnection handled for you",
@@ -464,10 +492,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Solar Battery Installation", href: "/solar-battery-installation/" },
-      { label: "Solar Storage Retrofit", href: "/solar-storage-retrofit/" },
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Off-Grid Systems", href: "/off-grid-systems/" },
+      { label: "Solar Battery Installation", href: "/solar-battery-installation" },
+      { label: "Solar Storage Retrofit", href: "/solar-storage-retrofit" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Off-Grid Systems", href: "/off-grid-systems" },
     ],
   },
   "solar-storage-retrofit": {
@@ -475,6 +503,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Solar + storage retrofit, add a battery to solar you already own.",
     description:
       "Already have solar? Add a battery and stop exporting cheap power while buying it back expensive. The battery can also earn state storage incentives on its own.",
+    ctaHeading: "Get a battery retrofit sized to your existing solar system.",
+    ctaBody:
+      "Talk with a licensed electrician, confirm compatibility with your current inverter, and identify available storage incentives before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Battery retrofit for most existing solar inverters",
       "Stops low-value grid export in favor of self-use",
@@ -531,10 +563,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Solar Battery Installation", href: "/solar-battery-installation/" },
-      { label: "Solar Panel Installation", href: "/solar-panel-installation/" },
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Home Energy Monitoring", href: "/home-energy-monitoring/" },
+      { label: "Solar Battery Installation", href: "/solar-battery-installation" },
+      { label: "Solar Panel Installation", href: "/solar-panel-installation" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Home Energy Monitoring", href: "/home-energy-monitoring" },
     ],
   },
   "off-grid-systems": {
@@ -542,6 +574,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Off-grid power systems engineered for the worst week, not the best month.",
     description:
       "True off-grid and grid-optional power, solar arrays sized for winter, serious battery banks, and generator backup for the dark weeks. Engineered systems, not kits.",
+    ctaHeading: "Get an off-grid system engineered around your real load budget.",
+    ctaBody:
+      "Talk with a licensed electrician, calculate your daily load budget, and get a clear array, battery, and generator recommendation before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Solar arrays sized to worst-month production, not annual average",
       "LiFePO4 battery banks sized for 2–3 days of autonomy",
@@ -598,10 +634,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Backup Power Systems", href: "/backup-power-systems/" },
-      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation/" },
-      { label: "Solar Panel Installation", href: "/solar-panel-installation/" },
-      { label: "Home Energy Monitoring", href: "/home-energy-monitoring/" },
+      { label: "Backup Power Systems", href: "/backup-power-systems" },
+      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation" },
+      { label: "Solar Panel Installation", href: "/solar-panel-installation" },
+      { label: "Home Energy Monitoring", href: "/home-energy-monitoring" },
     ],
   },
   "backup-power-systems": {
@@ -609,6 +645,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Backup power systems built around the circuits you can't afford to lose.",
     description:
       "Whole-home and partial-home backup using batteries, transfer switches, and generators, designed around the circuits that matter most to your household.",
+    ctaHeading: "Get a backup power system built around the circuits you can't afford to lose.",
+    ctaBody:
+      "Talk with a licensed electrician, identify your essential circuits, and get a clear battery, generator, or combined recommendation before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Battery, generator, or combined backup strategies",
       "Automatic or manual transfer switch options",
@@ -665,10 +705,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation/" },
-      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation/" },
-      { label: "Off-Grid Systems", href: "/off-grid-systems/" },
-      { label: "Home Energy Monitoring", href: "/home-energy-monitoring/" },
+      { label: "Tesla Powerwall Installation", href: "/tesla-powerwall-installation" },
+      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation" },
+      { label: "Off-Grid Systems", href: "/off-grid-systems" },
+      { label: "Home Energy Monitoring", href: "/home-energy-monitoring" },
     ],
   },
   "home-energy-monitoring": {
@@ -676,6 +716,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
     title: "Home energy monitoring, see what every circuit costs in real time.",
     description:
       "Circuit-level energy monitoring lets you see what every appliance costs in real time, catch failing equipment early, and right-size future solar and battery plans.",
+    ctaHeading: "Get circuit-level visibility into what your home actually uses.",
+    ctaBody:
+      "Talk with a licensed electrician, confirm compatibility with your panel, and get a clear monitoring setup recommendation before any work starts.",
+    relatedHeading: "Explore related battery and solar solutions",
     bullets: [
       "Circuit-level visibility into real-time energy use",
       "Early detection of failing or inefficient equipment",
@@ -732,10 +776,10 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       },
     ],
     related: [
-      { label: "Backup Power Systems", href: "/backup-power-systems/" },
-      { label: "Solar Storage Retrofit", href: "/solar-storage-retrofit/" },
-      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation/" },
-      { label: "Off-Grid Systems", href: "/off-grid-systems/" },
+      { label: "Backup Power Systems", href: "/backup-power-systems" },
+      { label: "Solar Storage Retrofit", href: "/solar-storage-retrofit" },
+      { label: "Multi-Powerwall Installation", href: "/multi-powerwall-installation" },
+      { label: "Off-Grid Systems", href: "/off-grid-systems" },
     ],
   },
 }
