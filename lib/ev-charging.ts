@@ -226,8 +226,9 @@ export const evChargingPages: Record<string, EvChargingPageData> = {
     description:
       "A NEMA 14-50 installation gives you the flexibility to plug in a 240V EV charger without a hardwired unit, while still giving the circuit the protection and sizing it needs.",
     bullets: [
-      "Dedicated 50-amp circuit for EV charging",
-      "Outlet installation with GFCI protection where required",
+      'Dedicated 50-amp circuit for EV charging',
+      'Industrial-grade, EV-rated receptacle for continuous charging loads',
+      'Outlet installation with GFCI protection where required',
       "Code-compliant permit and inspection handled for you",
     ],
     stats: [
@@ -252,8 +253,9 @@ export const evChargingPages: Record<string, EvChargingPageData> = {
       {
         heading: "A proper outlet install requires more than a receptacle and a breaker.",
         body: [
-          "The outlet must be on a dedicated circuit, correctly protected, and routed to the correct panel location with safe spacing. We also check whether the panel has capacity before the job starts.",
-          "That avoids nuisance trips, overloaded circuits, and future service issues that can happen when an EV circuit is undersized or poorly placed.",
+          'The outlet must be on a dedicated circuit, correctly protected, and routed to the correct panel location with safe spacing. We also check whether the panel has capacity before the job starts.',
+          'EV charging is a continuous, hours-long load. Budget receptacles can overheat and melt, so we use an industrial-grade, EV-rated receptacle designed for that use.',
+          'That avoids nuisance trips, overloaded circuits, and future service issues that can happen when an EV circuit is undersized or poorly placed.',
         ],
         points: [
           "Dedicated 50A EV circuit sizing",
