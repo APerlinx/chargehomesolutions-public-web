@@ -11,6 +11,9 @@ export type EvChargingPageData = {
   }[]
   faqs: { question: string; answer: string }[]
   related: { label: string; href: string }[]
+  ctaHeading?: string
+  ctaBody?: string
+  relatedHeading?: string
 }
 
 export const evChargingPages: Record<string, EvChargingPageData> = {
