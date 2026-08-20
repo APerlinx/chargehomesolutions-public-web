@@ -1,8 +1,9 @@
 import type { EvChargingPageData } from "@/lib/ev-charging"
+import { site } from "@/lib/site"
 
 type PageConfig = Pick<
   EvChargingPageData,
-  "eyebrow" | "title" | "description" | "bullets" | "stats" | "sections" | "faqs" | "related" | "ctaHeading" | "ctaBody"
+  "eyebrow" | "title" | "description" | "bullets" | "stats" | "sections" | "faqs" | "related" | "ctaHeading" | "ctaBody" | "primaryActionLabel" | "primaryActionHref"
 >
 
 const electricalRelated = [
@@ -150,6 +151,8 @@ export const electricalEmergencyPages: Record<string, EvChargingPageData> = {
     description: "Fast 24/7 triage and dispatch for problems that risk fire, shock, or leave your home unlivable, with diagnosis and price explained before repair.",
     ctaHeading: "Call now to speak with an emergency electrical dispatcher.",
     ctaBody: "Describe the symptom, make the area safe if you can, and get a real ETA for a licensed electrician.",
+    primaryActionLabel: "Call the 24/7 emergency line",
+    primaryActionHref: site.phoneHref,
     bullets: ["Sparking, smoke, hot panels, and outages", "Emergency triage before dispatch", "Most repairs resolved in one visit"],
     stats: [{ label: "Availability", value: "24/7" }, { label: "Dispatch", value: "Nationwide" }, { label: "Pricing", value: "Quoted first" }],
     sections: [{ heading: "Certain electrical symptoms are never wait-and-see problems.", body: ["Smoke, burning odor, sparking, exposed wires, and water intrusion can escalate quickly into fire or shock risk.", "Our dispatch team distinguishes a genuine hazard from a repair that can safely wait until the next business day."], points: ["Burning smell or smoke", "Sparking or buzzing panel", "Hot equipment", "Utility-confirmed home-side outage"] }, { heading: "Safety comes before troubleshooting.", body: ["If it is safe to reach the panel, turn off the affected breaker or the main if you cannot identify it.", "Do not touch wet or scorched equipment, and leave the home if an odor intensifies."], points: ["Phone triage", "Clear safety guidance", "Licensed electrician dispatch", "Up-front repair quote"] }],

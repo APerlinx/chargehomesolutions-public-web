@@ -21,6 +21,8 @@ export type ServicePageData = {
   related: { label: string; href: string }[]
   ctaHeading?: string
   ctaBody?: string
+  primaryActionLabel?: string
+  primaryActionHref?: string
   relatedHeading?: string
 }
 
@@ -35,6 +37,8 @@ export function EvChargingServicePage({
   related,
   ctaHeading = "Get a charging setup built around your home, panel, and driving habits.",
   ctaBody = "Talk with a licensed electrician, get a clear recommendation, and confirm the best charger, breaker, and routing path before any work starts.",
+  primaryActionLabel = "Book a free consultation",
+  primaryActionHref = site.consultationHref,
   relatedHeading = "Explore related EV charging solutions",
 }: ServicePageData) {
   return (
@@ -56,10 +60,10 @@ export function EvChargingServicePage({
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
-                    href={site.consultationHref}
+                    href={primaryActionHref}
                     className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[0.9375rem] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                   >
-                    Book a free consultation
+                    {primaryActionLabel}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </Link>
                   <a
@@ -161,10 +165,10 @@ export function EvChargingServicePage({
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
-                  href={site.consultationHref}
+                  href={primaryActionHref}
                   className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[0.9375rem] font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
                 >
-                  Book your free consultation
+                  {primaryActionLabel}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                 </Link>
                 <a
