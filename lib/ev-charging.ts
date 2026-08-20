@@ -13,6 +13,8 @@ export type EvChargingPageData = {
   related: { label: string; href: string }[]
   ctaHeading?: string
   ctaBody?: string
+  primaryActionLabel?: string
+  primaryActionHref?: string
   relatedHeading?: string
 }
 
