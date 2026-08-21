@@ -1,8 +1,8 @@
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowRight, Check } from "lucide-react"
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight, Check } from 'lucide-react'
 
-import { credentials } from "@/lib/home"
+import { credentials } from '@/lib/home'
 
 export function TrustStatement() {
   return (
@@ -22,7 +22,9 @@ export function TrustStatement() {
 
       <div className="relative mx-auto w-full max-w-[92rem] px-5 lg:px-8">
         <div className="ml-auto max-w-lg text-left lg:text-right">
-          <p className="label-mono text-primary">We install. We power. We protect.</p>
+          <p className="label-mono text-primary">
+            We install. We power. We protect.
+          </p>
           <h2
             id="trust-heading"
             className="mt-5 text-balance text-[2.25rem] font-semibold leading-[1.06] tracking-[-0.03em] text-foreground sm:text-5xl lg:text-[3.5rem]"
@@ -30,8 +32,8 @@ export function TrustStatement() {
             One crew for the whole system.
           </h2>
           <p className="mt-6 text-pretty text-lg leading-relaxed text-muted-foreground lg:ml-auto lg:max-w-md">
-            Charger, battery, panel and permit, handled by the same certified team. No subcontractor roulette, no
-            surprise change orders.
+            Charger, battery, panel and permit, handled by the same certified
+            team. No subcontractor roulette, no surprise change orders.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3 lg:justify-end">
@@ -44,7 +46,10 @@ export function TrustStatement() {
               className="group inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary-hover"
             >
               See the proof
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              <ArrowRight
+                className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
             </Link>
           </div>
         </div>
@@ -58,17 +63,28 @@ export function CredentialMarquee() {
   const halves = [credentials, credentials]
 
   return (
-    <section aria-label="Certifications and ratings" className="overflow-hidden bg-muted py-8">
+    <section
+      aria-label="Certifications and ratings"
+      className="marketing-ink-band overflow-hidden py-8"
+    >
       <div className="marquee-track flex">
         {halves.map((half, halfIndex) => (
-          <ul key={halfIndex} className="flex shrink-0 items-center" aria-hidden={halfIndex === 1}>
+          <ul
+            key={halfIndex}
+            className="flex shrink-0 items-center"
+            aria-hidden={halfIndex === 1}
+          >
             {half.map((item) => (
               <li
                 key={`${halfIndex}-${item.headline}`}
                 className="flex shrink-0 flex-col items-center border-r border-border px-10 text-center"
               >
-                <span className="text-base font-semibold tracking-[-0.01em] text-foreground">{item.headline}</span>
-                <span className="mt-0.5 text-xs text-muted-foreground">{item.sub}</span>
+                <span className="text-base font-semibold tracking-[-0.01em] text-foreground">
+                  {item.headline}
+                </span>
+                <span className="mt-0.5 text-xs text-muted-foreground">
+                  {item.sub}
+                </span>
               </li>
             ))}
           </ul>

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Enables `dark:` variants — used by the for-electricians sub-site. */
 @custom-variant dark (&:is(.dark *));
@@ -136,6 +136,32 @@
 @utility marquee-track {
   width: max-content;
   animation: marquee-x 48s linear infinite;
+}
+
+.marketing-ink-band {
+  background-color: var(--ink);
+  color: var(--ink-foreground);
+}
+
+.marketing-ink-band .bg-background {
+  background-color: var(--ink-raised);
+}
+
+.marketing-ink-band .bg-border {
+  background-color: var(--ink-border);
+}
+
+.marketing-ink-band .border-border,
+.marketing-ink-band .divide-border {
+  border-color: var(--ink-border);
+}
+
+.marketing-ink-band .text-foreground {
+  color: var(--ink-foreground);
+}
+
+.marketing-ink-band .text-muted-foreground {
+  color: var(--ink-muted);
 }
 
 @media (prefers-reduced-motion: reduce) {

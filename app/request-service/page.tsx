@@ -1,17 +1,17 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { CustomerHeader } from "@/components/customer-header"
-import { CustomerFooter } from "@/components/customer-footer"
-import { Container, Section } from "@/components/ui/section"
-import { TurnstileWidget } from "@/components/turnstile-widget"
+import { useState } from 'react'
+import { CustomerHeader } from '@/components/customer-header'
+import { CustomerFooter } from '@/components/customer-footer'
+import { Container, Section } from '@/components/ui/section'
+import { TurnstileWidget } from '@/components/turnstile-widget'
 import {
   APPOINTMENT_WINDOWS,
   SERVICE_TYPES,
   US_STATES,
   submitServiceRequest,
   type ServiceRequestInput,
-} from "@/lib/api"
+} from '@/lib/api'
 
 // Functional customer booking form. Captures the request + a booked appointment
 // (date + window) and posts to POST /public/services, which schedules it and
@@ -20,26 +20,26 @@ import {
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
 const EMPTY: ServiceRequestInput = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  address: "",
-  city: "",
-  state: "",
-  zipCode: "",
-  type: "",
-  scheduledLocalDate: "",
-  appointmentWindow: "",
-  customerComments: "",
-  company: "", // honeypot
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  address: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  type: '',
+  scheduledLocalDate: '',
+  appointmentWindow: '',
+  customerComments: '',
+  company: '', // honeypot
 }
 
 function todayLocalISO(): string {
   const d = new Date()
   const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, "0")
-  const day = String(d.getDate()).padStart(2, "0")
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
 }
 
@@ -50,20 +50,22 @@ function isLikelyUsPhone(value: string): boolean {
   // Reject stray letters/symbols first, so e.g. "abc3125550111" doesn't pass by
   // having its digits counted.
   if (!/^[0-9\s().+-]+$/.test(value)) return false
-  const digits = value.replace(/\D/g, "")
-  return digits.length === 10 || (digits.length === 11 && digits.startsWith("1"))
+  const digits = value.replace(/\D/g, '')
+  return (
+    digits.length === 10 || (digits.length === 11 && digits.startsWith('1'))
+  )
 }
 
-const PHONE_ERROR = "Enter a valid US phone number, e.g. (312) 555-0111."
+const PHONE_ERROR = 'Enter a valid US phone number, e.g. (312) 555-0111.'
 
 const inputClass =
-  "w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30"
-const labelClass = "mb-1.5 block text-sm font-medium text-foreground"
+  'w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30'
+const labelClass = 'mb-1.5 block text-sm font-medium text-foreground'
 
 export default function RequestServicePage() {
   const [form, setForm] = useState<ServiceRequestInput>(EMPTY)
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">(
-    "idle",
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>(
+    'idle',
   )
   const [error, setError] = useState<string | null>(null)
   const [phoneError, setPhoneError] = useState<string | null>(null)
@@ -90,28 +92,31 @@ export default function RequestServicePage() {
       return
     }
     if (needsTurnstile && !token) {
-      setError("Please complete the verification below.")
+      setError('Please complete the verification below.')
       return
     }
-    setStatus("submitting")
+    setStatus('submitting')
     try {
-      await submitServiceRequest({ ...form, turnstileToken: token ?? undefined })
-      setStatus("success")
+      await submitServiceRequest({
+        ...form,
+        turnstileToken: token ?? undefined,
+      })
+      setStatus('success')
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.")
-      setStatus("idle")
+      setError(err instanceof Error ? err.message : 'Something went wrong.')
+      setStatus('idle')
       // The Turnstile token is single-use — remount the widget for a fresh one.
       setToken(null)
       setTurnstileKey((k) => k + 1)
     }
   }
 
-  if (status === "success") {
+  if (status === 'success') {
     return (
       <div className="flex min-h-dvh flex-col">
         <CustomerHeader />
         <main className="flex-1">
-          <Section>
+          <Section tone="muted">
             <Container className="max-w-2xl">
               <div className="rounded-2xl border border-border bg-panel p-8 text-center text-panel-foreground">
                 <h2 className="text-2xl font-semibold tracking-[-0.02em]">
@@ -128,7 +133,7 @@ export default function RequestServicePage() {
                     setForm(EMPTY)
                     setToken(null)
                     setTurnstileKey((k) => k + 1)
-                    setStatus("idle")
+                    setStatus('idle')
                   }}
                   className="mt-6 rounded-full border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
                 >
@@ -147,7 +152,7 @@ export default function RequestServicePage() {
     <div className="flex min-h-dvh flex-col">
       <CustomerHeader />
       <main className="flex-1">
-        <Section>
+        <Section tone="muted">
           <Container className="max-w-2xl">
             <h1 className="text-3xl font-semibold tracking-tight">
               Book your free consultation
@@ -167,7 +172,7 @@ export default function RequestServicePage() {
                     id="firstName"
                     className={inputClass}
                     value={form.firstName}
-                    onChange={set("firstName")}
+                    onChange={set('firstName')}
                     required
                     maxLength={100}
                   />
@@ -180,7 +185,7 @@ export default function RequestServicePage() {
                     id="lastName"
                     className={inputClass}
                     value={form.lastName}
-                    onChange={set("lastName")}
+                    onChange={set('lastName')}
                     required
                     maxLength={100}
                   />
@@ -197,7 +202,7 @@ export default function RequestServicePage() {
                     type="email"
                     className={inputClass}
                     value={form.email}
-                    onChange={set("email")}
+                    onChange={set('email')}
                     required
                     maxLength={255}
                   />
@@ -212,13 +217,13 @@ export default function RequestServicePage() {
                     className={inputClass}
                     value={form.phone}
                     onChange={(e) => {
-                      set("phone")(e)
+                      set('phone')(e)
                       if (phoneError) setPhoneError(null)
                     }}
                     required
                     maxLength={30}
                     aria-invalid={phoneError ? true : undefined}
-                    aria-describedby={phoneError ? "phone-error" : undefined}
+                    aria-describedby={phoneError ? 'phone-error' : undefined}
                   />
                   {phoneError ? (
                     <p
@@ -239,7 +244,7 @@ export default function RequestServicePage() {
                   id="address"
                   className={inputClass}
                   value={form.address}
-                  onChange={set("address")}
+                  onChange={set('address')}
                   required
                   maxLength={255}
                 />
@@ -254,7 +259,7 @@ export default function RequestServicePage() {
                     id="city"
                     className={inputClass}
                     value={form.city}
-                    onChange={set("city")}
+                    onChange={set('city')}
                     required
                     maxLength={100}
                   />
@@ -267,7 +272,7 @@ export default function RequestServicePage() {
                     id="state"
                     className={inputClass}
                     value={form.state}
-                    onChange={set("state")}
+                    onChange={set('state')}
                     required
                   >
                     <option value="" disabled>
@@ -288,7 +293,7 @@ export default function RequestServicePage() {
                     id="zipCode"
                     className={inputClass}
                     value={form.zipCode}
-                    onChange={set("zipCode")}
+                    onChange={set('zipCode')}
                     required
                     maxLength={20}
                   />
@@ -303,7 +308,7 @@ export default function RequestServicePage() {
                   id="type"
                   className={inputClass}
                   value={form.type}
-                  onChange={set("type")}
+                  onChange={set('type')}
                   required
                 >
                   <option value="" disabled>
@@ -327,7 +332,7 @@ export default function RequestServicePage() {
                     type="date"
                     className={inputClass}
                     value={form.scheduledLocalDate}
-                    onChange={set("scheduledLocalDate")}
+                    onChange={set('scheduledLocalDate')}
                     min={minDate}
                     required
                   />
@@ -340,7 +345,7 @@ export default function RequestServicePage() {
                     id="appointmentWindow"
                     className={inputClass}
                     value={form.appointmentWindow}
-                    onChange={set("appointmentWindow")}
+                    onChange={set('appointmentWindow')}
                     required
                   >
                     <option value="" disabled>
@@ -357,7 +362,7 @@ export default function RequestServicePage() {
 
               <div>
                 <label className={labelClass} htmlFor="customerComments">
-                  Anything else{" "}
+                  Anything else{' '}
                   <span className="font-normal text-muted-foreground">
                     (optional)
                   </span>
@@ -367,7 +372,7 @@ export default function RequestServicePage() {
                   className={inputClass}
                   rows={4}
                   value={form.customerComments}
-                  onChange={set("customerComments")}
+                  onChange={set('customerComments')}
                   maxLength={2000}
                 />
               </div>
@@ -380,7 +385,7 @@ export default function RequestServicePage() {
                   tabIndex={-1}
                   autoComplete="off"
                   value={form.company}
-                  onChange={set("company")}
+                  onChange={set('company')}
                 />
               </div>
 
@@ -404,18 +409,16 @@ export default function RequestServicePage() {
 
               <button
                 type="submit"
-                disabled={
-                  status === "submitting" || (needsTurnstile && !token)
-                }
+                disabled={status === 'submitting' || (needsTurnstile && !token)}
                 className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:scale-[1.02] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {status === "submitting" ? "Submitting…" : "Book Appointment"}
+                {status === 'submitting' ? 'Submitting…' : 'Book Appointment'}
               </button>
 
               <p className="text-xs leading-relaxed text-muted-foreground">
                 By booking, you agree to receive SMS about your appointment from
-                Charge Home Solutions. Msg &amp; data rates may apply. Reply STOP
-                to opt out.{" "}
+                Charge Home Solutions. Msg &amp; data rates may apply. Reply
+                STOP to opt out.{' '}
                 <a
                   href="/privacy"
                   className="underline underline-offset-2 hover:text-foreground"
