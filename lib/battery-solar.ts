@@ -204,7 +204,7 @@ export const batterySolarPages: Record<string, EvChargingPageData> = {
       {
         question: "Does Powerwall 3 qualify for tax credits?",
         answer:
-          "The federal Residential Clean Energy Credit (Section 25D) doesn't apply to expenditures made after December 31, 2025, based on when installation was completed rather than only the placed-in-service date. State storage rebates and utility programs are what reduce the cost now.",
+          'The federal Residential Clean Energy Credit ended for property placed in service after December 31, 2025. State storage rebates, utility programs, and Virtual Power Plant payments may reduce costs where available.',
       },
     ],
     related: [
