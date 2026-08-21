@@ -1,7 +1,6 @@
 import type { LegalBlock, LegalDoc } from '@/lib/legal'
 import { Container, Eyebrow } from '@/components/ui/section'
 
-
 function Text({ text }: { text: string }) {
   const parts = text.split(/(\[[^\]]+\])/g)
 
@@ -132,30 +131,30 @@ export function LegalDocument({ doc }: { doc: LegalDoc }) {
   return (
     <main className="flex-1">
       {}
-      <header className="bg-ink text-ink-foreground">
+      <header className="bg-muted text-foreground">
         <Container className="pb-16 pt-28 sm:pb-20 lg:pt-36">
           <div className="flex max-w-3xl flex-col gap-5">
-            <Eyebrow tone="ink">{doc.eyebrow}</Eyebrow>
+            <Eyebrow>{doc.eyebrow}</Eyebrow>
             <h1 className="text-balance text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">
               {doc.title}
             </h1>
-            <p className="max-w-2xl text-pretty text-base leading-relaxed text-ink-muted sm:text-lg">
+            <p className="max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
               {doc.summary}
             </p>
-            <dl className="mt-2 flex flex-wrap gap-x-10 gap-y-3 border-t border-ink-border pt-6">
+            <dl className="mt-2 flex flex-wrap gap-x-10 gap-y-3 border-t border-border pt-6">
               <div className="flex flex-col gap-1">
-                <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ink-muted">
+                <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground">
                   Effective date
                 </dt>
-                <dd className="text-sm text-ink-foreground">
+                <dd className="text-sm text-foreground">
                   <Text text={doc.effectiveDate} />
                 </dd>
               </div>
               <div className="flex flex-col gap-1">
-                <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ink-muted">
+                <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground">
                   Last updated
                 </dt>
-                <dd className="text-sm text-ink-foreground">
+                <dd className="text-sm text-foreground">
                   <Text text={doc.lastUpdated} />
                 </dd>
               </div>
