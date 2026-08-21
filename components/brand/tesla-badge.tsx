@@ -1,5 +1,5 @@
 
-
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 
@@ -20,7 +20,7 @@ export function TeslaBadge({
     
     <span className={cn("inline-flex items-center gap-2", className)}>
       {}
-      <img
+      <Image
         src="/logos/tesla-mark.svg"
         alt=""
         width={25}
@@ -30,7 +30,7 @@ export function TeslaBadge({
       />
       <span className="flex flex-col leading-none">
         {}
-        <img
+        <Image
           src="/logos/tesla-wordmark.svg"
           alt="Tesla"
           width={98}
