@@ -55,27 +55,21 @@ export function Hero() {
               </span>
             </motion.div>
 
-            <h1 className="max-w-[80%] text-[clamp(2.75rem,6.2vw,5.5rem)] font-light leading-[0.98] tracking-[-0.035em]">
-              <motion.span
-                custom={1}
-                variants={rise}
-                initial="hidden"
-                animate="show"
-                className="block text-ink-foreground"
-              >
-                {hero.titleLead}
-              </motion.span>
-              {}
-              <motion.span
-                custom={2}
-                variants={rise}
-                initial="hidden"
-                animate="show"
-                className="block bg-linear-to-r from-primary via-primary to-accent bg-clip-text pb-[0.14em] text-transparent"
-              >
+            <motion.h1
+              custom={1}
+              variants={rise}
+              initial="hidden"
+              animate="show"
+              className="max-w-[80%] text-[clamp(2.75rem,6.2vw,5.5rem)] font-light leading-[0.98] tracking-[-0.035em]"
+            >
+              {/* Inline spans so the brand flows straight after "with" instead of
+                  being forced onto its own line. Animation lives on the <h1> since
+                  inline elements can't be transformed. */}
+              <span className="text-ink-foreground">{hero.titleLead}</span>{" "}
+              <span className="bg-linear-to-r from-primary via-primary to-accent bg-clip-text pb-[0.14em] text-transparent">
                 {hero.titleBrand}
-              </motion.span>
-            </h1>
+              </span>
+            </motion.h1>
 
             <motion.p
               custom={3}
