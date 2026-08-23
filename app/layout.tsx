@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 
+import { ThemeProvider } from "@/components/theme-provider"
 import { site } from "@/lib/site"
 import "./globals.css"
 
@@ -52,8 +53,17 @@ export default function RootLayout({
       className={`bg-background ${geistSans.variable} ${geistMono.variable}`}
     >
       {/* Each page/section owns its own chrome (the marketing homepage renders
-          the SiteHeader/Footer; /for-electricians has its own header/footer). */}
-      <body className="font-sans">{children}</body>
+          the SiteHeader/Footer; /for-electricians has its own header/footer).
+          ThemeProvider lives here (not in the nested /for-electricians layout) so
+          next-themes renders its anti-flash <script> once at SSR — a nested
+          provider re-renders that script on client navigation, which React 19
+          flags. Theme scoping is handled in CSS (.electrician-site), so the
+          marketing pages are unaffected. */}
+      <body className="font-sans">
+        <ThemeProvider attribute="class" defaultTheme="light">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
