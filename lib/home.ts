@@ -26,52 +26,52 @@ export const services: Service[] = [
   {
     title: "EV Charger Installation",
     blurb: "Level 2 charging, permitted and inspected.",
-    href: "/services/ev-charger-installation",
+    href: "/ev-charger-installation",
   },
   {
     title: "Tesla Wall Connector",
     blurb: "Certified installs by Tesla-approved electricians.",
-    href: "/services/tesla-wall-connector-installation",
+    href: "/tesla-wall-connector-installation",
   },
   {
     title: "Tesla Powerwall",
     blurb: "Whole-home backup, sized to your usage.",
-    href: "/services/tesla-powerwall-installation",
+    href: "/tesla-powerwall-installation",
   },
   {
     title: "Home Battery Solutions",
     blurb: "Store power and ride out the outage.",
-    href: "/services/home-battery-installation",
+    href: "/home-battery-installation",
   },
   {
     title: "Electrical Panel Upgrades",
     blurb: "200A service and load-managed capacity.",
-    href: "/services/electrical-panel-upgrade",
+    href: "/electrical-panel-upgrade",
   },
   {
     title: "Generator Installation",
     blurb: "Standby power that starts on its own.",
-    href: "/services/generator-installation",
+    href: "/generator-installation",
   },
   {
     title: "Solar & Battery",
     blurb: "Panels and storage as one system.",
-    href: "/services/solar-panel-installation",
+    href: "/solar-panel-installation",
   },
   {
     title: "Commercial EV Charging",
     blurb: "Fleet, retail and hospitality charging.",
-    href: "/services/commercial-ev-charging",
+    href: "/commercial-ev-charging",
   },
   {
     title: "Commercial Electrical",
     blurb: "Licensed crews for business properties.",
-    href: "/services/commercial-electrician",
+    href: "/commercial-electrician",
   },
   {
     title: "General Electrical",
     blurb: "Rewiring, lighting, breakers, inspections.",
-    href: "/services/electrical-services",
+    href: "/electrical",
   },
 ]
 
